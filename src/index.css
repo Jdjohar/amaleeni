@@ -1,0 +1,52 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-serif: 'Cormorant Garamond', Georgia, serif;
+    --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: #F8F3EA;
+    color: #1B3629;
+  }
+
+  h1, h2, h3, .font-serif-heading {
+    font-family: var(--font-serif);
+  }
+}
+
+/* Custom background paper texture simulation */
+.paper-texture {
+  background-color: #F6EFE2;
+  background-image: 
+    radial-gradient(rgba(180, 160, 130, 0.15) 1px, transparent 0),
+    radial-gradient(rgba(200, 175, 145, 0.12) 1px, transparent 0);
+  background-size: 24px 24px, 32px 32px;
+  background-position: 0 0, 12px 12px;
+}
+
+.paper-card {
+  background-color: #F2E8D7;
+  box-shadow: 0 10px 30px -5px rgba(27, 54, 41, 0.08), 0 4px 12px rgba(200, 59, 70, 0.04);
+}
+
+/* Float animations */
+@keyframes floatSlow {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(1.5deg); }
+}
+
+@keyframes floatReverse {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(8px) rotate(-1.5deg); }
+}
+
+.animate-float-slow {
+  animation: floatSlow 6s ease-in-out infinite;
+}
+
+.animate-float-reverse {
+  animation: floatReverse 7s ease-in-out infinite;
+}
