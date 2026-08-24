@@ -183,7 +183,7 @@ export default function ProgrammePage() {
               </div>
               <h4 className="font-serif text-xl font-bold text-white">Air Connectivity</h4>
               <p className="text-sm text-[#A8C2B3]">
-                [X] km from Biju Patnaik International Airport (BBI), connecting direct daily flights to Delhi, Mumbai, Bengaluru, Kolkata, and Chennai.
+                [X] km from International Airport, connecting direct daily flights to major metropolitan cities.
               </p>
             </div>
 
@@ -193,7 +193,7 @@ export default function ProgrammePage() {
               </div>
               <h4 className="font-serif text-xl font-bold text-white">Rail Connectivity</h4>
               <p className="text-sm text-[#A8C2B3]">
-                [X] km from Bhubaneswar Railway Station (BBS), major junction on the East Coast Railway route.
+                [X] km from central Railway Station, key junction on the national rail network.
               </p>
             </div>
 
@@ -203,7 +203,7 @@ export default function ProgrammePage() {
               </div>
               <h4 className="font-serif text-xl font-bold text-white">Partner Hotels &amp; Hospitality</h4>
               <p className="text-sm text-[#A8C2B3]">
-                Exclusive delegate rates pre-booked across 5-star and 4-star partner hotels in Bhubaneswar.
+                Exclusive delegate rates pre-booked across 5-star and 4-star partner hotels.
               </p>
             </div>
           </div>
@@ -212,7 +212,7 @@ export default function ProgrammePage() {
           <div className="bg-[#234533] rounded-3xl p-8 border border-[#2F5A43] text-center space-y-4">
             <MapPin className="w-12 h-12 text-[#C83B46] mx-auto" />
             <h3 className="font-serif text-2xl font-bold text-white">
-              Bhubaneswar Convention &amp; Exhibition Hub
+              National Convention &amp; Exhibition Hub
             </h3>
             <p className="text-sm text-[#A8C2B3] max-w-lg mx-auto font-serif">
               Full interactive navigation map and shuttle schedules will be emailed to registered delegates prior to 12 March 2027.

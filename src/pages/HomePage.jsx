@@ -93,11 +93,9 @@ export default function HomePage() {
   ];
 
   const marqueeSpeakers = [
-    { name: 'Dr. Akshaya Jain', title: 'Founder & Convenor, Amaleeni Foundation', img: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=300&q=80' },
-    { name: 'Suhani Roy', title: 'Managing Director, Horizon Capital', img: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=300&q=80' },
-    { name: 'Meera Patnaik', title: 'Mission Shakti State Lead', img: 'https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?auto=format&fit=crop&w=300&q=80' },
-    { name: 'Radhika Sen', title: 'Head of CSR, Global Ventures', img: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=300&q=80' },
-    { name: 'Dr. Kavita Menon', title: 'NITI Aayog Policy Consultant', img: 'https://images.unsplash.com/photo-1598550874175-4d0ef436c909?auto=format&fit=crop&w=300&q=80' },
+    { name: 'Dr. Akshaya Jain', title: 'Founder & Convenor, Amaleeni Foundation' },
+    { name: 'Ashwini Kumar', title: 'Communication & Media Lead' },
+    { name: 'Ramakrishna Padhy', title: 'Communication & Media Lead' },
   ];
 
   return (
@@ -332,7 +330,11 @@ export default function HomePage() {
               loop
               muted
               playsInline
-              preload="metadata"
+              preload="auto"
+              onEnded={(e) => {
+                e.target.currentTime = 0;
+                e.target.play();
+              }}
             >
               <source src="/assets/SYU_WEB_LANDING PAGE VIDEO.mp4" type="video/mp4" />
               Your browser does not support the video tag.
@@ -477,19 +479,14 @@ export default function HomePage() {
           </Link>
         </div>
 
-        <div className="flex gap-6 overflow-x-auto pb-4 scrollbar-none px-4 sm:px-8">
+        <div className="flex gap-6 overflow-x-auto pb-4 scrollbar-none px-4 sm:px-8 justify-center">
           {marqueeSpeakers.map((s, idx) => (
             <div
               key={idx}
-              className="shrink-0 w-72 bg-[#234533] rounded-2xl p-6 border border-[#2D5640] text-center flex flex-col items-center"
+              className="shrink-0 w-72 bg-[#234533] rounded-2xl p-6 border border-[#2D5640] text-center flex flex-col items-center justify-center"
             >
-              <img
-                src={s.img}
-                alt={s.name}
-                className="w-20 h-20 rounded-full object-cover border-2 border-[#D49B4B] mb-4 shadow-md"
-              />
               <h4 className="font-serif text-xl font-bold text-white">{s.name}</h4>
-              <p className="text-xs text-[#A8C4B3] mt-1 font-serif">{s.title}</p>
+              <p className="text-xs text-[#D49B4B] font-semibold mt-1 font-serif">{s.title}</p>
             </div>
           ))}
         </div>
