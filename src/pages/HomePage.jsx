@@ -312,6 +312,35 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Video Showcase Section */}
+      <section className="py-16 bg-[#1B3629] text-white border-b border-[#2D5440]">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#C83B46] text-white text-xs font-bold uppercase tracking-wider">
+            <Sparkles className="w-4 h-4" />
+            <span>Summit Showcase</span>
+          </div>
+
+          <h2 className="font-serif text-3xl sm:text-5xl font-extrabold text-[#FAF5EB] leading-tight">
+            Experience Amaleeni Womenpreneurs
+          </h2>
+
+          <div className="relative rounded-3xl overflow-hidden border-2 border-[#D49B4B] shadow-2xl bg-black max-w-4xl mx-auto">
+            <video
+              className="w-full h-auto max-h-[520px] object-cover rounded-3xl"
+              controls
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="metadata"
+            >
+              <source src="/assets/SYU_WEB_LANDING PAGE VIDEO.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        </div>
+      </section>
+
       {/* 1.4 Who's In The Room */}
       <section className="py-20 bg-[#FAF5EB] border-b border-[#E8DCC8]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -523,7 +552,7 @@ export default function HomePage() {
 
               <div className="bg-[#244735] p-5 rounded-2xl border border-[#2F5A43] space-y-2">
                 <p className="text-xs uppercase tracking-wider text-[#D49B4B] font-bold">Venue Location</p>
-                <p className="font-serif text-lg font-bold text-white">[VENUE NAME], India</p>
+                <p className="font-serif text-lg font-bold text-white">India</p>
               </div>
 
               <Link

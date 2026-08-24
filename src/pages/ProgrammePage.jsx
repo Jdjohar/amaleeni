@@ -53,7 +53,7 @@ export default function ProgrammePage() {
             </span>
             <span>•</span>
             <span className="flex items-center gap-1.5">
-              <MapPin className="w-5 h-5 text-[#1B3629]" /> [Venue Name], India
+              <MapPin className="w-5 h-5 text-[#1B3629]" /> India
             </span>
           </div>
         </div>
@@ -168,7 +168,7 @@ export default function ProgrammePage() {
               Venue &amp; Travel Information
             </span>
             <h2 className="font-serif text-4xl sm:text-5xl font-bold text-white mt-2">
-              [VENUE NAME], India
+              India
             </h2>
             <p className="text-base text-[#A8C2B3] font-serif mt-3">
               [Full address], India. Designed for world-class conventions, pitch floors, and delegate hospitality.

@@ -25,14 +25,7 @@ export default function Footer() {
               Amaleeni Womenpreneurs 2027: From Vision to Venture. Putting women entrepreneurs in the room with capital, policy, buyers, and mentors.
             </p>
 
-            <div className="space-y-1.5 text-xs text-[#D49B4B] font-serif">
-              <p className="flex items-center gap-1.5">
-                <Calendar className="w-4 h-4 text-[#C83B46]" /> 12–13 March 2027
-              </p>
-              <p className="flex items-center gap-1.5 text-[#A8C2B3]">
-                <MapPin className="w-4 h-4 text-[#C83B46]" /> India
-              </p>
-            </div>
+           
           </div>
 
           {/* Col 2: Navigation Pages */}
