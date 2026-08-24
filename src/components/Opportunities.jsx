@@ -28,12 +28,12 @@ export default function Opportunities({ onOpenContact }) {
     {
       id: 2,
       category: 'Textiles & Garments',
-      title: 'UP Textile Policy 2026',
+      title: 'National Textile Policy 2026',
       location: 'Gorakhpur, Varanasi & Meerut',
       subsidy: '50% Machinery Subsidy + ₹2/unit Power Off-set',
       eligibility: 'New apparel & weaving units',
       description:
-        'Capitalize on Uttar Pradesh’s rich weaving heritage. Get direct wage subsidies for female workers and export logistics support.',
+        'Capitalize on India’s rich weaving heritage. Get direct wage subsidies for female workers and export logistics support.',
       tag: 'Top Incentive',
     },
     {
@@ -51,7 +51,7 @@ export default function Opportunities({ onOpenContact }) {
       id: 4,
       category: 'Agri & Food Processing',
       title: 'Rural Micro-Food Enterprise Scheme',
-      location: '75 Districts of Uttar Pradesh',
+      location: 'Districts across India',
       subsidy: '35% Credit-Linked Capital Subsidy',
       eligibility: 'Self Help Groups & Women Food Artisans',
       description:
@@ -77,7 +77,7 @@ export default function Opportunities({ onOpenContact }) {
       subsidy: '₹1 Crore Cap Incentive + 10-Yr Tax Holiday',
       eligibility: 'EV battery assembly & solar light units',
       description:
-        'Pioneer green mobility solutions in UP with capital subsidies on machinery and priority land allocation in green industrial zones.',
+        'Pioneer green mobility solutions in India with capital subsidies on machinery and priority land allocation in green industrial zones.',
       tag: 'Future Green',
     },
   ];
@@ -102,7 +102,7 @@ export default function Opportunities({ onOpenContact }) {
               Business Opportunities &amp; Schemes
             </h2>
             <p className="mt-3 text-lg text-[#3D5C4A] font-serif max-w-2xl">
-              Explore subsidized industrial schemes, seed capital grants, and dedicated women-founder parks across Uttar Pradesh.
+              Explore subsidized industrial schemes, seed capital grants, and dedicated women-founder parks across India.
             </p>
           </div>
 

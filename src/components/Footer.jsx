@@ -10,22 +10,15 @@ export default function Footer() {
           
           {/* Col 1: Brand Info */}
           <div className="lg:col-span-2 space-y-4">
-            <Link to="/" className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full border border-[#D49B4B] overflow-hidden">
-                <img
-                  src="/assets/foundation-logo.jpg"
-                  alt="Amaleeni Foundation"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div>
-                <h3 className="font-serif text-2xl font-bold tracking-wider text-[#FAF5EB] uppercase leading-none">
-                  AMALEENI
-                </h3>
-                <span className="text-[9px] tracking-[0.2em] font-semibold text-[#D49B4B] uppercase">
-                  WOMENPRENEURS 2027
-                </span>
-              </div>
+            <Link to="/" className="flex items-center">
+              <img
+                src="/assets/logo.png"
+                alt="Amaleeni Logo"
+                className="h-10 sm:h-12 w-auto object-contain"
+                onError={(e) => {
+                  e.currentTarget.src = "/assets/logo.png";
+                }}
+              />
             </Link>
 
             <p className="text-sm text-[#A8C2B3] font-serif leading-relaxed max-w-sm">
@@ -37,7 +30,7 @@ export default function Footer() {
                 <Calendar className="w-4 h-4 text-[#C83B46]" /> 12–13 March 2027
               </p>
               <p className="flex items-center gap-1.5 text-[#A8C2B3]">
-                <MapPin className="w-4 h-4 text-[#C83B46]" /> Bhubaneswar, Odisha
+                <MapPin className="w-4 h-4 text-[#C83B46]" /> India
               </p>
             </div>
           </div>
@@ -49,7 +42,7 @@ export default function Footer() {
               <li><Link to="/" className="hover:text-white transition-colors">Home</Link></li>
               <li><Link to="/programme" className="hover:text-white transition-colors">Programme &amp; Venue</Link></li>
               <li><Link to="/team" className="hover:text-white transition-colors">Team &amp; Lineup</Link></li>
-              <li><Link to="/register" className="hover:text-white transition-colors">Register as Delegate</Link></li>
+              <li><a href="https://forms.gle/aKo9HBzgCB14dvAB9" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Register Now</a></li>
             </ul>
           </div>
 
@@ -88,7 +81,11 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#7A9988]">
           <p>An initiative of the Amaleeni Foundation – awakening the strength within.</p>
-          <div className="flex items-center gap-1">
+          <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
+            <p>
+              Design &amp; Impact Partner: <span className="text-[#D49B4B] font-semibold">SYU Design</span>
+            </p>
+            <span className="hidden sm:inline text-[#37644D]">•</span>
             <span>&copy; 2027 Amaleeni Foundation. All Rights Reserved.</span>
           </div>
         </div>

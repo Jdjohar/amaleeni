@@ -35,22 +35,15 @@ export default function Header() {
         <div className="flex items-center justify-between">
           
           {/* Logo Section */}
-          <Link to="/" className="flex items-center gap-3 group">
-            <div className="relative w-11 h-11 rounded-full overflow-hidden border-2 border-[#D49B4B] shadow-sm group-hover:scale-105 transition-transform duration-300">
-              <img
-                src="/assets/foundation-logo.jpg"
-                alt="Amaleeni Foundation Logo"
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <div className="flex flex-col">
-              <span className="font-serif text-xl sm:text-2xl font-bold tracking-wider text-[#1B3629] uppercase leading-tight">
-                AMALEENI
-              </span>
-              <span className="text-[9px] tracking-[0.2em] font-semibold text-[#D49B4B] uppercase -mt-0.5">
-                WOMENPRENEURS 2027
-              </span>
-            </div>
+          <Link to="/" className="flex items-center group">
+            <img
+              src="/assets/logo.png"
+              alt="Amaleeni Logo"
+              className="h-10 sm:h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+              onError={(e) => {
+                e.currentTarget.src = "/assets/logo.png";
+              }}
+            />
           </Link>
 
           {/* Desktop Navigation Links */}
@@ -78,13 +71,15 @@ export default function Header() {
 
           {/* Right Action & Menu Toggle */}
           <div className="flex items-center gap-3">
-            <Link
-              to="/register"
+            <a
+              href="https://forms.gle/aKo9HBzgCB14dvAB9"
+              target="_blank"
+              rel="noopener noreferrer"
               className="hidden sm:flex items-center gap-2 bg-[#C83B46] hover:bg-[#A82B36] text-white px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5"
             >
-              <span>Register as Delegate</span>
+              <span>Register Now</span>
               <ArrowRight className="w-4 h-4" />
-            </Link>
+            </a>
 
             {/* Mobile Hamburger Button */}
             <button
@@ -114,14 +109,16 @@ export default function Header() {
                 {link.name}
               </Link>
             ))}
-            <Link
-              to="/register"
+            <a
+              href="https://forms.gle/aKo9HBzgCB14dvAB9"
+              target="_blank"
+              rel="noopener noreferrer"
               onClick={() => setMobileMenuOpen(false)}
               className="mt-4 w-full flex items-center justify-center gap-2 bg-[#C83B46] text-white py-3 rounded-full text-base font-semibold shadow-md"
             >
-              <span>Register as Delegate</span>
+              <span>Register Now</span>
               <ArrowRight className="w-5 h-5" />
-            </Link>
+            </a>
           </nav>
         </div>
       )}

@@ -22,7 +22,7 @@ export default function ProgrammePage() {
     { time: '11:00 AM – 01:00 PM', title: 'CAPITAL TRACK: Pitch Floor & Bank Speed-Meetings', category: 'Capital', desc: 'Curated 1-on-1 meetings between founders, angel networks, Mudra desks, and VC partners.' },
     { time: '02:00 PM – 03:45 PM', title: 'POLICY TRACK: Direct Access to Officials & Scheme Walkthroughs', category: 'Policy', desc: 'Single-window clearance assistance, compliance walkthroughs, and government procurement.' },
     { time: '04:00 PM – 05:45 PM', title: 'MARKET TRACK: Corporate Buyer Meetings & Export Readiness', category: 'Market', desc: 'Supply-chain vendor onboarding with major corporate buyers and e-commerce platforms.' },
-    { time: '06:30 PM ONWARDS', title: 'Networking Dinner & Cultural Evening', category: 'Social', desc: 'Evening reception showcasing Odisha handlooms, cultural performances, and informal peer circles.' },
+    { time: '06:30 PM ONWARDS', title: 'Networking Dinner & Cultural Evening', category: 'Social', desc: 'Evening reception showcasing Indian handlooms, cultural performances, and informal peer circles.' },
   ];
 
   const day2Schedule = [
@@ -53,7 +53,7 @@ export default function ProgrammePage() {
             </span>
             <span>•</span>
             <span className="flex items-center gap-1.5">
-              <MapPin className="w-5 h-5 text-[#1B3629]" /> [Venue Name], Bhubaneswar, Odisha
+              <MapPin className="w-5 h-5 text-[#1B3629]" /> [Venue Name], India
             </span>
           </div>
         </div>
@@ -146,13 +146,15 @@ export default function ProgrammePage() {
 
         {/* 2.3 CTA */}
         <div className="text-center">
-          <Link
-            to="/register"
+          <a
+            href="https://forms.gle/aKo9HBzgCB14dvAB9"
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center gap-3 bg-[#C83B46] hover:bg-[#A82B36] text-white px-8 py-4 rounded-full text-base font-bold transition-all shadow-lg hover:shadow-xl"
           >
-            <span>Register as Delegate</span>
+            <span>Register Now</span>
             <ArrowRight className="w-5 h-5" />
-          </Link>
+          </a>
         </div>
 
       </section>
@@ -166,10 +168,10 @@ export default function ProgrammePage() {
               Venue &amp; Travel Information
             </span>
             <h2 className="font-serif text-4xl sm:text-5xl font-bold text-white mt-2">
-              [VENUE NAME], Bhubaneswar
+              [VENUE NAME], India
             </h2>
             <p className="text-base text-[#A8C2B3] font-serif mt-3">
-              [Full address], Bhubaneswar, Odisha. Designed for world-class conventions, pitch floors, and delegate hospitality.
+              [Full address], India. Designed for world-class conventions, pitch floors, and delegate hospitality.
             </p>
           </div>
 

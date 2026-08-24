@@ -17,7 +17,7 @@ export default function RegisterPage() {
     delegateType: 'Entrepreneur / Founder',
     stage: 'Growth Stage (1-3 yrs)',
     sector: 'Manufacturing',
-    location: 'Odisha',
+    location: 'India',
     seeking: ['Capital & Funding', 'Market & Buyer Access'],
   });
 
@@ -111,6 +111,17 @@ export default function RegisterPage() {
           <p className="text-lg sm:text-xl text-[#3D5C4A] font-serif">
             Whether you are starting, building or scaling – this is the room. Your answers shape the meetings we arrange for you.
           </p>
+
+          <div className="pt-2 pb-2">
+            <a
+              href="https://forms.gle/aKo9HBzgCB14dvAB9"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 bg-[#C83B46] hover:bg-[#A82B36] text-white px-8 py-3.5 rounded-full text-base font-bold transition-all shadow-lg hover:shadow-xl"
+            >
+              <span>Register Now</span>
+            </a>
+          </div>
 
           <p className="text-xs text-[#8A755A] font-semibold uppercase tracking-widest pt-2">
             One registration path for everyone – entrepreneurs, investors, banks, corporates and government all register as delegates.

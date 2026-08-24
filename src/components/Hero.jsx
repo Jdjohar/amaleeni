@@ -9,7 +9,7 @@ export default function Hero({ onOpenContact }) {
       <div className="absolute inset-0 z-0 pointer-events-none opacity-40 mix-blend-multiply flex justify-end items-center">
         <img
           src="/assets/paper-monuments.jpg"
-          alt="Uttar Pradesh Architectural Heritage Paper Craft"
+          alt="Indian Architectural Heritage Paper Craft"
           className="w-full h-full object-cover object-right-top"
         />
       </div>
@@ -21,37 +21,30 @@ export default function Hero({ onOpenContact }) {
           {/* Left Column: Hero Text */}
           <div className="lg:col-span-5 pt-4 pb-8 z-20">
             <div className="space-y-1">
-              <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl font-extrabold text-[#1B3629] leading-[1.02] tracking-tight">
-                Empowered
-              </h1>
               <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl font-extrabold text-[#1B3629] leading-[1.02] tracking-tight mb-3">
-                Women.
+                Empowered women,
               </h1>
-              <h2 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold text-[#C83B46] leading-[1.05] tracking-tight">
-                Strongr
-              </h2>
               <h2 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold text-[#C83B46] leading-[1.05] tracking-wider uppercase">
-                UTTAR
-              </h2>
-              <h2 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold text-[#C83B46] leading-[1.05] tracking-wider uppercase">
-                PRADESH
+                Stronger India
               </h2>
             </div>
 
             <div className="mt-6 space-y-1 text-[#2D4D3B] text-lg sm:text-xl font-serif leading-relaxed">
               <p className="font-medium">A safe place for women.</p>
-              <p className="font-medium">Infinite opportunities for you business.</p>
+              <p className="font-medium">Infinite opportunities for your business.</p>
             </div>
 
             {/* CTA Button */}
             <div className="mt-8">
-              <button
-                onClick={onOpenContact}
+              <a
+                href="https://forms.gle/aKo9HBzgCB14dvAB9"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="group relative inline-flex items-center gap-3 bg-[#C83B46] hover:bg-[#B02F3A] text-white px-7 py-3.5 rounded-full text-base font-semibold transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0"
               >
-                <span>Discover Opportunities</span>
+                <span>Register Now</span>
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </button>
+              </a>
             </div>
           </div>
 

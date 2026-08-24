@@ -10,10 +10,10 @@ export default function AboutUP({ onOpenContact }) {
       title: 'Safety & 24/7 Security Framework',
       subtitle: 'Safe Cities Initiative & Dedicated Women Helpline',
       description:
-        'Uttar Pradesh has pioneered state-wide safety infrastructure for women professionals including Safe City projects, Pink Police Outposts, dedicated transport corridors, and instant emergency response networks.',
-      stats: '100% District Safety Coverage',
+        'India has pioneered nation-wide safety infrastructure for women professionals including Safe City projects, Pink Police Outposts, dedicated transport corridors, and instant emergency response networks.',
+      stats: '100% Safety Coverage',
       points: [
-        'Dedicated Mission Shakti 4.0 programs in all industrial zones',
+        'Dedicated Mission Shakti 4.0 programs in industrial zones',
         '24/7 Pink Patrols and safe workplace compliance audits',
         'Express grievance redressal for women entrepreneurs',
       ],
@@ -23,7 +23,7 @@ export default function AboutUP({ onOpenContact }) {
       title: 'Women Entrepreneurship Subsidies',
       subtitle: 'Financial Grants & 100% Stamp Duty Waivers',
       description:
-        'Under the UP Women Entrepreneurship Policy, registered women-led MSMEs enjoy up to 100% stamp duty exemption, capital interest subsidies up to 25%, and direct seed funding access.',
+        'Under the Women Entrepreneurship Policy in India, registered women-led MSMEs enjoy stamp duty exemptions, capital interest subsidies up to 25%, and direct seed funding access.',
       stats: '₹5,000 Cr Allocated Fund',
       points: [
         '100% Stamp duty exemption on land purchase for factories',
@@ -33,10 +33,10 @@ export default function AboutUP({ onOpenContact }) {
     },
     {
       icon: Zap,
-      title: 'Nivesh Mitra Single Window Portal',
+      title: 'Single Window Digital Portal',
       subtitle: 'Fast-Track Digital Clearance in 15 Days',
       description:
-        'Experience seamless business setup with Uttar Pradesh’s unified digital portal. Obtain NOCs, environmental clearances, power connections, and GST registrations with zero physical hassle.',
+        'Experience seamless business setup with India’s unified digital portal. Obtain NOCs, environmental clearances, power connections, and GST registrations with zero physical hassle.',
       stats: '15-Day SLA Clearance',
       points: [
         'Over 400+ government services integrated into 1 login',
@@ -49,11 +49,11 @@ export default function AboutUP({ onOpenContact }) {
       title: 'World-Class Industrial Infrastructure',
       subtitle: 'Expressways, Defense Corridors & Women Parks',
       description:
-        'UP boasts India’s largest network of expressways, upcoming Noida International Airport, dedicated Women IT Parks in Lucknow and Noida, and plug-and-play manufacturing hubs.',
+        'India boasts an expanding network of expressways, modern international airports, dedicated Women IT Parks, and plug-and-play manufacturing hubs.',
       stats: '6 International Corridors',
       points: [
         'Dedicated Women’s Industrial Parks with daycare & health clinics',
-        'Strategic connectivity to Delhi-NCR and Mumbai ports',
+        'Strategic connectivity to major ports and freight corridors',
         'Subsidized power tariffs for eco-friendly manufacturing units',
       ],
     },
@@ -70,13 +70,13 @@ export default function AboutUP({ onOpenContact }) {
         <div className="text-center max-w-3xl mx-auto mb-14">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#1B3629]/10 text-[#1B3629] text-sm font-semibold mb-4">
             <Sparkles className="w-4 h-4 text-[#C83B46]" />
-            <span>Empowering Women Enterprise in UP</span>
+            <span>Empowering Women Enterprise in India</span>
           </div>
           <h2 className="font-serif text-4xl sm:text-5xl font-bold text-[#1B3629] leading-tight">
-            Why Uttar Pradesh is India’s Top Destination for Women Founders
+            Why India is the Top Destination for Women Founders
           </h2>
           <p className="mt-4 text-lg text-[#4A6454] font-serif">
-            A state transformed by progressive policies, bulletproof security, world-class infrastructure, and infinite growth avenues for women entrepreneurs.
+            A nation transformed by progressive policies, security, world-class infrastructure, and infinite growth avenues for women entrepreneurs.
           </p>
         </div>
 
@@ -91,7 +91,7 @@ export default function AboutUP({ onOpenContact }) {
             <p className="text-sm font-medium text-[#1B3629] mt-2">Stamp Duty Exemption</p>
           </div>
           <div className="paper-card rounded-2xl p-6 text-center border border-[#E0D2BC]">
-            <p className="font-serif text-4xl sm:text-5xl font-bold text-[#D49B4B]">75</p>
+            <p className="font-serif text-4xl sm:text-5xl font-bold text-[#D49B4B]">75+</p>
             <p className="text-sm font-medium text-[#1B3629] mt-2">Districts with Mission Shakti Units</p>
           </div>
           <div className="paper-card rounded-2xl p-6 text-center border border-[#E0D2BC]">
@@ -171,7 +171,7 @@ export default function AboutUP({ onOpenContact }) {
                   onClick={onOpenContact}
                   className="w-full sm:w-auto bg-[#1B3629] hover:bg-[#12251C] text-white px-6 py-2.5 rounded-full text-sm font-semibold transition-colors flex items-center justify-center gap-2"
                 >
-                  <span>Apply for UP Incentive Scheme</span>
+                  <span>Apply for Incentive Scheme</span>
                   <ChevronRight className="w-4 h-4" />
                 </button>
               </div>

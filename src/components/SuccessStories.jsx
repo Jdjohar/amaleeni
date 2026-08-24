@@ -6,18 +6,18 @@ export default function SuccessStories({ onOpenContact }) {
     {
       name: 'Sunita Sharma',
       role: 'Founder & CEO, Avadh Organics & Spices',
-      district: 'Lucknow, Uttar Pradesh',
+      district: 'Lucknow, India',
       growth: '₹8.5 Cr Turnover',
       workers: '120+ Women Employed',
       quote:
-        'Starting an organic spice processing plant seemed daunting until the UP Single Window Clearance cleared our licensing in 12 days. The 100% stamp duty waiver saved us initial capital!',
+        'Starting an organic spice processing plant seemed daunting until the Single Window Clearance cleared our licensing in 12 days. The 100% stamp duty waiver saved us initial capital!',
       sector: 'Food Processing',
       avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80',
     },
     {
       name: 'Ananya Verma',
       role: 'Co-Founder, TexCraft Weaving Solutions',
-      district: 'Varanasi, Uttar Pradesh',
+      district: 'Varanasi, India',
       growth: 'Exports to 14 Countries',
       workers: '250+ Handloom Artisans',
       quote:
@@ -28,7 +28,7 @@ export default function SuccessStories({ onOpenContact }) {
     {
       name: 'Priya Srivastava',
       role: 'Founder, EcoPack Paper Products',
-      district: 'Noida, Uttar Pradesh',
+      district: 'Noida, India',
       growth: '3 Factory Units',
       workers: '85+ Skilled Technicians',
       quote:
@@ -49,10 +49,10 @@ export default function SuccessStories({ onOpenContact }) {
             <span>Voices of Triumph</span>
           </div>
           <h2 className="font-serif text-4xl sm:text-5xl font-bold text-[#1B3629]">
-            Stories of Empowered Leaders in UP
+            Stories of Empowered Leaders in India
           </h2>
           <p className="mt-4 text-lg text-[#4A6454] font-serif">
-            Discover how women founders transformed vision into multi-crore enterprises in Uttar Pradesh.
+            Discover how women founders transformed vision into multi-crore enterprises in India.
           </p>
         </div>
 
@@ -108,7 +108,7 @@ export default function SuccessStories({ onOpenContact }) {
         <div className="mt-16 bg-[#1B3629] text-white rounded-3xl p-8 sm:p-12 border border-[#2D523E] shadow-2xl flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="max-w-2xl text-center md:text-left">
             <h3 className="font-serif text-3xl sm:text-4xl font-bold text-[#FAF5EB]">
-              Ready to Write Your Own Success Story in Uttar Pradesh?
+              Ready to Write Your Own Success Story in India?
             </h3>
             <p className="mt-3 text-[#A8C4B3] text-base font-serif">
               Get direct guidance from Amaleeni Foundation mentors, policy advisors, and investment officers.

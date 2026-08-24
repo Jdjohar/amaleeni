@@ -211,12 +211,14 @@ export default function AboutPage() {
             >
               Partner With Us
             </Link>
-            <Link
-              to="/register"
-              className="w-full sm:w-auto bg-[#1B3629] hover:bg-[#12251C] text-white px-8 py-3.5 rounded-full text-base font-bold transition-all shadow-md"
+            <a
+              href="https://forms.gle/aKo9HBzgCB14dvAB9"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full sm:w-auto bg-[#1B3629] hover:bg-[#12251C] text-white px-8 py-3.5 rounded-full text-base font-bold transition-all shadow-md text-center"
             >
-              Register as Delegate
-            </Link>
+              Register Now
+            </a>
           </div>
         </div>
       </section>

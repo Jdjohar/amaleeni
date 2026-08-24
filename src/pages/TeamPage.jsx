@@ -31,16 +31,16 @@ export default function TeamPage() {
   const speakers = [
     { name: 'Dr. Akshaya Jain', role: 'Founder & Convenor, Amaleeni Foundation', track: 'Mentorship', bio: 'Aesthetic Physician, Founder of Skintillatingg & Chromocosmo Institute (CIATN). 10+ years dedicated to women’s self-reliance.', img: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80' },
     { name: 'Suhani Roy', role: 'Managing Director, Horizon Capital', track: 'Capital', bio: 'Pioneer early-stage venture investor backing women-founded MSMEs and consumer tech brands.', img: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=400&q=80' },
-    { name: 'Meera Patnaik', role: 'State Director, Mission Shakti Odisha', track: 'Policy', bio: 'Leading the flagship collective initiative empowering 70 lakh women across 6 lakh self-help groups.', img: 'https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?auto=format&fit=crop&w=400&q=80' },
+    { name: 'Meera Patnaik', role: 'State Director, Mission Shakti India', track: 'Policy', bio: 'Leading the flagship collective initiative empowering 70 lakh women across 6 lakh self-help groups.', img: 'https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?auto=format&fit=crop&w=400&q=80' },
     { name: 'Radhika Sen', role: 'Head of Global Supply Diversity, Apex Corp', track: 'Market', bio: 'Architect of inclusive corporate vendor programs connecting women producers with global retail chains.', img: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=400&q=80' },
     { name: 'Dr. Kavita Menon', role: 'Senior Policy Advisor, NITI Aayog', track: 'Policy', bio: 'Policy expert specializing in priority sector lending, Women Entrepreneurship Platform (WEP), and MSME incentives.', img: 'https://images.unsplash.com/photo-1598550874175-4d0ef436c909?auto=format&fit=crop&w=400&q=80' },
     { name: 'Rajesh Malhotra', role: 'Chief Credit Officer, National Small Business Bank', track: 'Capital', bio: 'Spearheading Mudra & CGTMSE collateral-free loan disbursals for first-generation women founders.', img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80' },
   ];
 
   const advisoryBoard = [
-    { name: 'Padma Shri Dr. R. K. Mohanty', designation: 'Senior Industry Advisor & Economist', affiliation: 'Odisha State Economic Board' },
+    { name: 'Padma Shri Dr. R. K. Mohanty', designation: 'Senior Industry Advisor & Economist', affiliation: 'National Economic Board' },
     { name: 'Shalini Tripathi', designation: 'Former Executive Director', affiliation: 'Reserve Bank of India (NABARD Division)' },
-    { name: 'Prof. Ananya Das', designation: 'Dean of Entrepreneurship', affiliation: 'XIM University Bhubaneswar' },
+    { name: 'Prof. Ananya Das', designation: 'Dean of Entrepreneurship', affiliation: 'XIM University' },
     { name: 'Vikramjit Singh', designation: 'Partner', affiliation: 'Impact Venture Partners' },
   ];
 
@@ -50,7 +50,7 @@ export default function TeamPage() {
     { name: '[Name]', role: 'Partnerships & Sponsorship Lead' },
     { name: '[Name]', role: 'Delegate Experience Lead' },
     { name: '[Name]', role: 'Communications & Media Lead' },
-    { name: '[Name]', role: 'Odisha Chapter Coordinator' },
+    { name: '[Name]', role: 'India Chapter Coordinator' },
   ];
 
   const filteredSpeakers = selectedTrack === 'All' ? speakers : speakers.filter(s => s.track === selectedTrack);

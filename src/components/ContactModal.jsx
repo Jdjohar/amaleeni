@@ -44,10 +44,10 @@ export default function ContactModal({ isOpen, onClose }) {
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#C83B46] text-white text-xs font-bold uppercase tracking-wider mb-2">
               <Sparkles className="w-3.5 h-3.5" />
-              <span>UP Single Window Support</span>
+              <span>Single Window Support</span>
             </div>
             <h3 className="font-serif text-2xl sm:text-3xl font-bold text-[#FAF5EB]">
-              Start Your Business in Uttar Pradesh
+              Start Your Business in India
             </h3>
             <p className="text-xs sm:text-sm text-[#A8C2B3] mt-1 font-serif">
               Amaleeni Foundation advisors will contact you within 24 hours.
@@ -74,7 +74,7 @@ export default function ContactModal({ isOpen, onClose }) {
                 Application Submitted Successfully!
               </h4>
               <p className="text-base text-[#4E6B5A] font-serif max-w-md mx-auto">
-                Thank you, <span className="font-semibold text-[#1B3629]">{formData.fullName}</span>. Our UP Business Facilitation Officer will reach out to you at <span className="font-semibold text-[#1B3629]">{formData.phone}</span> with custom scheme details.
+                Thank you, <span className="font-semibold text-[#1B3629]">{formData.fullName}</span>. Our Business Facilitation Officer will reach out to you at <span className="font-semibold text-[#1B3629]">{formData.phone}</span> with custom scheme details.
               </p>
 
               <div className="pt-6">
@@ -167,7 +167,7 @@ export default function ContactModal({ isOpen, onClose }) {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-bold text-[#1B3629] uppercase tracking-wider mb-1">
-                    Preferred UP District
+                    Preferred Region / State
                   </label>
                   <div className="relative">
                     <MapPin className="w-4 h-4 text-[#8A755A] absolute left-3.5 top-3.5" />
@@ -182,7 +182,7 @@ export default function ContactModal({ isOpen, onClose }) {
                       <option value="Varanasi">Varanasi</option>
                       <option value="Gorakhpur">Gorakhpur</option>
                       <option value="Meerut">Meerut</option>
-                      <option value="Other">Other UP District</option>
+                      <option value="Other">Other Region</option>
                     </select>
                   </div>
                 </div>

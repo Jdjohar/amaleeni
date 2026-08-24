@@ -119,7 +119,7 @@ export default function HomePage() {
                 <span>12–13 March 2027</span>
                 <span className="text-[#D49B4B]">•</span>
                 <MapPin className="w-3.5 h-3.5 text-[#1B3629] shrink-0" />
-                <span>Bhubaneswar, Odisha</span>
+                <span>India</span>
               </div>
 
               {/* Tagline & Main Headline */}
@@ -128,10 +128,10 @@ export default function HomePage() {
                   From Vision to Venture
                 </span>
                 <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-extrabold text-[#1B3629] leading-[1.08] tracking-tight">
-                  Empowered Women.
+                  Empowered women,
                 </h1>
                 <h2 className="font-serif text-2xl sm:text-4xl lg:text-5xl font-bold text-[#C83B46] leading-[1.08] tracking-tight">
-                  Strongr UTTAR PRADESH
+                  Stronger India
                 </h2>
               </div>
 
@@ -147,13 +147,15 @@ export default function HomePage() {
 
               {/* Hero CTA Buttons - Side by Side on Mobile */}
               <div className="pt-2 pb-1 relative z-50 flex flex-row items-center gap-2.5 sm:gap-3">
-                <Link
-                  to="/register"
+                <a
+                  href="https://forms.gle/aKo9HBzgCB14dvAB9"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex items-center justify-center gap-1.5 sm:gap-2.5 bg-[#C83B46] hover:bg-[#A82B36] text-white px-4 sm:px-7 py-2.5 sm:py-3.5 rounded-full text-xs sm:text-sm font-bold transition-all duration-300 shadow-lg hover:shadow-xl relative z-50 cursor-pointer border-2 border-white/20"
                 >
-                  <span>Discover Opportunities</span>
+                  <span>Register Now</span>
                   <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                </Link>
+                </a>
 
                 <Link
                   to="/partner"
@@ -350,13 +352,15 @@ export default function HomePage() {
           </div>
 
           <div className="mt-14 text-center">
-            <Link
-              to="/register"
+            <a
+              href="https://forms.gle/aKo9HBzgCB14dvAB9"
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-3 bg-[#C83B46] hover:bg-[#A82B36] text-white px-8 py-4 rounded-full text-base font-bold transition-all shadow-lg hover:shadow-xl"
             >
-              <span>Register as Delegate</span>
+              <span>Register Now</span>
               <ArrowRight className="w-5 h-5" />
-            </Link>
+            </a>
           </div>
         </div>
       </section>
@@ -472,25 +476,25 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 1.8 Why Odisha */}
+      {/* 1.8 Why India */}
       <section className="py-20 bg-[#FAF5EB] border-b border-[#E8DCC8]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             
             <div className="lg:col-span-7 space-y-6">
               <span className="text-xs font-bold tracking-[0.2em] uppercase text-[#C83B46]">
-                State Spotlight
+                National Spotlight
               </span>
               <h2 className="font-serif text-4xl sm:text-5xl font-bold text-[#1B3629]">
-                Why Odisha
+                Why India
               </h2>
 
               <p className="text-base sm:text-lg text-[#3A5645] font-serif leading-relaxed">
-                Odisha runs one of the largest women's collective movements anywhere in the world. Mission Shakti spans over 6 lakh self-help groups and roughly 70 lakh women members – an entrepreneurial base no other state can match at this density.
+                India runs one of the largest women's collective movements anywhere in the world. Mission Shakti spans over 6 lakh self-help groups and roughly 70 lakh women members – an entrepreneurial base no other nation can match at this density.
               </p>
 
               <p className="text-base sm:text-lg text-[#3A5645] font-serif leading-relaxed">
-                In 2021, Odisha became the first state in India to create a dedicated Mission Shakti department. Amaleeni Womenpreneurs 2027 is built on top of that foundation, complementing the efforts.
+                India has established dedicated departments and policies for women entrepreneurship. Amaleeni Womenpreneurs 2027 is built on top of that foundation, complementing nationwide efforts.
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
@@ -503,8 +507,8 @@ export default function HomePage() {
                   <p className="text-xs font-medium text-[#1B3629] mt-1">Women Members</p>
                 </div>
                 <div className="bg-[#F2E8D7] rounded-2xl p-5 border border-[#E0D2BC] text-center">
-                  <p className="font-serif text-3xl font-extrabold text-[#D49B4B]">1st State</p>
-                  <p className="text-xs font-medium text-[#1B3629] mt-1">With Dedicated Mission Shakti Dept</p>
+                  <p className="font-serif text-3xl font-extrabold text-[#D49B4B]">Nationwide</p>
+                  <p className="text-xs font-medium text-[#1B3629] mt-1">Mission Shakti Support</p>
                 </div>
               </div>
             </div>
@@ -514,12 +518,12 @@ export default function HomePage() {
                 1.9 Venue &amp; Host City
               </h3>
               <p className="text-sm text-[#A8C2B3] font-serif leading-relaxed">
-                Hosted in the temple city of Bhubaneswar, Odisha – seamlessly connected by air, rail, and road to major commercial centers.
+                Hosted in India – seamlessly connected by air, rail, and road to major commercial centers.
               </p>
 
               <div className="bg-[#244735] p-5 rounded-2xl border border-[#2F5A43] space-y-2">
                 <p className="text-xs uppercase tracking-wider text-[#D49B4B] font-bold">Venue Location</p>
-                <p className="font-serif text-lg font-bold text-white">[VENUE NAME], Bhubaneswar, Odisha</p>
+                <p className="font-serif text-lg font-bold text-white">[VENUE NAME], India</p>
               </div>
 
               <Link
@@ -601,12 +605,14 @@ export default function HomePage() {
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-            <Link
-              to="/register"
-              className="w-full sm:w-auto bg-[#C83B46] hover:bg-[#A82B36] text-white px-8 py-3.5 rounded-full text-base font-bold transition-all shadow-lg"
+            <a
+              href="https://forms.gle/aKo9HBzgCB14dvAB9"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full sm:w-auto bg-[#C83B46] hover:bg-[#A82B36] text-white px-8 py-3.5 rounded-full text-base font-bold transition-all shadow-lg text-center"
             >
-              Register as Delegate
-            </Link>
+              Register Now
+            </a>
 
             <Link
               to="/partner"

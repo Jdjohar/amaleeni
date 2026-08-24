@@ -26,7 +26,7 @@ export default function LegalPage() {
             <p>
               {isPrivacy
                 ? 'Amaleeni Foundation is committed to protecting the privacy and confidentiality of all registered delegates, speakers, investors, and corporate partners. Information collected during delegate registration (including business stage, sector, and meeting preferences) is strictly used for curated meeting matching and event communication.'
-                : 'By registering as a delegate, speaker, or partner for Amaleeni Womenpreneurs 2027 (12–13 March 2027, Bhubaneswar, Odisha), you agree to abide by the official summit code of conduct and event guidelines.'}
+                : 'By registering as a delegate, speaker, or partner for Amaleeni Womenpreneurs 2027 (12–13 March 2027, India), you agree to abide by the official summit code of conduct and event guidelines.'}
             </p>
 
             <h3 className="font-serif text-xl font-bold text-[#1B3629] pt-2">Data Protection &amp; Confidentiality</h3>
