@@ -56,14 +56,14 @@ if ($attemptsRow && intval($attemptsRow['failed_count']) >= 5) {
 // ==========================================
 $stmt = $pdo->prepare("
     SELECT u.id, u.full_name, u.email, u.password_hash, u.phone, u.role, u.status,
-           p.ref_id, p.org_name, p.category, p.sector, p.city, p.state_country, 
+           p.ref_id, p.org_name, p.designation, p.category, p.sector, p.city, p.state_country, 
            p.website_url, p.seeking, p.business_description, p.payment_status, p.payment_amount, p.paid_at
     FROM users u
     LEFT JOIN pink_pages_profiles p ON u.id = p.user_id
-    WHERE u.email = :email
+    WHERE u.email = :identifier OR u.phone = :identifier
     LIMIT 1
 ");
-$stmt->execute([':email' => $email]);
+$stmt->execute([':identifier' => $email]);
 $user = $stmt->fetch();
 
 // ==========================================
@@ -107,6 +107,7 @@ $userData = [
     'role' => $user['role'],
     'ref_id' => $user['ref_id'] ?? 'PP-' . $user['id'],
     'org_name' => $user['org_name'] ?? '',
+    'designation' => $user['designation'] ?? 'Founder / Leader',
     'sector' => $user['sector'] ?? '',
     'category' => $user['category'] ?? '',
     'city' => $user['city'] ?? '',

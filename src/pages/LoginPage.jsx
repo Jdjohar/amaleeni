@@ -55,15 +55,9 @@ export default function LoginPage() {
     }
 
     // 3. Client Validation
-    const trimmedEmail = email.trim();
-    if (!trimmedEmail) {
-      setErrorMsg('Please enter your email address.');
-      return;
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(trimmedEmail)) {
-      setErrorMsg('Please enter a valid email address (e.g. name@domain.com).');
+    const trimmedIdentifier = email.trim();
+    if (!trimmedIdentifier) {
+      setErrorMsg('Please enter your WhatsApp Number or Email.');
       return;
     }
 
@@ -79,7 +73,7 @@ export default function LoginPage() {
 
     setIsSubmitting(true);
     try {
-      await login(trimmedEmail, password, botTrap);
+      await login(trimmedIdentifier, password, botTrap);
       confetti({
         particleCount: 100,
         spread: 70,
@@ -147,16 +141,16 @@ export default function LoginPage() {
               />
             </div>
 
-            {/* Email Field */}
+            {/* WhatsApp No. or Email Field */}
             <div>
               <label className="block text-xs font-bold text-[#1B3629] uppercase mb-1.5">
-                Registered Email Address
+                WhatsApp No. or Email Address
               </label>
               <div className="relative">
                 <input
-                  type="email"
+                  type="text"
                   required
-                  placeholder="name@company.com"
+                  placeholder="+91 98765 43210 or email@domain.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full pl-10 pr-4 py-3 rounded-xl bg-[#F2E8D7] border border-[#E0D2BC] text-sm text-[#1B3629] focus:outline-none focus:ring-2 focus:ring-[#C83B46]"

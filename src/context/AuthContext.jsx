@@ -78,6 +78,26 @@ export function AuthProvider({ children }) {
     return updated;
   };
 
+  // Update user profile fields (Sector, Category, Website, Seeking, Bio, etc.)
+  const updateUserProfile = (updates) => {
+    if (!user) return;
+    const updated = { ...user, ...updates };
+    setUser(updated);
+    localStorage.setItem('ama_user', JSON.stringify(updated));
+
+    try {
+      const existingUsers = JSON.parse(localStorage.getItem('ama_mock_users') || '[]');
+      const idx = existingUsers.findIndex((u) => u.id === user.id);
+      if (idx !== -1) {
+        existingUsers[idx] = { ...existingUsers[idx], ...updates };
+        localStorage.setItem('ama_mock_users', JSON.stringify(existingUsers));
+      }
+    } catch (e) {
+      console.warn('Could not update mock users list', e);
+    }
+    return updated;
+  };
+
   // Logout
   const logout = () => {
     setUser(null);
@@ -95,6 +115,7 @@ export function AuthProvider({ children }) {
     register,
     login,
     updatePaymentSuccess,
+    updateUserProfile,
     logout,
   };
 

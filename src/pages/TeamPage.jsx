@@ -6,7 +6,8 @@ import {
   CheckCircle2,
   Globe2,
   Layers,
-  ArrowRight
+  ArrowRight,
+  User
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
@@ -35,84 +36,95 @@ export default function TeamPage() {
     }
   }, [location]);
 
-  // Exact Roster from Amaleeni Secretariat Table
+  // Exact Roster from Amaleeni Secretariat Table with Added Member Photos
   const officialRoster = [
     {
       name: 'Dr. Akshaya Jain',
       role: 'Founder & Convenor, Amaleeni Foundation',
       category: 'Leadership',
       bio: 'Aesthetic Physician, Founder of Skintillatingg & Chromocosmo Institute (CIATN). 10+ years dedicated to women’s economic self-reliance and community empowerment.',
-      status: 'Confirmed'
+      status: 'Confirmed',
+      image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80',
     },
     {
       name: 'Nitinchandra Jain',
       role: 'Trustee & Strategic Advisor',
       category: 'Leadership',
       bio: 'Advising on institutional governance, strategic alignment, and long-term organizational initiatives of Amaleeni Foundation.',
-      status: 'Confirmed'
+      status: 'Confirmed',
+      image: '/assets/Nitinchandra Jain.png',
     },
     {
       name: 'Amruta Jain',
       role: 'Trustee & Governing Member',
       category: 'Leadership',
       bio: 'Guiding philanthropic outreach, community coordination, and empowerment programs across Western and Northern India.',
-      status: 'Confirmed'
+      status: 'Confirmed',
+      image: '/assets/Amruta Jain.png',
     },
     {
       name: 'Priya Pawar',
       role: 'Core Management & Operations',
       category: 'Leadership',
       bio: 'Coordinating floor operations, institutional logistics, and delegate stakeholder engagement for the summit.',
-      status: 'Confirmed'
+      status: 'Confirmed',
+      image: '/assets/Priya Pawar.jpeg',
     },
     {
       name: 'Sahil Sharma',
       role: 'Strategy & Technology Outreach',
       category: 'Leadership',
       bio: 'Managing digital architecture, portal operations, and ecosystem engagement for Amaleeni Womenpreneurs 2027.',
-      status: 'Confirmed'
+      status: 'Confirmed',
+      image: '/assets/Sahil Sharma.png',
     },
     {
       name: '[Name]',
       role: 'Event Director',
       category: 'Secretariat',
       bio: 'Leading end-to-end summit execution, stage production, schedule flow, and on-ground venue administration.',
-      status: 'Open Appointment'
+      status: 'Open Appointment',
+      image: null,
     },
     {
       name: '[Name]',
       role: 'Partnerships & Sponsorship Lead',
       category: 'Secretariat',
       bio: 'Heading corporate sponsorships, PSU partnerships, banking desks, and brand integrations.',
-      status: 'Open Appointment'
+      status: 'Open Appointment',
+      image: null,
     },
     {
       name: '[Name]',
       role: 'Delegate Experience Lead',
       category: 'Secretariat',
       bio: 'Curating VIP buyer walkthroughs, investor speed-meetings, and seamless attendee journeys.',
-      status: 'Open Appointment'
+      status: 'Open Appointment',
+      image: null,
     },
     {
       name: 'Ashwini Kumar',
       role: 'Design & Communications Lead',
       category: 'Secretariat',
       bio: 'Directing summit visual identity, brand communications, creative digital media, and attendee storytelling.',
-      status: 'Confirmed'
+      status: 'Confirmed',
+      image: '/assets/Aswini-Kumar.png',
     },
     {
       name: 'Ramakrishna Padhy',
       role: 'Media & PR Lead',
       category: 'Secretariat',
       bio: 'Steering national press relations, media alliances, broadcast channels, and global summit publicity.',
-      status: 'Confirmed'
+      status: 'Confirmed',
+      image: '/assets/RAMAKRISHNA.png',
     },
     {
       name: '[Name]',
       role: 'State Chapter Coordinator',
       category: 'Secretariat',
       bio: 'Mobilizing regional women entrepreneur federations, MSME associations, and state mission clusters.',
-      status: 'Open Appointment'
+      status: 'Open Appointment',
+      image: null,
     },
   ];
 
@@ -241,13 +253,28 @@ export default function TeamPage() {
                       }`}
                     >
                       <td className="py-4 px-6 sm:px-8 font-serif font-bold text-base">
-                        {item.name === '[Name]' ? (
-                          <span className="font-mono text-[#7A6750] font-normal bg-[#EAE0D0] px-2 py-0.5 rounded text-xs">
-                            [Appointment in Progress]
+                        <div className="flex items-center gap-3">
+                          {item.image ? (
+                            <img
+                              src={item.image}
+                              alt={item.name}
+                              className="w-10 h-10 rounded-full object-cover object-top border border-[#D49B4B] shadow-sm shrink-0 bg-[#EAE0D0]"
+                            />
+                          ) : (
+                            <div className="w-10 h-10 rounded-full bg-[#EAE0D0] border border-dashed border-[#D9C7AF] flex items-center justify-center shrink-0 text-[#7A6750]">
+                              <User className="w-5 h-5 opacity-40" />
+                            </div>
+                          )}
+                          <span>
+                            {item.name === '[Name]' ? (
+                              <span className="font-mono text-[#7A6750] font-normal bg-[#EAE0D0] px-2 py-0.5 rounded text-xs">
+                                [Appointment in Progress]
+                              </span>
+                            ) : (
+                              item.name
+                            )}
                           </span>
-                        ) : (
-                          item.name
-                        )}
+                        </div>
                       </td>
                       <td className="py-4 px-6 sm:px-8 text-[#3D5C4A] font-medium">
                         {item.role || <span className="text-[#8A755A] italic">Trustee / Member</span>}
@@ -277,7 +304,7 @@ export default function TeamPage() {
             {filteredTeam.map((member, idx) => (
               <div
                 key={idx}
-                className={`bg-[#FAF5EB] rounded-3xl p-7 border transition-all duration-300 flex flex-col justify-between hover:shadow-xl ${
+                className={`bg-[#FAF5EB] rounded-3xl p-6 sm:p-7 border transition-all duration-300 flex flex-col justify-between hover:shadow-xl ${
                   member.name === 'Dr. Akshaya Jain'
                     ? 'border-2 border-[#C83B46] shadow-md bg-gradient-to-b from-[#FAF5EB] to-[#F5EDE1]'
                     : member.name === '[Name]'
@@ -286,7 +313,7 @@ export default function TeamPage() {
                 }`}
               >
                 <div>
-                  <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center justify-between mb-4">
                     <span
                       className={`inline-block px-2.5 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider ${
                         member.category === 'Leadership'
@@ -302,6 +329,22 @@ export default function TeamPage() {
                     </span>
                   </div>
 
+                  {/* Member Photo */}
+                  {member.image ? (
+                    <div className="relative mb-4 overflow-hidden rounded-2xl border-2 border-[#D49B4B]/30 shadow-sm bg-[#F2E8D7] aspect-[4/3] w-full group">
+                      <img
+                        src={member.image}
+                        alt={member.name}
+                        className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                      />
+                    </div>
+                  ) : member.name === '[Name]' ? (
+                    <div className="relative mb-4 overflow-hidden rounded-2xl border-2 border-dashed border-[#D9C7AF] bg-[#F2E8D7]/40 aspect-[4/3] w-full flex flex-col items-center justify-center text-[#7A6750] gap-1.5">
+                      <User className="w-9 h-9 opacity-30 text-[#1B3629]" />
+                      <span className="text-xs font-mono text-[#8A755A] font-semibold">[Appointment Open]</span>
+                    </div>
+                  ) : null}
+
                   <h3 className="font-serif text-2xl font-bold text-[#1B3629]">
                     {member.name === '[Name]' ? (
                       <span className="text-[#8A755A] font-sans text-lg font-semibold italic">
@@ -316,7 +359,7 @@ export default function TeamPage() {
                     {member.role || 'Trustee & Council Member'}
                   </p>
 
-                  <p className="text-xs sm:text-sm text-[#4E6B5A] font-serif leading-relaxed mt-4">
+                  <p className="text-xs sm:text-sm text-[#4E6B5A] font-serif leading-relaxed mt-3">
                     {member.bio}
                   </p>
                 </div>

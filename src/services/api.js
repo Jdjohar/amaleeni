@@ -58,9 +58,15 @@ export async function registerUserApi(formData) {
   console.info('Using local client-side storage simulation for registration.');
   const existingUsers = JSON.parse(localStorage.getItem('ama_mock_users') || '[]');
   
-  const existing = existingUsers.find((u) => u.email.toLowerCase() === formData.email.toLowerCase());
+  const cleanPhone = (formData.phone || '').replace(/[^0-9]/g, '');
+  const userEmail = (formData.email || (cleanPhone ? cleanPhone + '@amaleeni.member' : 'member@amaleeni.member')).toLowerCase();
+  
+  const existing = existingUsers.find((u) => 
+    (u.email && u.email.toLowerCase() === userEmail) ||
+    (cleanPhone && (u.phone || '').replace(/[^0-9]/g, '') === cleanPhone)
+  );
   if (existing) {
-    throw new Error('An account with this email already exists. Please log into your account.');
+    throw new Error('An account with this WhatsApp Number or Email already exists. Please log into your account.');
   }
 
   const newId = Date.now();
@@ -69,17 +75,18 @@ export async function registerUserApi(formData) {
   const newUser = {
     id: newId,
     full_name: formData.fullName,
-    email: formData.email,
+    email: userEmail,
     phone: formData.phone,
     password: formData.password, // only in local mock
     org_name: formData.orgName,
+    designation: formData.designation || 'Founder / Leader',
     category: formData.profileCategory || 'Entrepreneurs & Founders',
     sector: formData.sector || 'Technology & Digital',
-    city: formData.city,
+    city: formData.cityPin || formData.city || 'Lucknow',
     state_country: formData.stateCountry || 'India',
-    website_url: formData.websiteUrl,
-    seeking: Array.isArray(formData.seeking) ? formData.seeking.join(', ') : formData.seeking,
-    business_description: formData.businessDescription,
+    website_url: formData.websiteUrl || '',
+    seeking: Array.isArray(formData.seeking) ? formData.seeking.join(', ') : (formData.seeking || 'Capital & Investment, Market Access'),
+    business_description: formData.businessDescription || '',
     payment_status: 'PENDING',
     payment_amount: 5000.00,
     created_at: new Date().toISOString(),
@@ -93,62 +100,87 @@ export async function registerUserApi(formData) {
     status: 'success',
     token: 'mock_token_' + newId,
     user: newUser,
-    message: 'Registration successful! Confirmation email notification queued.',
+    message: 'Registration successful! Directing to Member Dashboard.',
     isLocalFallback: true,
   };
 }
 
 /**
- * Login User API
+ * Login User API (Supports WhatsApp Phone or Email)
  */
-export async function loginUserApi(email, password, botTrap = '') {
+export async function loginUserApi(identifier, password, botTrap = '') {
   // Bot check
   if (botTrap) {
     throw new Error('Spam bot detected. Access rejected.');
   }
 
-  const result = await postRequest('login.php', { email, password, website_bot_trap: botTrap });
+  const trimmedId = (identifier || '').trim();
+  const cleanPhone = trimmedId.replace(/[^0-9]/g, '');
+
+  // 1. Try exact identifier with Hostinger backend
+  let result = await postRequest('login.php', { email: trimmedId, password, website_bot_trap: botTrap });
+
+  // 2. If phone number entered, also try cleaned digits and member-email variants
+  if (!result.ok && !trimmedId.includes('@') && cleanPhone) {
+    const resDigits = await postRequest('login.php', { email: cleanPhone, password, website_bot_trap: botTrap });
+    if (resDigits.ok) {
+      result = resDigits;
+    } else {
+      const resMemberMail = await postRequest('login.php', { email: `${cleanPhone}@amaleeni.member`, password, website_bot_trap: botTrap });
+      if (resMemberMail.ok) {
+        result = resMemberMail;
+      }
+    }
+  }
+
   if (result.ok) {
     return result.data;
   }
 
   // --- LOCAL FALLBACK SIMULATION ---
-  console.info('Using local client-side authentication fallback.');
+  console.info('Checking local client-side storage for account...');
   const existingUsers = JSON.parse(localStorage.getItem('ama_mock_users') || '[]');
-  const found = existingUsers.find((u) => u.email.toLowerCase() === email.toLowerCase());
 
-  if (!found || found.password !== password) {
-    // Provide a sample default test account if needed
-    if (email.toLowerCase() === 'member@amaleeni.org' && password === 'Amaleeni@2027') {
-      const demoUser = {
-        id: 9999,
-        full_name: 'Dr. Priya Sharma',
-        email: 'member@amaleeni.org',
-        phone: '+91 98765 43210',
-        org_name: 'Priya Biotech Innovations',
-        sector: 'Healthcare & Life Sciences',
-        category: 'Entrepreneurs & Founders',
-        city: 'Lucknow, UP',
-        state_country: 'India',
-        payment_status: 'PAID',
-        payment_amount: 5000.00,
-        ref_id: 'PP-DEMO27',
-      };
-      return {
-        status: 'success',
-        token: 'mock_demo_token',
-        user: demoUser,
-      };
-    }
-    throw new Error('Invalid email or password. Please verify your credentials.');
+  const found = existingUsers.find((u) => 
+    (u.email && u.email.toLowerCase() === trimmedId.toLowerCase()) ||
+    (cleanPhone && (u.phone || '').replace(/[^0-9]/g, '') === cleanPhone) ||
+    (cleanPhone && u.email && u.email.toLowerCase() === `${cleanPhone}@amaleeni.member`)
+  );
+
+  if (found && found.password === password) {
+    return {
+      status: 'success',
+      token: 'mock_token_' + found.id,
+      user: found,
+      isLocalFallback: true,
+    };
   }
 
-  return {
-    status: 'success',
-    token: 'mock_token_' + found.id,
-    user: found,
-    isLocalFallback: true,
-  };
+  // Provide demo test account fallback
+  if ((trimmedId.toLowerCase() === 'member@amaleeni.org' || trimmedId.includes('9876543210')) && password === 'Amaleeni@2027') {
+    const demoUser = {
+      id: 9999,
+      full_name: 'Dr. Priya Sharma',
+      email: 'member@amaleeni.org',
+      phone: '+91 98765 43210',
+      org_name: 'Priya Biotech Innovations',
+      designation: 'Founder & Managing Director',
+      sector: 'Healthcare & Life Sciences',
+      category: 'Entrepreneurs & Founders',
+      city: 'Lucknow, UP',
+      state_country: 'India',
+      payment_status: 'PAID',
+      payment_amount: 5000.00,
+      ref_id: 'PP-DEMO27',
+    };
+    return {
+      status: 'success',
+      token: 'mock_demo_token',
+      user: demoUser,
+    };
+  }
+
+  throw new Error(result.error || 'Invalid credentials or account not found. Please verify your Email/WhatsApp No. and password.');
 }
 
 /**

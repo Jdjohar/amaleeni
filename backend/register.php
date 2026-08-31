@@ -35,23 +35,27 @@ if (!empty($data['form_loaded_at'])) {
 
 // ==========================================
 // 2. INPUT SANITIZATION & VALIDATION
-// ==========================================
 $fullName = trim($data['fullName'] ?? '');
-$email = trim(strtolower($data['email'] ?? ''));
-$phone = trim($data['phone'] ?? '');
-$password = $data['password'] ?? '';
 $orgName = trim($data['orgName'] ?? '');
+$designation = trim($data['designation'] ?? 'Founder / Leader');
+$phone = trim($data['phone'] ?? '');
+$cleanPhone = preg_replace('/[^0-9]/', '', $phone);
+$city = trim($data['cityPin'] ?? ($data['city'] ?? ''));
+$email = trim(strtolower($data['email'] ?? ''));
+if (empty($email) && !empty($cleanPhone)) {
+    $email = $cleanPhone . '@amaleeni.member';
+}
+$password = $data['password'] ?? '';
 $category = trim($data['profileCategory'] ?? 'Entrepreneurs & Founders');
 $sector = trim($data['sector'] ?? 'Technology & Digital');
-$city = trim($data['city'] ?? '');
 $stateCountry = trim($data['stateCountry'] ?? 'India');
 $websiteUrl = trim($data['websiteUrl'] ?? '');
-$seeking = is_array($data['seeking'] ?? null) ? implode(', ', $data['seeking']) : trim($data['seeking'] ?? '');
+$seeking = is_array($data['seeking'] ?? null) ? implode(', ', $data['seeking']) : trim($data['seeking'] ?? 'Market & Buyer Access, Capital & Investment');
 $businessDescription = trim($data['businessDescription'] ?? '');
 
-if (empty($fullName) || empty($email) || empty($phone) || empty($orgName)) {
+if (empty($fullName) || empty($phone) || empty($orgName) || empty($email)) {
     http_response_code(422);
-    echo json_encode(['status' => 'error', 'message' => 'Please fill all required fields.']);
+    echo json_encode(['status' => 'error', 'message' => 'Please fill all required fields: Name, Organisation, Email, WhatsApp Number.']);
     exit;
 }
 
@@ -108,14 +112,15 @@ try {
     // Insert Pink Pages profile with payment_status = 'PENDING'
     $profileStmt = $pdo->prepare("
         INSERT INTO pink_pages_profiles 
-        (user_id, ref_id, org_name, category, sector, city, state_country, website_url, seeking, business_description, payment_status, payment_amount, created_at)
+        (user_id, ref_id, org_name, designation, category, sector, city, state_country, website_url, seeking, business_description, payment_status, payment_amount, created_at)
         VALUES 
-        (:user_id, :ref_id, :org_name, :category, :sector, :city, :state_country, :website_url, :seeking, :business_description, 'PENDING', 5000.00, NOW())
+        (:user_id, :ref_id, :org_name, :designation, :category, :sector, :city, :state_country, :website_url, :seeking, :business_description, 'PENDING', 5000.00, NOW())
     ");
     $profileStmt->execute([
         ':user_id' => $userId,
         ':ref_id' => $refId,
         ':org_name' => $orgName,
+        ':designation' => $designation,
         ':category' => $category,
         ':sector' => $sector,
         ':city' => $city,
@@ -138,6 +143,7 @@ try {
         'role' => 'member',
         'ref_id' => $refId,
         'org_name' => $orgName,
+        'designation' => $designation,
         'sector' => $sector,
         'category' => $category,
         'city' => $city,

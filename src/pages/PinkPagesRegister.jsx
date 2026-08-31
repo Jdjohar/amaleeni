@@ -37,18 +37,13 @@ export default function PinkPagesRegister({ onOpenContact }) {
 
   const [formData, setFormData] = useState({
     fullName: '',
+    orgName: '',
+    designation: '',
     email: '',
     phone: '',
+    cityPin: '',
     password: '',
     confirmPassword: '',
-    orgName: '',
-    profileCategory: 'Entrepreneurs & Founders',
-    sector: 'Technology & Digital',
-    city: '',
-    stateCountry: 'India',
-    websiteUrl: '',
-    seeking: ['Market & Buyer Access', 'Capital & Investment'],
-    businessDescription: '',
     website_bot_trap: '', // Honeypot bot protection
   });
 
@@ -71,14 +66,6 @@ export default function PinkPagesRegister({ onOpenContact }) {
     }
   };
 
-  const handleCheckboxToggle = (item) => {
-    if (formData.seeking.includes(item)) {
-      setFormData({ ...formData, seeking: formData.seeking.filter((i) => i !== item) });
-    } else {
-      setFormData({ ...formData, seeking: [...formData.seeking, item] });
-    }
-  };
-
   const handleRegistrationSubmit = async (e) => {
     e.preventDefault();
     setFormError('');
@@ -86,6 +73,17 @@ export default function PinkPagesRegister({ onOpenContact }) {
     // Bot detection check
     if (formData.website_bot_trap) {
       setFormError('Automated spam detection triggered. Submission aborted.');
+      return;
+    }
+
+    if (!formData.fullName.trim() || !formData.orgName.trim() || !formData.email.trim() || !formData.phone.trim()) {
+      setFormError('Please fill all required fields: Name, Organisation, Email, WhatsApp Number.');
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email.trim())) {
+      setFormError('Please enter a valid email address (e.g. name@company.com).');
       return;
     }
 
@@ -101,7 +99,18 @@ export default function PinkPagesRegister({ onOpenContact }) {
 
     setIsSubmitting(true);
     try {
-      await register(formData);
+      await register({
+        fullName: formData.fullName.trim(),
+        orgName: formData.orgName.trim(),
+        designation: formData.designation.trim() || 'Founder / Leader',
+        email: formData.email.trim().toLowerCase(),
+        phone: formData.phone.trim(),
+        city: formData.cityPin.trim(),
+        cityPin: formData.cityPin.trim(),
+        password: formData.password,
+        confirmPassword: formData.confirmPassword,
+        website_bot_trap: formData.website_bot_trap,
+      });
       confetti({
         particleCount: 150,
         spread: 90,
@@ -131,28 +140,6 @@ export default function PinkPagesRegister({ onOpenContact }) {
       setIsLoggingIn(false);
     }
   };
-
-  // 18 Sectors from Pink Pages specification
-  const sectorsList = [
-    'Agriculture & Agri-Business',
-    'Manufacturing & Engineering',
-    'Technology & Digital',
-    'Healthcare & Life Sciences',
-    'Beauty, Aesthetics & Wellness',
-    'Education & Skill Development',
-    'Finance & Investment',
-    'Fashion, Textiles & Lifestyle',
-    'Food, Hospitality & Tourism',
-    'Infrastructure & Real Estate',
-    'Energy & Sustainability',
-    'Logistics & Supply Chain',
-    'Legal, Consulting & Professional Services',
-    'Media, Arts & Creative Industries',
-    'Sports & Fitness',
-    'Science, Research & Innovation',
-    'Social Impact & Development',
-    'Public Leadership & Institutions',
-  ];
 
   // 3.2 Frequently Asked Questions
   const faqs = [
@@ -298,8 +285,9 @@ export default function PinkPagesRegister({ onOpenContact }) {
               />
             </div>
 
-            {/* Personal Details */}
+            {/* Exact 7 Registration Fields Requested */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {/* 1. Full Name */}
               <div>
                 <label className="block text-xs font-bold text-[#1B3629] uppercase mb-1">
                   Full Name *
@@ -314,6 +302,39 @@ export default function PinkPagesRegister({ onOpenContact }) {
                 />
               </div>
 
+              {/* 2. Organisation */}
+              <div>
+                <label className="block text-xs font-bold text-[#1B3629] uppercase mb-1">
+                  Organisation / Enterprise *
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Sharma Crafts & Textiles"
+                  value={formData.orgName}
+                  onChange={(e) => setFormData({ ...formData, orgName: e.target.value })}
+                  className="w-full px-4 py-3 rounded-xl bg-[#F2E8D7] border border-[#E0D2BC] text-sm text-[#1B3629] focus:outline-none focus:ring-2 focus:ring-[#C83B46]"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {/* 3. Designation */}
+              <div>
+                <label className="block text-xs font-bold text-[#1B3629] uppercase mb-1">
+                  Designation / Role *
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Founder, CEO, Partner, Director"
+                  value={formData.designation}
+                  onChange={(e) => setFormData({ ...formData, designation: e.target.value })}
+                  className="w-full px-4 py-3 rounded-xl bg-[#F2E8D7] border border-[#E0D2BC] text-sm text-[#1B3629] focus:outline-none focus:ring-2 focus:ring-[#C83B46]"
+                />
+              </div>
+
+              {/* 4. Email Address */}
               <div>
                 <label className="block text-xs font-bold text-[#1B3629] uppercase mb-1">
                   Email Address *
@@ -329,11 +350,11 @@ export default function PinkPagesRegister({ onOpenContact }) {
               </div>
             </div>
 
-            {/* Phone & Enterprise Name */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {/* 5. Whatsapp No. */}
               <div>
                 <label className="block text-xs font-bold text-[#1B3629] uppercase mb-1">
-                  WhatsApp / Phone Number *
+                  WhatsApp No. *
                 </label>
                 <input
                   type="tel"
@@ -345,26 +366,27 @@ export default function PinkPagesRegister({ onOpenContact }) {
                 />
               </div>
 
+              {/* 6. City/PIN */}
               <div>
                 <label className="block text-xs font-bold text-[#1B3629] uppercase mb-1">
-                  Enterprise / Practice Name *
+                  City / PIN *
                 </label>
                 <input
                   type="text"
                   required
-                  placeholder="Company or Practice Name"
-                  value={formData.orgName}
-                  onChange={(e) => setFormData({ ...formData, orgName: e.target.value })}
+                  placeholder="e.g. Lucknow - 226016 or Noida - 201301"
+                  value={formData.cityPin}
+                  onChange={(e) => setFormData({ ...formData, cityPin: e.target.value })}
                   className="w-full px-4 py-3 rounded-xl bg-[#F2E8D7] border border-[#E0D2BC] text-sm text-[#1B3629] focus:outline-none focus:ring-2 focus:ring-[#C83B46]"
                 />
               </div>
             </div>
 
-            {/* Account Password Setup for Login */}
+            {/* 6. Password & 7. Confirm Password */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
               <div>
                 <label className="block text-xs font-bold text-[#1B3629] uppercase mb-1">
-                  Create Password * (min. 6 characters)
+                  Password * (min. 6 characters)
                 </label>
                 <div className="relative">
                   <input
@@ -400,116 +422,12 @@ export default function PinkPagesRegister({ onOpenContact }) {
               </div>
             </div>
 
-            {/* Category & Sector Selection */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-xs font-bold text-[#1B3629] uppercase mb-1">
-                  Who are you? (Category) *
-                </label>
-                <select
-                  value={formData.profileCategory}
-                  onChange={(e) => setFormData({ ...formData, profileCategory: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl bg-[#F2E8D7] border border-[#E0D2BC] text-sm text-[#1B3629]"
-                >
-                  <option value="Entrepreneurs & Founders">Entrepreneurs (Founders &amp; Co-founders)</option>
-                  <option value="MSME & Industry Leaders">MSME &amp; Industry Leaders (Mfg / Exporters)</option>
-                  <option value="Professionals">Professionals (Doctors, Lawyers, Consultants, Architects)</option>
-                  <option value="Investors">Investors (Angel, Family Office, Fund Manager)</option>
-                  <option value="Startups & Innovators">Startups &amp; Innovators (Technology, Emerging)</option>
-                  <option value="Creators & Leaders">Creators &amp; Leaders (Arts, Media, Impact)</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-[#1B3629] uppercase mb-1">
-                  Primary Sector *
-                </label>
-                <select
-                  value={formData.sector}
-                  onChange={(e) => setFormData({ ...formData, sector: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl bg-[#F2E8D7] border border-[#E0D2BC] text-sm text-[#1B3629]"
-                >
-                  {sectorsList.map((sec) => (
-                    <option key={sec} value={sec}>
-                      {sec}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-
-            {/* Location & Website */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-xs font-bold text-[#1B3629] uppercase mb-1">
-                  City &amp; State / Country *
-                </label>
-                <input
-                  type="text"
-                  required
-                  placeholder="e.g. Lucknow, UP, India / London, UK"
-                  value={formData.city}
-                  onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl bg-[#F2E8D7] border border-[#E0D2BC] text-sm text-[#1B3629] focus:outline-none focus:ring-2 focus:ring-[#C83B46]"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-[#1B3629] uppercase mb-1">
-                  Website or LinkedIn / Social Profile
-                </label>
-                <input
-                  type="url"
-                  placeholder="https://..."
-                  value={formData.websiteUrl}
-                  onChange={(e) => setFormData({ ...formData, websiteUrl: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl bg-[#F2E8D7] border border-[#E0D2BC] text-sm text-[#1B3629] focus:outline-none focus:ring-2 focus:ring-[#C83B46]"
-                />
-              </div>
-            </div>
-
-            {/* What are you seeking */}
-            <div>
-              <label className="block text-xs font-bold text-[#1B3629] uppercase mb-2">
-                What opportunities are you seeking on Pink Pages?
-              </label>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3">
-                {[
-                  'Capital & Investment',
-                  'Market & Buyer Access',
-                  'Corporate Supply Chains',
-                  'Mentorship & Guidance',
-                  'International Trade / Exports',
-                  'Peer Partnerships',
-                ].map((item) => (
-                  <label
-                    key={item}
-                    className="flex items-center gap-2 text-xs text-[#1B3629] cursor-pointer bg-[#F2E8D7] p-3 rounded-xl border border-[#E0D2BC] hover:border-[#C83B46] transition-colors"
-                  >
-                    <input
-                      type="checkbox"
-                      checked={formData.seeking.includes(item)}
-                      onChange={() => handleCheckboxToggle(item)}
-                      className="rounded text-[#C83B46] focus:ring-[#C83B46]"
-                    />
-                    <span>{item}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
-
-            {/* Brief business description */}
-            <div>
-              <label className="block text-xs font-bold text-[#1B3629] uppercase mb-1">
-                Brief Business / Practice Overview
-              </label>
-              <textarea
-                rows={3}
-                placeholder="Summarize your products, services, or focus areas to help relevant partners discover you..."
-                value={formData.businessDescription}
-                onChange={(e) => setFormData({ ...formData, businessDescription: e.target.value })}
-                className="w-full px-4 py-3 rounded-xl bg-[#F2E8D7] border border-[#E0D2BC] text-sm text-[#1B3629] focus:outline-none focus:ring-2 focus:ring-[#C83B46]"
-              />
+            {/* Dashboard Profile Notification Callout */}
+            <div className="bg-[#F2E8D7]/80 rounded-2xl p-4 border border-[#E0D2BC] flex items-start gap-3 text-xs text-[#4E6B5A]">
+              <Sparkles className="w-4 h-4 text-[#C83B46] shrink-0 mt-0.5" />
+              <p className="font-serif leading-relaxed">
+                <span className="font-bold text-[#1B3629]">Dashboard Profile:</span> Additional details (Sector, Profile Category, Website, Opportunities Seeking, and Business Overview) are customized directly inside your Member Dashboard after registration.
+              </p>
             </div>
 
             {/* Submit CTA */}
@@ -706,12 +624,12 @@ export default function PinkPagesRegister({ onOpenContact }) {
             <form onSubmit={handleLoginSubmit} className="space-y-4">
               <div>
                 <label className="block text-xs font-bold text-[#1B3629] uppercase mb-1">
-                  Registered Email Address
+                  WhatsApp No. or Email Address
                 </label>
                 <input
-                  type="email"
+                  type="text"
                   required
-                  placeholder="name@company.com"
+                  placeholder="+91 98765 43210 or email@domain.com"
                   value={loginEmail}
                   onChange={(e) => setLoginEmail(e.target.value)}
                   className="w-full px-4 py-2.5 rounded-xl bg-[#F2E8D7] border border-[#E0D2BC] text-sm text-[#1B3629] focus:outline-none focus:ring-2 focus:ring-[#C83B46]"

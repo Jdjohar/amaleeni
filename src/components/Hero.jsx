@@ -29,9 +29,16 @@ export default function Hero({ onOpenContact }) {
               </h2>
             </div>
 
-            <div className="mt-6 space-y-1 text-[#2D4D3B] text-lg sm:text-xl font-serif leading-relaxed">
-              <p className="font-medium">A safe place for women.</p>
-              <p className="font-medium">Infinite opportunities for your business.</p>
+            <div className="mt-6 space-y-2 text-[#1B3629] font-serif leading-relaxed">
+              <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#1B3629]">
+                A safe place for women. Infinite opportunities for your business.
+              </p>
+              <p className="text-sm sm:text-base lg:text-lg text-[#2D4D3B] font-medium">
+                Amaleeni Womenpreneurs 2027 brings together women entrepreneurs face to face with investors, banks, corporates and policymakers.
+              </p>
+              <p className="text-xs sm:text-sm text-[#614E38] pt-1">
+                An initiative of the Amaleeni Foundation – ten years of work with women.
+              </p>
             </div>
 
             {/* CTA Button */}

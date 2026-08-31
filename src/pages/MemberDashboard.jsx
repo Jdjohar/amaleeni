@@ -19,14 +19,45 @@ import {
   Mail,
   Phone,
   Globe,
-  Layers
+  Layers,
+  Edit3,
+  Save,
+  ExternalLink,
+  X
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 export default function MemberDashboard({ onOpenContact }) {
-  const { user, isPaidMember, updatePaymentSuccess, logout } = useAuth();
+  const { user, isPaidMember, updatePaymentSuccess, updateUserProfile, logout } = useAuth();
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
   const [paymentError, setPaymentError] = useState('');
+
+  // Profile Edit State ("baki fields dashboard andar show hon profile ch")
+  const [isEditingProfile, setIsEditingProfile] = useState(false);
+  const [profileSuccessMsg, setProfileSuccessMsg] = useState(false);
+  const [editFormData, setEditFormData] = useState({
+    designation: user?.designation || 'Founder / Leader',
+    category: user?.category || 'Entrepreneurs & Founders',
+    sector: user?.sector || 'Technology & Digital',
+    city: user?.city || '',
+    email: user?.email && !user?.email.includes('@amaleeni.member') ? user.email : '',
+    website_url: user?.website_url || '',
+    seeking: user?.seeking || 'Market & Buyer Access, Capital & Investment',
+    business_description: user?.business_description || '',
+  });
+
+  const handleSaveProfile = (e) => {
+    e.preventDefault();
+    if (updateUserProfile) {
+      updateUserProfile(editFormData);
+    }
+    setProfileSuccessMsg(true);
+    confetti({ particleCount: 60, spread: 50, origin: { y: 0.8 } });
+    setTimeout(() => {
+      setIsEditingProfile(false);
+      setProfileSuccessMsg(false);
+    }, 1200);
+  };
 
   // Navigation levels for State-wise directory explorer:
   // Level 1: selectedState = null, selectedSector = null (Show State Cards)
@@ -1063,33 +1094,292 @@ export default function MemberDashboard({ onOpenContact }) {
 
         </div>
 
-        {/* Profile Overview Card */}
-        <div className="bg-[#FAF5EB] rounded-3xl p-6 sm:p-8 border border-[#E5D7C3] shadow-md space-y-4">
-          <h4 className="font-serif text-xl font-bold text-[#1B3629] border-b border-[#E5D7C3] pb-3">
-            Your Registered Pink Pages Profile
-          </h4>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-xs text-[#3E5C4B]">
-            <div className="bg-[#F2E8D7] p-3.5 rounded-xl border border-[#E0D2BC]">
-              <span className="font-bold text-[#1B3629] block uppercase text-[10px] text-[#7A6750]">Enterprise / Brand</span>
-              <span className="text-sm font-serif font-bold text-[#1B3629]">{user.org_name || 'Not provided'}</span>
+        {/* Profile Overview & Directory Settings Card ("baki fields dashboard andar show hon profile ch") */}
+        <div className="bg-[#FAF5EB] rounded-3xl p-6 sm:p-8 border border-[#E5D7C3] shadow-md space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#E5D7C3] pb-4">
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-[#C83B46]">
+                  Directory Membership
+                </span>
+                <span className="text-xs text-[#7A6750]">•</span>
+                <span className="text-xs font-mono font-bold text-[#1B3629]">
+                  {user.ref_id || 'PP-MEMBER'}
+                </span>
+              </div>
+              <h3 className="font-serif text-2xl font-bold text-[#1B3629]">
+                Your Pink Pages Enterprise Profile
+              </h3>
+              <p className="text-xs text-[#5A7B68] font-serif">
+                Manage your directory visibility, industry sector, business overview, and collaboration preferences.
+              </p>
             </div>
 
-            <div className="bg-[#F2E8D7] p-3.5 rounded-xl border border-[#E0D2BC]">
-              <span className="font-bold text-[#1B3629] block uppercase text-[10px] text-[#7A6750]">Category</span>
-              <span className="text-sm font-serif font-bold text-[#1B3629]">{user.category}</span>
-            </div>
-
-            <div className="bg-[#F2E8D7] p-3.5 rounded-xl border border-[#E0D2BC]">
-              <span className="font-bold text-[#1B3629] block uppercase text-[10px] text-[#7A6750]">Sector</span>
-              <span className="text-sm font-serif font-bold text-[#1B3629]">{user.sector}</span>
-            </div>
-
-            <div className="bg-[#F2E8D7] p-3.5 rounded-xl border border-[#E0D2BC]">
-              <span className="font-bold text-[#1B3629] block uppercase text-[10px] text-[#7A6750]">Location</span>
-              <span className="text-sm font-serif font-bold text-[#1B3629]">{user.city || 'Lucknow'}, {user.state_country || 'India'}</span>
-            </div>
+            <button
+              onClick={() => setIsEditingProfile(!isEditingProfile)}
+              className="inline-flex items-center gap-1.5 self-start sm:self-center bg-[#F2E8D7] hover:bg-[#E5D7C3] text-[#1B3629] px-4 py-2 rounded-full text-xs font-bold border border-[#D9C7AF] transition-colors cursor-pointer"
+            >
+              {isEditingProfile ? (
+                <>
+                  <X className="w-3.5 h-3.5 text-[#C83B46]" />
+                  <span>Close Editor</span>
+                </>
+              ) : (
+                <>
+                  <Edit3 className="w-3.5 h-3.5 text-[#C83B46]" />
+                  <span>Edit Profile Details</span>
+                </>
+              )}
+            </button>
           </div>
+
+          {/* EDIT PROFILE FORM */}
+          {isEditingProfile ? (
+            <form onSubmit={handleSaveProfile} className="space-y-4 bg-[#F2E8D7]/60 p-5 rounded-2xl border border-[#E0D2BC]">
+              <div className="flex items-center justify-between">
+                <h4 className="text-sm font-bold text-[#1B3629] uppercase tracking-wider">
+                  Update Directory Fields
+                </h4>
+                {profileSuccessMsg && (
+                  <span className="text-xs text-green-700 font-bold bg-green-100 px-3 py-1 rounded-full flex items-center gap-1">
+                    <CheckCircle2 className="w-3.5 h-3.5" />
+                    Profile Updated Successfully!
+                  </span>
+                )}
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-xs">
+                <div>
+                  <label className="block font-bold text-[#1B3629] mb-1">Designation / Role</label>
+                  <input
+                    type="text"
+                    value={editFormData.designation}
+                    onChange={(e) => setEditFormData({ ...editFormData, designation: e.target.value })}
+                    placeholder="e.g. Founder & CEO"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-[#E0D2BC] text-sm text-[#1B3629] focus:outline-none focus:ring-2 focus:ring-[#C83B46]"
+                  />
+                </div>
+
+                <div>
+                  <label className="block font-bold text-[#1B3629] mb-1">Primary Industry Sector</label>
+                  <select
+                    value={editFormData.sector}
+                    onChange={(e) => setEditFormData({ ...editFormData, sector: e.target.value })}
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-[#E0D2BC] text-xs sm:text-sm text-[#1B3629]"
+                  >
+                    {[
+                      'Manufacturing & Engineering',
+                      'Agriculture & Agri-Business',
+                      'Technology & Digital',
+                      'Healthcare & Life Sciences',
+                      'Beauty, Aesthetics & Wellness',
+                      'Education & Skill Development',
+                      'Finance & Investment',
+                      'Fashion, Textiles & Lifestyle',
+                      'Food, Hospitality & Tourism',
+                      'Infrastructure & Real Estate',
+                      'Energy & Sustainability',
+                      'Logistics & Supply Chain',
+                      'Legal, Consulting & Professional Services',
+                      'Media, Arts & Creative Industries',
+                      'Sports & Fitness',
+                      'Social Impact & Development',
+                    ].map((sec) => (
+                      <option key={sec} value={sec}>
+                        {sec}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block font-bold text-[#1B3629] mb-1">Category</label>
+                  <select
+                    value={editFormData.category}
+                    onChange={(e) => setEditFormData({ ...editFormData, category: e.target.value })}
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-[#E0D2BC] text-xs sm:text-sm text-[#1B3629]"
+                  >
+                    <option value="Entrepreneurs & Founders">Entrepreneurs &amp; Founders</option>
+                    <option value="MSME & Industry Leaders">MSME &amp; Industry Leaders</option>
+                    <option value="Professionals">Professionals</option>
+                    <option value="Investors">Investors</option>
+                    <option value="Startups & Innovators">Startups &amp; Innovators</option>
+                    <option value="Creators & Leaders">Creators &amp; Leaders</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block font-bold text-[#1B3629] mb-1">Official Email Address</label>
+                  <input
+                    type="email"
+                    value={editFormData.email}
+                    onChange={(e) => setEditFormData({ ...editFormData, email: e.target.value })}
+                    placeholder="contact@yourcompany.com"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-[#E0D2BC] text-sm text-[#1B3629] focus:outline-none focus:ring-2 focus:ring-[#C83B46]"
+                  />
+                </div>
+
+                <div>
+                  <label className="block font-bold text-[#1B3629] mb-1">Website / LinkedIn URL</label>
+                  <input
+                    type="url"
+                    value={editFormData.website_url}
+                    onChange={(e) => setEditFormData({ ...editFormData, website_url: e.target.value })}
+                    placeholder="https://..."
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-[#E0D2BC] text-sm text-[#1B3629] focus:outline-none focus:ring-2 focus:ring-[#C83B46]"
+                  />
+                </div>
+
+                <div>
+                  <label className="block font-bold text-[#1B3629] mb-1">City / Region</label>
+                  <input
+                    type="text"
+                    value={editFormData.city}
+                    onChange={(e) => setEditFormData({ ...editFormData, city: e.target.value })}
+                    placeholder="e.g. Lucknow, UP"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-[#E0D2BC] text-sm text-[#1B3629] focus:outline-none focus:ring-2 focus:ring-[#C83B46]"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block font-bold text-[#1B3629] mb-1 text-xs">
+                  What opportunities are you seeking on Pink Pages?
+                </label>
+                <input
+                  type="text"
+                  value={editFormData.seeking}
+                  onChange={(e) => setEditFormData({ ...editFormData, seeking: e.target.value })}
+                  placeholder="e.g. Capital & Investment, Buyer Access, Corporate Supply Chains"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-[#E0D2BC] text-sm text-[#1B3629] focus:outline-none focus:ring-2 focus:ring-[#C83B46]"
+                />
+              </div>
+
+              <div>
+                <label className="block font-bold text-[#1B3629] mb-1 text-xs">
+                  Business / Practice Overview (Products, services, and collaboration areas)
+                </label>
+                <textarea
+                  rows={2}
+                  value={editFormData.business_description}
+                  onChange={(e) => setEditFormData({ ...editFormData, business_description: e.target.value })}
+                  placeholder="Write a brief overview of what your enterprise delivers..."
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-[#E0D2BC] text-sm text-[#1B3629] focus:outline-none focus:ring-2 focus:ring-[#C83B46]"
+                />
+              </div>
+
+              <div className="flex items-center gap-3 pt-2">
+                <button
+                  type="submit"
+                  className="inline-flex items-center gap-1.5 bg-[#C83B46] hover:bg-[#A82B36] text-white px-5 py-2.5 rounded-full text-xs font-bold shadow-md cursor-pointer transition-colors"
+                >
+                  <Save className="w-3.5 h-3.5" />
+                  <span>Save Profile Details</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setIsEditingProfile(false)}
+                  className="text-xs text-[#7A6750] hover:text-[#1B3629] underline cursor-pointer"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          ) : (
+            /* VIEW PROFILE DETAILS */
+            <div className="space-y-6">
+              {/* Row 1: Core Registered Info */}
+              <div>
+                <span className="text-[10px] font-bold text-[#7A6750] uppercase tracking-wider block mb-2">
+                  1. Core Registration Credentials
+                </span>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 text-xs text-[#3E5C4B]">
+                  <div className="bg-[#F2E8D7] p-3.5 rounded-xl border border-[#E0D2BC]">
+                    <span className="font-bold text-[#1B3629] block uppercase text-[10px] text-[#7A6750]">Full Name</span>
+                    <span className="text-sm font-serif font-bold text-[#1B3629]">{user.full_name}</span>
+                  </div>
+
+                  <div className="bg-[#F2E8D7] p-3.5 rounded-xl border border-[#E0D2BC]">
+                    <span className="font-bold text-[#1B3629] block uppercase text-[10px] text-[#7A6750]">Organisation</span>
+                    <span className="text-sm font-serif font-bold text-[#1B3629]">{user.org_name || 'Not provided'}</span>
+                  </div>
+
+                  <div className="bg-[#F2E8D7] p-3.5 rounded-xl border border-[#E0D2BC]">
+                    <span className="font-bold text-[#1B3629] block uppercase text-[10px] text-[#7A6750]">Designation</span>
+                    <span className="text-sm font-serif font-bold text-[#1B3629]">{user.designation || 'Founder / Leader'}</span>
+                  </div>
+
+                  <div className="bg-[#F2E8D7] p-3.5 rounded-xl border border-[#E0D2BC]">
+                    <span className="font-bold text-[#1B3629] block uppercase text-[10px] text-[#7A6750]">WhatsApp No.</span>
+                    <span className="text-sm font-mono font-bold text-[#1B3629]">{user.phone}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Row 2: Directory Specific Fields ("Baki Fields") */}
+              <div>
+                <span className="text-[10px] font-bold text-[#7A6750] uppercase tracking-wider block mb-2">
+                  2. Sector, Directory &amp; Business Profiles (Customizable in Dashboard)
+                </span>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 text-xs text-[#3E5C4B]">
+                  <div className="bg-[#F2E8D7] p-3.5 rounded-xl border border-[#E0D2BC]">
+                    <span className="font-bold text-[#1B3629] block uppercase text-[10px] text-[#7A6750]">Industry Sector</span>
+                    <span className="text-sm font-serif font-bold text-[#1B3629]">{user.sector || 'Technology & Digital'}</span>
+                  </div>
+
+                  <div className="bg-[#F2E8D7] p-3.5 rounded-xl border border-[#E0D2BC]">
+                    <span className="font-bold text-[#1B3629] block uppercase text-[10px] text-[#7A6750]">Profile Category</span>
+                    <span className="text-sm font-serif font-bold text-[#1B3629]">{user.category || 'Entrepreneurs & Founders'}</span>
+                  </div>
+
+                  <div className="bg-[#F2E8D7] p-3.5 rounded-xl border border-[#E0D2BC]">
+                    <span className="font-bold text-[#1B3629] block uppercase text-[10px] text-[#7A6750]">City / PIN Code</span>
+                    <span className="text-sm font-serif font-bold text-[#1B3629]">{user.city || 'Lucknow'}</span>
+                  </div>
+
+                  <div className="bg-[#F2E8D7] p-3.5 rounded-xl border border-[#E0D2BC]">
+                    <span className="font-bold text-[#1B3629] block uppercase text-[10px] text-[#7A6750]">Official Website</span>
+                    {user.website_url ? (
+                      <a
+                        href={user.website_url.startsWith('http') ? user.website_url : `https://${user.website_url}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs font-mono font-bold text-[#C83B46] hover:underline flex items-center gap-1 mt-0.5"
+                      >
+                        <span>Visit Site</span>
+                        <ExternalLink className="w-3 h-3" />
+                      </a>
+                    ) : (
+                      <span className="text-xs text-[#7A6750] italic">Not added yet</span>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Row 3: Opportunities Seeking & Bio */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                <div className="bg-[#F2E8D7] p-4 rounded-xl border border-[#E0D2BC] space-y-1">
+                  <span className="font-bold text-[#1B3629] block uppercase text-[10px] text-[#7A6750]">
+                    Opportunities Seeking
+                  </span>
+                  <p className="text-xs text-[#1B3629] font-medium leading-relaxed">
+                    {user.seeking || 'Capital & Investment, Market & Buyer Access, Corporate Supply Chains'}
+                  </p>
+                </div>
+
+                <div className="bg-[#F2E8D7] p-4 rounded-xl border border-[#E0D2BC] space-y-1">
+                  <span className="font-bold text-[#1B3629] block uppercase text-[10px] text-[#7A6750]">
+                    Business &amp; Practice Overview
+                  </span>
+                  <p className="text-xs text-[#1B3629] font-serif leading-relaxed">
+                    {user.business_description || 'Click "Edit Profile Details" above to add your enterprise summary, products, and services.'}
+                  </p>
+                </div>
+              </div>
+
+            </div>
+          )}
+
         </div>
 
       </div>

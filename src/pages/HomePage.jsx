@@ -113,7 +113,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-center w-full">
             
             {/* Hero Left Content */}
-            <div className="lg:col-span-5 pt-1 pb-2 sm:pb-8 lg:pb-14 relative z-40 space-y-2.5">
+            <div className="lg:col-span-6 pt-1 pb-2 sm:pb-8 lg:pb-14 relative z-40 space-y-3 sm:space-y-4">
               
               {/* Date & Location Chip */}
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#1B3629]/10 border border-[#1B3629]/20 text-[#1B3629] text-[11px] sm:text-xs font-bold">
@@ -137,12 +137,12 @@ export default function HomePage() {
                 </h2>
               </div>
 
-              {/* Subhead Paragraph - BOLD */}
-              <div className="pt-1 text-[#1B3629] text-xs sm:text-base font-serif leading-relaxed">
-                <p className="font-bold text-[#1B3629]">
+              {/* Subhead Paragraph - BOLD & ENLARGED */}
+              <div className="pt-1.5 space-y-2.5 text-[#1B3629] font-serif">
+                <p className="text-lg sm:text-2xl lg:text-2xl font-bold text-[#1B3629] leading-snug">
                   A safe place for women. Infinite opportunities for your business.
                 </p>
-                <p className="text-xs text-[#2D4D3B] font-medium hidden sm:block mt-1">
+                <p className="text-base sm:text-lg lg:text-xl font-bold text-[#1B3629] leading-snug">
                   Amaleeni Womenpreneurs 2027 brings together women entrepreneurs face to face with investors, banks, corporates and policymakers.
                 </p>
               </div>
@@ -168,14 +168,14 @@ export default function HomePage() {
                 </Link>
               </div>
 
-              {/* Small Caption Below Buttons */}
-              <p className="text-[10px] sm:text-xs text-[#7A6750] italic font-serif pt-0.5">
+              {/* Caption Below Buttons - BOLD */}
+              <p className="text-sm sm:text-base font-bold text-[#1B3629] font-serif pt-1.5">
                 An initiative of the Amaleeni Foundation – ten years of work with women.
               </p>
             </div>
 
             {/* Hero Center/Right: Females Cutout Image - Mobile Optimized */}
-            <div className="lg:col-span-7 relative flex justify-center lg:justify-center items-end h-full z-10 -mt-1 lg:mt-0">
+            <div className="lg:col-span-6 relative flex justify-center lg:justify-center items-end h-full z-10 -mt-1 lg:mt-0">
               <div className="relative w-full max-w-xs sm:max-w-xl lg:max-w-4xl translate-y-3 sm:translate-y-6 lg:translate-y-8">
                 <img
                   src="/assets/females.png"
