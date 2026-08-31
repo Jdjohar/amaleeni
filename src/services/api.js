@@ -3,9 +3,9 @@
  * Connects to Hostinger PHP backend with intelligent local fallback
  */
 
-const RAW_URL = import.meta.env.VITE_API_URL || 'https://linen-oryx-691439.hostingersite.com';
+const RAW_URL = import.meta.env.API_URL || 'https://linen-oryx-691439.hostingersite.com';
 const API_BASE_URL = RAW_URL.replace(/\/+$/, '');
-export const RAZORPAY_KEY_ID = import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_test_YourKeyIdHere';
+export const RAZORPAY_KEY_ID = import.meta.env.RAZORPAY_KEY_ID || 'rzp_test_YourKeyIdHere';
 
 // Helper for HTTP requests
 async function postRequest(endpoint, payload) {

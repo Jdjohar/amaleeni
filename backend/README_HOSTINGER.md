@@ -56,8 +56,8 @@ Tuhada API endpoint URL ready ho javega: `https://linen-oryx-691439.hostingersit
 
 ### Step 4: Vercel te Environment Variables Add Karo
 Vercel dashboard ch apne project di **Settings** -> **Environment Variables** ch add karo:
-- `VITE_API_URL` = `https://linen-oryx-691439.hostingersite.com`
-- `VITE_RAZORPAY_KEY_ID` = tuhadi Razorpay Key ID (e.g. `rzp_live_...`)
+- `API_URL` = `https://linen-oryx-691439.hostingersite.com`
+- `RAZORPAY_KEY_ID` = tuhadi Razorpay Key ID (e.g. `rzp_live_...`)
 
 ---
 
