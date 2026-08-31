@@ -94,8 +94,12 @@ export default function HomePage() {
 
   const marqueeSpeakers = [
     { name: 'Dr. Akshaya Jain', title: 'Founder & Convenor, Amaleeni Foundation' },
-    { name: 'Ashwini Kumar', title: 'Communication & Media Lead' },
-    { name: 'Ramakrishna Padhy', title: 'Communication & Media Lead' },
+    { name: 'Nitinchandra Jain', title: 'Advisory Board / Trustee' },
+    { name: 'Amruta Jain', title: 'Advisory Board / Trustee' },
+    { name: 'Ashwini Kumar', title: 'Design & Communications Lead' },
+    { name: 'Ramakrishna Padhy', title: 'Media & PR Lead' },
+    { name: 'Priya Pawar', title: 'Core Operations' },
+    { name: 'Sahil Sharma', title: 'Strategy & Outreach' },
   ];
 
   return (
@@ -392,6 +396,134 @@ export default function HomePage() {
               <span>Register Now</span>
               <ArrowRight className="w-5 h-5" />
             </a>
+          </div>
+        </div>
+      </section>
+
+      {/* 1.5 Pink Pages Spotlight Section */}
+      <section className="py-20 bg-gradient-to-b from-[#FAF5EB] via-[#F5ECE0] to-[#FAF5EB] border-b border-[#E8DCC8] relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-[#C83B46]/5 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#D49B4B]/10 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="bg-gradient-to-br from-[#1B3629] via-[#162D22] to-[#0F2018] text-white rounded-3xl p-8 sm:p-12 lg:p-14 border-2 border-[#D49B4B]/40 shadow-2xl relative overflow-hidden">
+            
+            {/* Background watermark */}
+            <div className="absolute -right-6 -bottom-8 opacity-10 pointer-events-none select-none">
+              <span className="font-serif text-[180px] sm:text-[240px] font-extrabold text-[#D49B4B] leading-none">
+                PP
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+              
+              {/* Left Column: Details & Value Proposition */}
+              <div className="lg:col-span-7 space-y-6">
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#C83B46] text-white text-xs font-bold uppercase tracking-wider shadow-sm">
+                  <Sparkles className="w-4 h-4 text-[#D49B4B]" />
+                  <span>Opportunity &amp; Business Directory</span>
+                </div>
+
+                <h2 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-extrabold text-[#FAF5EB] leading-tight">
+                  Pink Pages
+                </h2>
+
+                <p className="text-base sm:text-lg text-[#D9E6DF] font-serif leading-relaxed">
+                  One Platform. One Network. A World of Opportunities. Amaleeni Foundation's business and opportunity directory for women entrepreneurs – built to put you in front of the people who can grow your enterprise, in India and beyond.
+                </p>
+
+                {/* Core User Highlight Callout */}
+                <div className="bg-[#244735] p-5 sm:p-6 rounded-2xl border border-[#37644D] space-y-1.5 shadow-md">
+                  <div className="flex items-center gap-2 text-[#D49B4B] text-xs font-bold uppercase tracking-wider">
+                    <Award className="w-4 h-4" />
+                    <span>Special Early Bird Summit Access</span>
+                  </div>
+                  <p className="font-serif text-lg sm:text-xl text-white font-semibold leading-snug">
+                    "The registration for Pink Pages also gets you Early Bird access to Amaleeni Womenpreneurs 2027."
+                  </p>
+                </div>
+
+                {/* Key Pillars */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                  <div className="flex items-center gap-2.5 text-xs sm:text-sm text-[#A8C2B3]">
+                    <CheckCircle2 className="w-4 h-4 text-[#81C784] shrink-0" />
+                    <span>State-wise &amp; Sector Directory Listing</span>
+                  </div>
+                  <div className="flex items-center gap-2.5 text-xs sm:text-sm text-[#A8C2B3]">
+                    <CheckCircle2 className="w-4 h-4 text-[#81C784] shrink-0" />
+                    <span>Investor &amp; Corporate Buyer Leads</span>
+                  </div>
+                  <div className="flex items-center gap-2.5 text-xs sm:text-sm text-[#A8C2B3]">
+                    <CheckCircle2 className="w-4 h-4 text-[#81C784] shrink-0" />
+                    <span>AW 2027 Summit Delegate Pass Included</span>
+                  </div>
+                  <div className="flex items-center gap-2.5 text-xs sm:text-sm text-[#A8C2B3]">
+                    <CheckCircle2 className="w-4 h-4 text-[#81C784] shrink-0" />
+                    <span>Verified Profile &amp; Member Portal</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right Column: Fee Card & Action Button */}
+              <div className="lg:col-span-5 bg-[#FAF5EB] text-[#1B3629] rounded-3xl p-7 sm:p-9 border border-[#E0D2BC] shadow-2xl text-center space-y-6 flex flex-col justify-between">
+                
+                <div className="space-y-2">
+                  <span className="text-[11px] font-bold uppercase tracking-widest text-[#7A6750] bg-[#F2E8D7] px-3.5 py-1 rounded-full border border-[#E0D2BC]">
+                    Annual Membership
+                  </span>
+                  
+                  <div className="pt-2">
+                    <p className="text-xs uppercase tracking-wider font-bold text-[#7A6750]">
+                      FEE:
+                    </p>
+                    <p className="font-serif text-5xl sm:text-6xl font-extrabold text-[#C83B46] tracking-tight">
+                      ₹5,000
+                    </p>
+                    <p className="text-xs text-[#5A7B68] font-medium mt-1 font-serif">
+                      All-Inclusive • 1 Year Directory + Summit 2027 Access
+                    </p>
+                  </div>
+                </div>
+
+                <div className="p-4 rounded-2xl bg-[#F2E8D7] border border-[#E0D2BC] text-xs text-[#4E6B5A] text-left space-y-2">
+                  <p className="font-bold text-[#1B3629]">Included with registration:</p>
+                  <ul className="space-y-1.5">
+                    <li className="flex items-center gap-2">
+                      <span className="text-[#C83B46] font-bold">✓</span>
+                      <span>Verified Pink Pages Listing &amp; Business Profile</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="text-[#C83B46] font-bold">✓</span>
+                      <span>Early Bird Access to Amaleeni Womenpreneurs 2027</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="text-[#C83B46] font-bold">✓</span>
+                      <span>Direct B2B Inquiries, Investor &amp; Buyer Desks</span>
+                    </li>
+                  </ul>
+                </div>
+
+                <div className="space-y-3">
+                  <Link
+                    to="/pink-pages/register"
+                    className="w-full inline-flex items-center justify-center gap-2 bg-[#C83B46] hover:bg-[#A82B36] text-white py-4 px-6 rounded-full text-base font-bold transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 cursor-pointer"
+                  >
+                    <span>Register on Pink Pages</span>
+                    <ArrowRight className="w-5 h-5" />
+                  </Link>
+
+                  <Link
+                    to="/pink-pages"
+                    className="w-full inline-flex items-center justify-center gap-1 text-xs font-bold text-[#1B3629] hover:text-[#C83B46] transition-colors py-1"
+                  >
+                    <span>Explore Pink Pages directory details</span>
+                    <ChevronRight className="w-4 h-4" />
+                  </Link>
+                </div>
+
+              </div>
+
+            </div>
           </div>
         </div>
       </section>

@@ -30,12 +30,14 @@ export default function Footer() {
 
           {/* Col 2: Navigation Pages */}
           <div>
-            <h4 className="font-serif text-lg font-bold text-[#D49B4B] mb-4">Event Pages</h4>
+            <h4 className="font-serif text-lg font-bold text-[#D49B4B] mb-4">Event &amp; Directory</h4>
             <ul className="space-y-2 text-sm text-[#A8C2B3]">
               <li><Link to="/" className="hover:text-white transition-colors">Home</Link></li>
+              <li><Link to="/pink-pages" className="hover:text-white text-[#F6EFE2] font-semibold transition-colors">Pink Pages Directory</Link></li>
+              <li><Link to="/pink-pages/register" className="hover:text-white text-[#D49B4B] transition-colors">Register on Pink Pages</Link></li>
               <li><Link to="/programme" className="hover:text-white transition-colors">Programme &amp; Venue</Link></li>
               <li><Link to="/team" className="hover:text-white transition-colors">Team &amp; Lineup</Link></li>
-              <li><a href="https://forms.gle/aKo9HBzgCB14dvAB9" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Register Now</a></li>
+              <li><a href="https://forms.gle/aKo9HBzgCB14dvAB9" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Summit Registration</a></li>
             </ul>
           </div>
 
@@ -45,6 +47,7 @@ export default function Footer() {
             <ul className="space-y-2 text-sm text-[#A8C2B3]">
               <li><Link to="/about" className="hover:text-white transition-colors">About Amaleeni</Link></li>
               <li><Link to="/partner" className="hover:text-white transition-colors">Partner With Us</Link></li>
+              <li><Link to="/contact" className="hover:text-white transition-colors">Contact Us</Link></li>
               <li><Link to="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
               <li><Link to="/terms" className="hover:text-white transition-colors">Terms &amp; Conditions</Link></li>
             </ul>

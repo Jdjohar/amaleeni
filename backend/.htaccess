@@ -1,0 +1,11 @@
+# Disable directory listing
+Options -Indexes
+
+# Protect configuration and sensitive files
+<FilesMatch "^(config\.php|\.env|\.git|schema\.sql)">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Enable UTF-8 encoding
+AddDefaultCharset UTF-8
