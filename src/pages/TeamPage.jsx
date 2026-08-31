@@ -44,7 +44,7 @@ export default function TeamPage() {
       category: 'Leadership',
       bio: 'Aesthetic Physician, Founder of Skintillatingg & Chromocosmo Institute (CIATN). 10+ years dedicated to women’s economic self-reliance and community empowerment.',
       status: 'Confirmed',
-      image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80',
+      image: '../public/assets/Akshaya Jain.jpeg',
     },
     {
       name: 'Nitinchandra Jain',
@@ -79,30 +79,6 @@ export default function TeamPage() {
       image: '/assets/Sahil Sharma.png',
     },
     {
-      name: '[Name]',
-      role: 'Event Director',
-      category: 'Secretariat',
-      bio: 'Leading end-to-end summit execution, stage production, schedule flow, and on-ground venue administration.',
-      status: 'Open Appointment',
-      image: null,
-    },
-    {
-      name: '[Name]',
-      role: 'Partnerships & Sponsorship Lead',
-      category: 'Secretariat',
-      bio: 'Heading corporate sponsorships, PSU partnerships, banking desks, and brand integrations.',
-      status: 'Open Appointment',
-      image: null,
-    },
-    {
-      name: '[Name]',
-      role: 'Delegate Experience Lead',
-      category: 'Secretariat',
-      bio: 'Curating VIP buyer walkthroughs, investor speed-meetings, and seamless attendee journeys.',
-      status: 'Open Appointment',
-      image: null,
-    },
-    {
       name: 'Ashwini Kumar',
       role: 'Design & Communications Lead',
       category: 'Secretariat',
@@ -117,14 +93,6 @@ export default function TeamPage() {
       bio: 'Steering national press relations, media alliances, broadcast channels, and global summit publicity.',
       status: 'Confirmed',
       image: '/assets/RAMAKRISHNA.png',
-    },
-    {
-      name: '[Name]',
-      role: 'State Chapter Coordinator',
-      category: 'Secretariat',
-      bio: 'Mobilizing regional women entrepreneur federations, MSME associations, and state mission clusters.',
-      status: 'Open Appointment',
-      image: null,
     },
   ];
 
