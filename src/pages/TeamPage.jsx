@@ -44,7 +44,7 @@ export default function TeamPage() {
       category: 'Leadership',
       bio: 'Aesthetic Physician, Founder of Skintillatingg & Chromocosmo Institute (CIATN). 10+ years dedicated to women’s economic self-reliance and community empowerment.',
       status: 'Confirmed',
-      image: '../public/assets/Akshaya Jain.jpeg',
+      image: '/assets/Akshaya Jain.jpeg',
     },
     {
       name: 'Nitinchandra Jain',
