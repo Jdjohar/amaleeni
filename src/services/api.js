@@ -25,12 +25,22 @@ async function postRequest(endpoint, payload) {
       });
 
       if (response.status === 404) {
-        continue; // Try next URL format
+        continue; // Try next URL format only if 404 Not Found
       }
 
-      const data = await response.json();
+      let data = {};
+      try {
+        data = await response.json();
+      } catch (jsonParseErr) {
+        data = { message: `Server returned HTTP ${response.status}` };
+      }
+
       if (!response.ok) {
-        throw new Error(data.message || 'Server returned an error');
+        return {
+          ok: false,
+          error: data.message || `Server error (${response.status})`,
+          status: response.status,
+        };
       }
       return { ok: true, data };
     } catch (err) {

@@ -109,26 +109,55 @@ try {
     ]);
     $userId = $pdo->lastInsertId();
 
+    // Ensure designation column exists
+    try {
+        $pdo->exec("ALTER TABLE `pink_pages_profiles` ADD COLUMN `designation` VARCHAR(150) NULL DEFAULT 'Founder / Leader' AFTER `org_name`");
+    } catch (Throwable $colErr) {
+        // ignore safely
+    }
+
     // Insert Pink Pages profile with payment_status = 'PENDING'
-    $profileStmt = $pdo->prepare("
-        INSERT INTO pink_pages_profiles 
-        (user_id, ref_id, org_name, designation, category, sector, city, state_country, website_url, seeking, business_description, payment_status, payment_amount, created_at)
-        VALUES 
-        (:user_id, :ref_id, :org_name, :designation, :category, :sector, :city, :state_country, :website_url, :seeking, :business_description, 'PENDING', 5000.00, NOW())
-    ");
-    $profileStmt->execute([
-        ':user_id' => $userId,
-        ':ref_id' => $refId,
-        ':org_name' => $orgName,
-        ':designation' => $designation,
-        ':category' => $category,
-        ':sector' => $sector,
-        ':city' => $city,
-        ':state_country' => $stateCountry,
-        ':website_url' => $websiteUrl,
-        ':seeking' => $seeking,
-        ':business_description' => $businessDescription
-    ]);
+    try {
+        $profileStmt = $pdo->prepare("
+            INSERT INTO pink_pages_profiles 
+            (user_id, ref_id, org_name, designation, category, sector, city, state_country, website_url, seeking, business_description, payment_status, payment_amount, created_at)
+            VALUES 
+            (:user_id, :ref_id, :org_name, :designation, :category, :sector, :city, :state_country, :website_url, :seeking, :business_description, 'PENDING', 5000.00, NOW())
+        ");
+        $profileStmt->execute([
+            ':user_id' => $userId,
+            ':ref_id' => $refId,
+            ':org_name' => $orgName,
+            ':designation' => $designation,
+            ':category' => $category,
+            ':sector' => $sector,
+            ':city' => $city,
+            ':state_country' => $stateCountry,
+            ':website_url' => $websiteUrl,
+            ':seeking' => $seeking,
+            ':business_description' => $businessDescription
+        ]);
+    } catch (Throwable $profErr) {
+        // Fallback without designation
+        $profileStmt = $pdo->prepare("
+            INSERT INTO pink_pages_profiles 
+            (user_id, ref_id, org_name, category, sector, city, state_country, website_url, seeking, business_description, payment_status, payment_amount, created_at)
+            VALUES 
+            (:user_id, :ref_id, :org_name, :category, :sector, :city, :state_country, :website_url, :seeking, :business_description, 'PENDING', 5000.00, NOW())
+        ");
+        $profileStmt->execute([
+            ':user_id' => $userId,
+            ':ref_id' => $refId,
+            ':org_name' => $orgName,
+            ':category' => $category,
+            ':sector' => $sector,
+            ':city' => $city,
+            ':state_country' => $stateCountry,
+            ':website_url' => $websiteUrl,
+            ':seeking' => $seeking,
+            ':business_description' => $businessDescription
+        ]);
+    }
 
     $pdo->commit();
 

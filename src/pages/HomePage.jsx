@@ -150,7 +150,7 @@ export default function HomePage() {
               {/* Hero CTA Buttons - Side by Side on Mobile */}
               <div className="pt-2 pb-1 relative z-50 flex flex-row items-center gap-2.5 sm:gap-3">
                 <a
-                  href="https://forms.gle/aKo9HBzgCB14dvAB9"
+                  href="./pink-pages/register"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center gap-1.5 sm:gap-2.5 bg-[#C83B46] hover:bg-[#A82B36] text-white px-4 sm:px-7 py-2.5 sm:py-3.5 rounded-full text-xs sm:text-sm font-bold transition-all duration-300 shadow-lg hover:shadow-xl relative z-50 cursor-pointer border-2 border-white/20"
