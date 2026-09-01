@@ -40,7 +40,7 @@ export default function TeamPage() {
   const officialRoster = [
     {
       name: 'Dr. Akshaya Jain',
-      role: 'Founder & Convenor, Amaleeni Foundation',
+      role: 'President, Amaleeni Foundation',
       category: 'Leadership',
       bio: 'Aesthetic Physician, Founder of Skintillatingg & Chromocosmo Institute (CIATN). 10+ years dedicated to women’s economic self-reliance and community empowerment.',
       status: 'Confirmed',
