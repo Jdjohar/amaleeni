@@ -332,10 +332,7 @@ export default function TeamPage() {
                   </p>
                 </div>
 
-                <div className="pt-4 mt-6 border-t border-[#E5D7C3] flex items-center justify-between text-xs text-[#8A755A]">
-                  <span className="font-medium">Amaleeni Foundation</span>
-                  <Globe2 className="w-4 h-4 text-[#1B3629]" />
-                </div>
+                
               </div>
             ))}
           </div>

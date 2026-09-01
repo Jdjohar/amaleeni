@@ -22,7 +22,7 @@ export default function Footer() {
             </Link>
 
             <p className="text-sm text-[#A8C2B3] font-serif leading-relaxed max-w-sm">
-              Amaleeni Womenpreneurs 2027: From Vision to Venture. Putting women entrepreneurs in the room with capital, policy, buyers, and mentors.
+              Amaleeni Womenpreneurs 2027: Putting women entrepreneurs in the room with capital, policy, buyers, and mentors.
             </p>
 
            

@@ -124,11 +124,8 @@ export default function HomePage() {
                 <span>India</span>
               </div>
 
-              {/* Tagline & Main Headline */}
-              <div className="space-y-0.5">
-                <span className="block text-[10px] sm:text-xs font-bold tracking-[0.2em] uppercase text-[#D49B4B] font-sans">
-                  From Vision to Venture
-                </span>
+              {/* Main Headline */}
+              <div className="space-y-0.5 pt-1">
                 <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-extrabold text-[#1B3629] leading-[1.08] tracking-tight">
                   Empowered women,
                 </h1>
@@ -289,11 +286,11 @@ export default function HomePage() {
           </div>
 
           <h2 className="font-serif text-3xl sm:text-5xl font-bold text-[#1B3629] leading-tight">
-            Put women entrepreneurs in the room with the people who shape the business landscape.
+            Connect women entrepreneurs with people who shape businesses.
           </h2>
 
           <p className="text-lg sm:text-xl text-[#3A5645] font-serif leading-relaxed">
-            Amaleeni Womenpreneurs 2027 is a two-day business networking summit built on a simple premise: put women entrepreneurs in the room with the people who shape the business landscape. It aims to break down the barriers between action and intention.
+            Amaleeni Womenpreneurs 2027 is a two-day business networking summit built on a simple premise: connect women entrepreneurs with people who shape businesses. It aims to break down the barriers between action and intention.
           </p>
 
           <div className="bg-[#FAF5EB] rounded-2xl p-6 border border-[#E5D7C3] shadow-sm max-w-2xl mx-auto">

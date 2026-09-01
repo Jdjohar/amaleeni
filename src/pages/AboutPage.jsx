@@ -43,12 +43,13 @@ export default function AboutPage() {
           
           <div className="space-y-4">
             <p className="font-serif text-lg sm:text-xl text-[#1B3629] leading-relaxed">
-              <span className="font-bold text-[#C83B46]">Amaleeni</span> means the one who is untarnished, unwavering, unbreakable. A woman is born many times over across a single life. Every relationship gives her a new identity. Every responsibility reveals another dimension of her. Every challenge creates another version of her.
+              <span className="font-bold text-[#C83B46]">Amaleeni</span> means the one who is untarnished, unwavering, unbreakable. The Amaleeni Foundation sets out to bring out that strength in women from within. Women own barely one in five Indian businesses – against two in five in the US and Canada. Only 35.3% of working-age women are in the workforce at all.
+They’re ambitious; they always have been. What's missing is an opportunity. A skill to channel it, a mentor to guide it, a market to prove it, a platform to show it.
             </p>
 
             <div className="bg-[#F2E8D7] p-6 rounded-2xl border border-[#E0D2BC] text-center">
               <p className="font-serif text-xl sm:text-2xl font-bold tracking-wide text-[#1B3629] leading-snug">
-                Daughter. Sister. Woman. Professional. Entrepreneur. Wife. Mother. Warrior. Leader.
+                For ten years, the Amaleeni Foundation has worked to close that gap – helping women learn a skill, earn from it, and build an identity of their own. Because when a woman becomes self-sufficient, it reaches her family, her children, her community, and the generations after her.
               </p>
             </div>
 
@@ -57,16 +58,7 @@ export default function AboutPage() {
             </p>
           </div>
 
-          {/* Pull Quote 1 */}
-          <div className="bg-[#1B3629] text-white p-8 rounded-2xl border border-[#2B4E3B] text-center space-y-3 relative">
-            <Quote className="w-10 h-10 text-[#D49B4B]/30 absolute top-4 left-4" />
-            <p className="font-serif text-2xl font-bold text-[#FAF5EB] italic leading-relaxed">
-              "There is as much edge and strength in a woman's bangle as there is in a man's sword."
-            </p>
-            <p className="text-xs uppercase tracking-widest text-[#D49B4B] font-bold">
-              — Dr. Akshaya Jain
-            </p>
-          </div>
+         
 
           <p className="font-serif text-lg text-[#3D5C4A] leading-relaxed">
             For ten years, the Amaleeni Foundation has worked to create those openings – helping women learn a skill, earn from it, and build an identity of their own. Because when a woman becomes self-sufficient, it reaches her family, her children, her community, and the generations after her.
@@ -81,7 +73,7 @@ export default function AboutPage() {
           
           <div className="md:col-span-4 text-center">
             <img
-              src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80"
+              src="./assets/Akshaya Jain.jpeg"
               alt="Dr. Akshaya Jain"
               className="w-48 h-48 rounded-full object-cover mx-auto border-4 border-[#D49B4B] shadow-xl mb-4"
             />
