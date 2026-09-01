@@ -84,17 +84,19 @@ try {
                COALESCE(p.designation, 'Founder / Leader') AS designation
         FROM users u
         LEFT JOIN pink_pages_profiles p ON u.id = p.user_id
-        WHERE u.email = :identifier 
-           OR u.phone = :identifier 
-           OR (u.phone != '' AND :clean_phone != '' AND REPLACE(REPLACE(REPLACE(u.phone, ' ', ''), '-', ''), '+', '') LIKE CONCAT('%', :clean_phone))
+        WHERE u.email = :id_email 
+           OR u.phone = :id_phone 
+           OR (:clean_phone != '' AND REPLACE(REPLACE(REPLACE(u.phone, ' ', ''), '-', ''), '+', '') LIKE CONCAT('%', :clean_phone_like))
         LIMIT 1
     ");
     
     // If the above query fails due to missing designation, fallback to query without it
     try {
         $stmt->execute([
-            ':identifier' => $email,
-            ':clean_phone' => $cleanPhone
+            ':id_email' => $email,
+            ':id_phone' => $email,
+            ':clean_phone' => $cleanPhone,
+            ':clean_phone_like' => $cleanPhone
         ]);
         $user = $stmt->fetch();
     } catch (Throwable $queryErr) {
@@ -105,10 +107,13 @@ try {
                    p.website_url, p.seeking, p.business_description, p.payment_status, p.payment_amount, p.paid_at
             FROM users u
             LEFT JOIN pink_pages_profiles p ON u.id = p.user_id
-            WHERE u.email = :identifier OR u.phone = :identifier
+            WHERE u.email = :fb_email OR u.phone = :fb_phone
             LIMIT 1
         ");
-        $fallbackStmt->execute([':identifier' => $email]);
+        $fallbackStmt->execute([
+            ':fb_email' => $email,
+            ':fb_phone' => $email
+        ]);
         $user = $fallbackStmt->fetch();
         if ($user) {
             $user['designation'] = 'Founder / Leader';

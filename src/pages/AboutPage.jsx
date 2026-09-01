@@ -37,31 +37,35 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* 5.2 About the Foundation */}
+      {/* 6.2 About the Foundation */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mb-20">
         <div className="bg-[#FAF5EB] rounded-3xl p-8 sm:p-12 border border-[#E5D7C3] shadow-lg space-y-8">
           
-          <div className="space-y-4">
+          <div className="space-y-5">
+            
+
             <p className="font-serif text-lg sm:text-xl text-[#1B3629] leading-relaxed">
               <span className="font-bold text-[#C83B46]">Amaleeni</span> means the one who is untarnished, unwavering, unbreakable. The Amaleeni Foundation sets out to bring out that strength in women from within. Women own barely one in five Indian businesses – against two in five in the US and Canada. Only 35.3% of working-age women are in the workforce at all.
-They’re ambitious; they always have been. What's missing is an opportunity. A skill to channel it, a mentor to guide it, a market to prove it, a platform to show it.
             </p>
 
-            <div className="bg-[#F2E8D7] p-6 rounded-2xl border border-[#E0D2BC] text-center">
-              <p className="font-serif text-xl sm:text-2xl font-bold tracking-wide text-[#1B3629] leading-snug">
-                For ten years, the Amaleeni Foundation has worked to close that gap – helping women learn a skill, earn from it, and build an identity of their own. Because when a woman becomes self-sufficient, it reaches her family, her children, her community, and the generations after her.
-              </p>
-            </div>
-
             <p className="font-serif text-lg text-[#3D5C4A] leading-relaxed">
-              In a civilisation that has always understood the feminine as strength itself – Lakshmi, Saraswati, Durga, Kali – the Amaleeni Foundation sets out to bring out the strength from within. What's missing is the opportunity to use it: a skill to channel it, a mentor to guide it, a market to prove it, a platform to show it.
+              They’re ambitious; they always have been. What's missing is an opportunity. A skill to channel it, a mentor to guide it, a market to prove it, a platform to show it.
             </p>
           </div>
 
-         
+          {/* Pull Quote */}
+          <div className="bg-[#1B3629] text-white p-8 sm:p-10 rounded-2xl border border-[#2B4E3B] text-center space-y-3 relative shadow-md">
+            <Quote className="w-10 h-10 text-[#D49B4B]/30 absolute top-4 left-4" />
+            <p className="font-serif text-2xl sm:text-3xl font-bold text-[#FAF5EB] italic leading-relaxed">
+              "There is as much edge and strength in a woman's bangle as there is in a man's sword."
+            </p>
+            <p className="text-xs uppercase tracking-widest text-[#D49B4B] font-bold pt-1">
+              — Dr. Akshaya Jain
+            </p>
+          </div>
 
           <p className="font-serif text-lg text-[#3D5C4A] leading-relaxed">
-            For ten years, the Amaleeni Foundation has worked to create those openings – helping women learn a skill, earn from it, and build an identity of their own. Because when a woman becomes self-sufficient, it reaches her family, her children, her community, and the generations after her.
+            For ten years, the Amaleeni Foundation has worked to close that gap – helping women learn a skill, earn from it, and build an identity of their own. Because when a woman becomes self-sufficient, it reaches her family, her children, her community, and the generations after her.
           </p>
 
         </div>
@@ -73,7 +77,7 @@ They’re ambitious; they always have been. What's missing is an opportunity. A 
           
           <div className="md:col-span-4 text-center">
             <img
-              src="./assets/Akshaya Jain.jpeg"
+              src="/assets/Akshaya Jain.jpeg"
               alt="Dr. Akshaya Jain"
               className="w-48 h-48 rounded-full object-cover mx-auto border-4 border-[#D49B4B] shadow-xl mb-4"
             />
