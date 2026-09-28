@@ -6,32 +6,35 @@ export default function Footer() {
   return (
     <footer className="bg-[#13281E] text-white pt-16 pb-12 border-t border-[#1F3D2E]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-[#234532]">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 pb-12 border-b border-[#234532]">
           
-          {/* Col 1: Brand Info */}
-          <div className="lg:col-span-2 space-y-4">
+          {/* Col 1: Brand Info & LEI */}
+          <div className="space-y-4">
             <Link to="/" className="flex items-center">
               <img
                 src="/assets/logo.png"
                 alt="Amaleeni Logo"
-                className="h-14 sm:h-[75px] w-auto object-contain"
+                className="h-14 sm:h-[70px] w-auto object-contain"
                 onError={(e) => {
                   e.currentTarget.src = "/assets/logo.png";
                 }}
               />
             </Link>
 
-            <p className="text-sm text-[#A8C2B3] font-serif leading-relaxed max-w-sm">
+            <p className="text-xs sm:text-sm text-[#A8C2B3] font-serif leading-relaxed">
               Amaleeni Womenpreneurs 2027: Putting women entrepreneurs in the room with capital, policy, buyers, and mentors.
             </p>
 
-           
+            <div className="text-[11px] text-[#7A9988] font-serif pt-1 space-y-0.5 border-t border-[#1F3D2E]">
+              <p>NGO Darpan ID: MH/2022/0311250</p>
+              <p>LEI: 9845008F0CBFA6D37097</p>
+            </div>
           </div>
 
           {/* Col 2: Navigation Pages */}
           <div>
-            <h4 className="font-serif text-lg font-bold text-[#D49B4B] mb-4">Event &amp; Directory</h4>
-            <ul className="space-y-2 text-sm text-[#A8C2B3]">
+            <h4 className="font-serif text-base font-bold text-[#D49B4B] mb-3">Event &amp; Directory</h4>
+            <ul className="space-y-2 text-xs sm:text-sm text-[#A8C2B3]">
               <li><Link to="/" className="hover:text-white transition-colors">Home</Link></li>
               <li><Link to="/pink-pages" className="hover:text-white text-[#F6EFE2] font-semibold transition-colors">Pink Pages Directory</Link></li>
               <li><Link to="/pink-pages/register" className="hover:text-white text-[#D49B4B] transition-colors">Register on Pink Pages</Link></li>
@@ -43,19 +46,31 @@ export default function Footer() {
 
           {/* Col 3: Foundation Pages */}
           <div>
-            <h4 className="font-serif text-lg font-bold text-[#D49B4B] mb-4">Foundation &amp; Partners</h4>
-            <ul className="space-y-2 text-sm text-[#A8C2B3]">
+            <h4 className="font-serif text-base font-bold text-[#D49B4B] mb-3">Foundation &amp; Impact</h4>
+            <ul className="space-y-2 text-xs sm:text-sm text-[#A8C2B3]">
               <li><Link to="/about" className="hover:text-white transition-colors">About Amaleeni</Link></li>
+              <li><Link to="/advisory-board" className="hover:text-white font-semibold text-[#FAF5EB] transition-colors">Advisory Board</Link></li>
+              <li><Link to="/impact-stories" className="hover:text-white transition-colors">Impact Stories</Link></li>
+              <li><Link to="/csr-partnerships" className="hover:text-white transition-colors">CSR Partnerships</Link></li>
               <li><Link to="/partner" className="hover:text-white transition-colors">Partner With Us</Link></li>
               <li><Link to="/contact" className="hover:text-white transition-colors">Contact Us</Link></li>
-              <li><Link to="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
-              <li><Link to="/terms" className="hover:text-white transition-colors">Terms &amp; Conditions</Link></li>
             </ul>
           </div>
 
-          {/* Col 4: Newsletter */}
+          {/* Col 4: Governance & Policies */}
           <div>
-            <h4 className="font-serif text-lg font-bold text-[#D49B4B] mb-4">Secretariat Updates</h4>
+            <h4 className="font-serif text-base font-bold text-[#D49B4B] mb-3">Governance &amp; Policies</h4>
+            <ul className="space-y-2 text-xs sm:text-sm text-[#A8C2B3]">
+              <li><Link to="/terms" className="hover:text-white transition-colors">Terms of Service</Link></li>
+              <li><Link to="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
+              <li><Link to="/grievance-redressal" className="hover:text-white font-semibold text-[#FAF5EB] transition-colors">Grievance Redressal</Link></li>
+              <li><Link to="/refund-cancellation" className="hover:text-white transition-colors">Refund &amp; Cancellation</Link></li>
+            </ul>
+          </div>
+
+          {/* Col 5: Secretariat Updates */}
+          <div>
+            <h4 className="font-serif text-base font-bold text-[#D49B4B] mb-3">Secretariat Updates</h4>
             <p className="text-xs text-[#A8C2B3] mb-3 font-serif">
               Subscribe for delegate updates, line-up releases, and match updates.
             </p>

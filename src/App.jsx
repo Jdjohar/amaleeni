@@ -18,6 +18,14 @@ import ProtectedRoute from './components/ProtectedRoute';
 import { AuthProvider } from './context/AuthContext';
 import ContactModal from './components/ContactModal';
 
+import AdvisoryBoardPage from './pages/AdvisoryBoardPage';
+import TermsPage from './pages/TermsPage';
+import PrivacyPage from './pages/PrivacyPage';
+import GrievanceRedressalPage from './pages/GrievanceRedressalPage';
+import RefundCancellationPage from './pages/RefundCancellationPage';
+import ImpactStoriesPage from './pages/ImpactStoriesPage';
+import CSRPartnershipsPage from './pages/CSRPartnershipsPage';
+
 export default function App() {
   const [isContactOpen, setIsContactOpen] = useState(false);
 
@@ -50,15 +58,22 @@ export default function App() {
                 }
               />
               
-              {/* Preserved multi-page routes ready to activate whenever needed */}
+              {/* Multi-page routes */}
               <Route path="/programme" element={<ProgrammePage />} />
               <Route path="/team" element={<TeamPage />} />
+              <Route path="/advisory-board" element={<AdvisoryBoardPage />} />
               <Route path="/register" element={<RegisterPage />} />
               <Route path="/about" element={<AboutPage />} />
               <Route path="/partner" element={<PartnerPage />} />
+              <Route path="/csr-partnerships" element={<CSRPartnershipsPage />} />
+              <Route path="/impact-stories" element={<ImpactStoriesPage />} />
               <Route path="/contact" element={<ContactPage />} />
-              <Route path="/privacy" element={<LegalPage />} />
-              <Route path="/terms" element={<LegalPage />} />
+              
+              {/* Governance & Policy routes */}
+              <Route path="/privacy" element={<PrivacyPage />} />
+              <Route path="/terms" element={<TermsPage />} />
+              <Route path="/grievance-redressal" element={<GrievanceRedressalPage />} />
+              <Route path="/refund-cancellation" element={<RefundCancellationPage />} />
             </Routes>
           </main>
 

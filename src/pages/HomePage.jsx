@@ -109,11 +109,11 @@ export default function HomePage() {
       <section className="relative min-h-[580px] sm:min-h-[680px] lg:min-h-[780px] bg-[url('/assets/background.png')] bg-cover bg-center bg-no-repeat pt-24 sm:pt-28 lg:pt-32 pb-6 lg:pb-12 flex flex-col justify-between overflow-hidden">
         
         {/* Main Content Container */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full grow flex items-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full grow flex items-center pb-6 sm:pb-8 lg:pb-12">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-center w-full">
             
             {/* Hero Left Content */}
-            <div className="lg:col-span-6 pt-1 pb-2 sm:pb-8 lg:pb-14 relative z-40 space-y-3 sm:space-y-4">
+            <div className="lg:col-span-6 pt-1 pb-2 sm:pb-4 lg:pb-6 relative z-40 space-y-2 sm:space-y-3">
               
               {/* Date & Location Chip */}
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#1B3629]/10 border border-[#1B3629]/20 text-[#1B3629] text-[11px] sm:text-xs font-bold">
@@ -125,27 +125,27 @@ export default function HomePage() {
               </div>
 
               {/* Main Headline */}
-              <div className="space-y-0.5 pt-1">
-                <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-extrabold text-[#1B3629] leading-[1.08] tracking-tight">
+              <div className="space-y-0 pt-0.5">
+                <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#1B3629] leading-[1.08] tracking-tight">
                   Empowered women,
                 </h1>
-                <h2 className="font-serif text-2xl sm:text-4xl lg:text-5xl font-bold text-[#C83B46] leading-[1.08] tracking-tight">
+                <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-[#C83B46] leading-[1.08] tracking-tight">
                   Stronger India
                 </h2>
               </div>
 
-              {/* Subhead Paragraph - BOLD & ENLARGED */}
-              <div className="pt-1.5 space-y-2.5 text-[#1B3629] font-serif">
-                <p className="text-lg sm:text-2xl lg:text-2xl font-bold text-[#1B3629] leading-snug">
+              {/* Subhead Paragraph */}
+              <div className="pt-0.5 space-y-1.5 text-[#1B3629] font-serif">
+                <p className="text-base sm:text-xl lg:text-xl font-bold text-[#1B3629] leading-snug">
                   A safe place for women. Infinite opportunities for your business.
                 </p>
-                <p className="text-base sm:text-lg lg:text-xl font-bold text-[#1B3629] leading-snug">
+                <p className="text-sm sm:text-base lg:text-lg text-[#1B3629]/90 font-semibold leading-relaxed">
                   Amaleeni Womenpreneurs 2027 brings together women entrepreneurs face to face with investors, banks, corporates and policymakers.
                 </p>
               </div>
 
               {/* Hero CTA Buttons - Side by Side on Mobile */}
-              <div className="pt-2 pb-1 relative z-50 flex flex-row items-center gap-2.5 sm:gap-3">
+              <div className="pt-1.5 pb-0.5 relative z-50 flex flex-row items-center gap-2.5 sm:gap-3">
                 <a
                   href="./pink-pages/register"
                   target="_blank"
@@ -165,19 +165,19 @@ export default function HomePage() {
                 </Link>
               </div>
 
-              {/* Caption Below Buttons - BOLD */}
-              <p className="text-sm sm:text-base font-bold text-[#1B3629] font-serif pt-1.5">
+              {/* Caption Below Buttons */}
+              <p className="text-xs sm:text-sm font-medium text-[#1B3629]/80 font-serif pt-0.5">
                 An initiative of the Amaleeni Foundation – ten years of work with women.
               </p>
             </div>
 
-            {/* Hero Center/Right: Females Cutout Image - Mobile Optimized */}
+            {/* Hero Center/Right: Females Cutout Image - Expanded Height Upwards, Anchored at Bottom */}
             <div className="lg:col-span-6 relative flex justify-center lg:justify-center items-end h-full z-10 -mt-1 lg:mt-0">
-              <div className="relative w-full max-w-xs sm:max-w-xl lg:max-w-4xl translate-y-3 sm:translate-y-6 lg:translate-y-8">
+              <div className="relative w-full max-w-xs sm:max-w-xl lg:max-w-4xl translate-y-10 sm:translate-y-14 lg:translate-y-18 -mb-10 sm:-mb-14 lg:-mb-18 origin-bottom scale-105 sm:scale-110 lg:scale-115">
                 <img
                   src="/assets/females.png"
                   alt="Empowered Professional Women"
-                  className="w-full h-auto object-contain max-h-[250px] sm:max-h-[480px] lg:max-h-[680px] mx-auto filter drop-shadow-2xl origin-bottom"
+                  className="w-full h-auto object-contain max-h-[400px] sm:max-h-[620px] lg:max-h-[780px] mx-auto filter drop-shadow-2xl origin-bottom"
                 />
               </div>
             </div>
