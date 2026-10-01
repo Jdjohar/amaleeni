@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS `pink_pages_profiles` (
   `sector` VARCHAR(120) NOT NULL,
   `city` VARCHAR(100) NOT NULL,
   `state_country` VARCHAR(100) NOT NULL,
+  `pincode` VARCHAR(20) NULL,
   `website_url` VARCHAR(255) NULL,
   `seeking` TEXT NULL,
   `business_description` TEXT NULL,
@@ -50,6 +51,24 @@ CREATE TABLE IF NOT EXISTS `orders` (
   `status` ENUM('created', 'attempted', 'paid') DEFAULT 'created',
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `newsletter_subscribers` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `email` VARCHAR(191) NOT NULL UNIQUE,
+  `ip_address` VARCHAR(45) NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  INDEX idx_subscriber_email (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `email_otps` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `email` VARCHAR(191) NOT NULL,
+  `otp_code` VARCHAR(10) NOT NULL,
+  `expires_at` DATETIME NOT NULL,
+  `verified` TINYINT(1) DEFAULT 0,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  INDEX idx_email_otp (`email`, `otp_code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `login_attempts` (

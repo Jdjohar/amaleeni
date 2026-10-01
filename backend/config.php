@@ -1,6 +1,6 @@
 <?php
 /**
- * Configuration for Amaleeni Pink Pages API
+ * Configuration for Amaleeni Pink Pages API & Zoho SMTP
  * Upload this directory to Hostinger (e.g. public_html/api/)
  */
 
@@ -35,11 +35,20 @@ define('MEMBERSHIP_FEE_PAISE', 500000); // Rs 5,000 in paise (5000 * 100)
 define('JWT_SECRET', 'ama_pink_pages_sec_key_9874523498234876234'); // Change to any random string
 
 // ==========================================
-// 4. EMAIL SETTINGS
+// 4. EMAIL & ZOHO SMTP CONFIGURATION
 // ==========================================
-define('MAIL_FROM_EMAIL', 'noreply@amaleeni.org');
-define('MAIL_FROM_NAME', 'Amaleeni Foundation - Pink Pages');
-define('SECRETARIAT_EMAIL', 'connect@amaleeni.org');
+// Enable SMTP to send emails via Zoho (set false to fall back to PHP mail())
+define('USE_SMTP', true);
+define('SMTP_HOST', 'smtppro.zoho.in'); // Zoho India SMTP: smtppro.zoho.in (or smtp.zoho.com for US)
+define('SMTP_PORT', 465);               // 465 for SSL or 587 for TLS
+define('SMTP_SECURE', 'ssl');           // 'ssl' or 'tls'
+define('SMTP_USER', 'hello@amaleeni.org');  // <-- Replace with your Zoho email address
+define('SMTP_PASS', 'AmaEvent@2026');   // <-- Replace with your Zoho Password / App Password
+
+define('MAIL_FROM_EMAIL', 'hello@amaleeni.org');
+define('MAIL_FROM_NAME', 'Amaleeni Foundation');
+define('SECRETARIAT_EMAIL', 'hello@amaleeni.org');
+define('ADMIN_NOTIFICATION_EMAIL', 'hello@amaleeni.org'); // Admin email recipient for form alerts
 
 // ==========================================
 // 5. ALLOWED CORS ORIGINS (Vercel + Localhost + Hostinger)

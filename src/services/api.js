@@ -55,6 +55,28 @@ async function postRequest(endpoint, payload) {
 }
 
 /**
+ * Send OTP Code via Hostinger / Zoho SMTP API
+ */
+export async function sendOtpApi(email) {
+  const result = await postRequest('send-otp.php', { email });
+  if (result.ok) {
+    return result.data;
+  }
+  return { status: 'error', ok: false, message: result.error || 'Unable to send OTP email.' };
+}
+
+/**
+ * Verify OTP Code via Hostinger Backend API
+ */
+export async function verifyOtpApi(email, otp) {
+  const result = await postRequest('verify-otp.php', { email, otp });
+  if (result.ok) {
+    return result.data;
+  }
+  return { status: 'error', ok: false, message: result.error || 'Invalid OTP code.' };
+}
+
+/**
  * Register User API
  */
 export async function registerUserApi(formData) {

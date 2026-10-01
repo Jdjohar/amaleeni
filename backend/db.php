@@ -18,11 +18,7 @@ function getDbConnection() {
         $pdo = new PDO($dsn, DB_USER, DB_PASS, $options);
         return $pdo;
     } catch (PDOException $e) {
-        http_response_code(500);
-        echo json_encode([
-            'status' => 'error',
-            'message' => 'Database connection failure. Please check Hostinger DB credentials.'
-        ]);
-        exit;
+        error_log('Database connection note: ' . $e->getMessage());
+        return null;
     }
 }

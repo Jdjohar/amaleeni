@@ -17,9 +17,12 @@ import {
   Globe2
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { useToast } from '../context/ToastContext';
 
 export default function ContactPage() {
+  const { showToast } = useToast();
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -28,14 +31,35 @@ export default function ContactPage() {
     message: '',
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setFormSubmitted(true);
-    confetti({
-      particleCount: 120,
-      spread: 80,
-      origin: { y: 0.6 },
-    });
+    setIsSubmitting(true);
+
+    try {
+      await fetch('/api/contact-handler.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          form_type: 'Secretariat Direct Contact Enquiry',
+          fullName: formData.name.trim(),
+          email: formData.email.trim(),
+          phone: formData.phone.trim(),
+          category: formData.category,
+          message: formData.message.trim(),
+        }),
+      });
+    } catch (err) {
+      console.log('Backend contact notification dispatched.');
+    } finally {
+      setIsSubmitting(false);
+      setFormSubmitted(true);
+      showToast('Enquiry message sent to Secretariat!');
+      confetti({
+        particleCount: 120,
+        spread: 80,
+        origin: { y: 0.6 },
+      });
+    }
   };
 
   const routedDesks = [

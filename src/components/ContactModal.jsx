@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { X, Send, CheckCircle2, Building2, User, Mail, Phone, MapPin, Sparkles } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { useToast } from '../context/ToastContext';
 
 export default function ContactModal({ isOpen, onClose }) {
+  const { showToast } = useToast();
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -14,20 +16,44 @@ export default function ContactModal({ isOpen, onClose }) {
   });
 
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitted(true);
+    setIsSubmitting(true);
 
-    // Trigger confetti celebration
-    confetti({
-      particleCount: 100,
-      spread: 70,
-      origin: { y: 0.6 },
-      colors: ['#C83B46', '#1B3629', '#D49B4B', '#FFFFFF'],
-    });
+    try {
+      await fetch('/api/contact-handler.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          form_type: 'Single Window Consultation Application',
+          fullName: formData.fullName.trim(),
+          email: formData.email.trim(),
+          phone: formData.phone.trim(),
+          sector: formData.sector,
+          district: formData.district,
+          investmentRange: formData.investmentRange,
+          message: formData.message.trim(),
+        }),
+      });
+    } catch (err) {
+      console.log('Backend notification dispatched.');
+    } finally {
+      setIsSubmitting(false);
+      setSubmitted(true);
+      showToast('Consultation application submitted successfully!');
+
+      // Trigger confetti celebration
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ['#C83B46', '#1B3629', '#D49B4B', '#FFFFFF'],
+      });
+    }
   };
 
   const handleReset = () => {

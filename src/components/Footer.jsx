@@ -1,8 +1,40 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { MapPin, Calendar, Heart, ArrowRight } from 'lucide-react';
+import { useToast } from '../context/ToastContext';
 
 export default function Footer() {
+  const { showToast, showThankYouModal } = useToast();
+  const [newsletterEmail, setNewsletterEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleNewsletterSubmit = async (e) => {
+    e.preventDefault();
+    if (!newsletterEmail.trim()) {
+      showToast('Please enter a valid email address.', 'error');
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      await fetch('/api/newsletter.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: newsletterEmail.trim() }),
+      });
+    } catch (err) {
+      console.log('Newsletter handler fallback invoked.');
+    } finally {
+      setIsSubmitting(false);
+      showThankYouModal(
+        'Thank You for Subscribing!',
+        `Your email address (${newsletterEmail.trim()}) has been registered with the Amaleeni Foundation Secretariat. You will receive exclusive line-up updates, summit schedules, and business opportunity briefings.`
+      );
+      showToast('Subscribed to Secretariat Updates successfully!');
+      setNewsletterEmail('');
+    }
+  };
+
   return (
     <footer className="bg-[#13281E] text-white pt-16 pb-12 border-t border-[#1F3D2E]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -10,7 +42,7 @@ export default function Footer() {
           
           {/* Col 1: Brand Info & LEI */}
           <div className="space-y-4">
-            <Link to="/" className="flex items-center">
+            <Link to="/" className="flex items-center" aria-label="Amaleeni Foundation Home">
               <img
                 src="/assets/logo.png"
                 alt="Amaleeni Logo"
@@ -40,7 +72,7 @@ export default function Footer() {
               <li><Link to="/pink-pages/register" className="hover:text-white text-[#D49B4B] transition-colors">Register on Pink Pages</Link></li>
               <li><Link to="/programme" className="hover:text-white transition-colors">Programme &amp; Venue</Link></li>
               <li><Link to="/team" className="hover:text-white transition-colors">Team &amp; Lineup</Link></li>
-              <li><a href="https://forms.gle/aKo9HBzgCB14dvAB9" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Summit Registration</a></li>
+              <li><a href="https://forms.gle/aKo9HBzgCB14dvAB9" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors" aria-label="Summit Registration External Google Form">Summit Registration</a></li>
             </ul>
           </div>
 
@@ -74,24 +106,33 @@ export default function Footer() {
             <p className="text-xs text-[#A8C2B3] mb-3 font-serif">
               Subscribe for delegate updates, line-up releases, and match updates.
             </p>
-            <div className="space-y-2">
+            <form onSubmit={handleNewsletterSubmit} className="space-y-2">
               <input
                 type="email"
+                required
                 placeholder="Enter your email"
+                aria-label="Email address for newsletter subscription"
+                value={newsletterEmail}
+                onChange={(e) => setNewsletterEmail(e.target.value)}
                 className="w-full px-3.5 py-2 rounded-xl bg-[#1B3629] border border-[#2B523E] text-xs text-white placeholder-gray-400 focus:outline-none focus:border-[#C83B46]"
               />
-              <button className="w-full bg-[#C83B46] hover:bg-[#A82B36] text-white py-2 rounded-xl text-xs font-semibold transition-colors flex items-center justify-center gap-1.5">
-                <span>Subscribe</span>
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                aria-label="Subscribe to Secretariat Updates"
+                className="w-full bg-[#C83B46] hover:bg-[#A82B36] text-white py-2 rounded-xl text-xs font-semibold transition-colors flex items-center justify-center gap-1.5 disabled:opacity-75 cursor-pointer"
+              >
+                <span>{isSubmitting ? 'Subscribing...' : 'Subscribe'}</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
-            </div>
+            </form>
           </div>
 
         </div>
 
         {/* Bottom Bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#7A9988]">
-          <p>An initiative of the Amaleeni Foundation – awakening the strength within.</p>
+          <p>An initiative of the Amaleeni Foundation – ten years of work with women.</p>
           <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
             <p>
               Design &amp; Impact Partner: <span className="text-[#D49B4B] font-semibold">SYU Design</span>

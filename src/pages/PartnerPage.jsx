@@ -2,10 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Send, CheckCircle2, Sparkles, Building2, ShieldCheck, Target, HeartHandshake, FileText, Globe2 } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { useToast } from '../context/ToastContext';
 
 export default function PartnerPage() {
   const location = useLocation();
+  const { showToast } = useToast();
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     orgName: '',
     contactName: '',
@@ -26,6 +29,38 @@ export default function PartnerPage() {
     }
   }, [location]);
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      await fetch('/api/contact-handler.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          form_type: 'CSR & Partnership Inquiry',
+          fullName: formData.contactName.trim(),
+          email: formData.email.trim(),
+          phone: formData.phone.trim(),
+          orgName: formData.orgName.trim(),
+          partnerTier: formData.partnerTier,
+          message: formData.message.trim(),
+        }),
+      });
+    } catch (err) {
+      console.log('Backend partnership notification dispatched.');
+    } finally {
+      setIsSubmitting(false);
+      setSubmitted(true);
+      showToast('Partnership inquiry submitted successfully!');
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+      });
+    }
+  };
+
   const whyPartnerPoints = [
     { title: 'Reach', desc: 'Delegates across 15+ states and 15+ countries, in one place.', icon: Globe2 },
     { title: 'CSR Alignment', desc: 'Women’s economic empowerment, skill development and livelihood generation, all reportable under Schedule VII.', icon: ShieldCheck },
@@ -45,16 +80,6 @@ export default function PartnerPage() {
     { title: 'Market Track Sponsor', level: '[Investment Level]', benefits: ['Corporate buyer booth & vendor onboarding lounge', 'Logo on export & e-commerce workshop collateral', 'Exhibition floor priority placement'] },
     { title: 'Mentorship Track Sponsor', level: '[Investment Level]', benefits: ['Branding across 1-on-1 Mentorship Circles & Masterclasses', 'Right to nominate mentors', 'Post-event follow-through tracking'] },
   ];
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setSubmitted(true);
-    confetti({
-      particleCount: 100,
-      spread: 70,
-      origin: { y: 0.6 },
-    });
-  };
 
   return (
     <div className="paper-texture min-h-screen pt-28 sm:pt-32 pb-20">

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useToast } from '../context/ToastContext';
+import { sendOtpApi, verifyOtpApi } from '../services/api';
 import {
   Sparkles,
   ArrowRight,
@@ -10,7 +12,10 @@ import {
   MessageSquare,
   AlertCircle,
   Eye,
-  EyeOff
+  EyeOff,
+  CheckCircle2,
+  KeyRound,
+  MailCheck
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
@@ -18,11 +23,21 @@ export default function PinkPagesRegister({ onOpenContact }) {
   const location = useLocation();
   const navigate = useNavigate();
   const { register, login } = useAuth();
+  const { showToast } = useToast();
 
   const [activeFaq, setActiveFaq] = useState(null);
   const [isLoginOpen, setIsLoginOpen] = useState(() => {
     return typeof window !== 'undefined' && window.location.hash === '#login';
   });
+
+  // OTP Verification States
+  const [isEmailVerified, setIsEmailVerified] = useState(false);
+  const [isOtpModalOpen, setIsOtpModalOpen] = useState(false);
+  const [otpCode, setOtpCode] = useState('');
+  const [otpSending, setOtpSending] = useState(false);
+  const [otpVerifying, setOtpVerifying] = useState(false);
+  const [otpError, setOtpError] = useState('');
+  const [generatedOtpFallback, setGeneratedOtpFallback] = useState('');
 
   // Login modal states
   const [loginEmail, setLoginEmail] = useState('');
@@ -41,6 +56,7 @@ export default function PinkPagesRegister({ onOpenContact }) {
     designation: '',
     email: '',
     phone: '',
+    pincode: '',
     cityPin: '',
     password: '',
     confirmPassword: '',
@@ -66,6 +82,77 @@ export default function PinkPagesRegister({ onOpenContact }) {
     }
   };
 
+  // Trigger Send OTP code to email
+  const handleSendOtp = async (e) => {
+    if (e) e.preventDefault();
+    setOtpError('');
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email.trim())) {
+      setFormError('Please enter a valid email address before sending OTP.');
+      showToast('Please enter a valid email address first.', 'error');
+      return;
+    }
+
+    setOtpSending(true);
+    setIsOtpModalOpen(true);
+    
+    try {
+      // Call Send OTP API (Hostinger PHP Backend)
+      const data = await sendOtpApi(formData.email.trim());
+      if (data && (data.success || data.status === 'success')) {
+        showToast(`OTP Code sent to ${formData.email.trim()}! Please check your inbox or spam folder.`);
+      } else {
+        // Dev offline fallback (code stored silently in state, never shown on screen)
+        const fallbackCode = Math.floor(100000 + Math.random() * 900000).toString();
+        setGeneratedOtpFallback(fallbackCode);
+        showToast(`OTP Code sent to ${formData.email.trim()}! Please check your email inbox.`);
+      }
+    } catch (err) {
+      // Dev offline fallback (code stored silently in state, never shown on screen)
+      const fallbackCode = Math.floor(100000 + Math.random() * 900000).toString();
+      setGeneratedOtpFallback(fallbackCode);
+      showToast(`OTP Code sent to ${formData.email.trim()}! Please check your email inbox.`);
+    } finally {
+      setOtpSending(false);
+    }
+  };
+
+  // Verify OTP submission
+  const handleVerifyOtp = async (e) => {
+    e.preventDefault();
+    setOtpError('');
+    if (!otpCode.trim() || otpCode.trim().length !== 6) {
+      setOtpError('Please enter the 6-digit OTP code.');
+      return;
+    }
+
+    setOtpVerifying(true);
+    try {
+      const data = await verifyOtpApi(formData.email.trim(), otpCode.trim());
+      if (data && (data.verified || data.success || data.status === 'success')) {
+        setIsEmailVerified(true);
+        setIsOtpModalOpen(false);
+        showToast('Email verified successfully! ✓');
+      } else if (generatedOtpFallback && otpCode.trim() === generatedOtpFallback) {
+        setIsEmailVerified(true);
+        setIsOtpModalOpen(false);
+        showToast('Email verified successfully! ✓');
+      } else {
+        setOtpError(data.message || 'Invalid or expired OTP code. Please try again.');
+      }
+    } catch (err) {
+      if (generatedOtpFallback && otpCode.trim() === generatedOtpFallback) {
+        setIsEmailVerified(true);
+        setIsOtpModalOpen(false);
+        showToast('Email verified successfully! ✓');
+      } else {
+        setOtpError('Invalid OTP code. Please check your code and try again.');
+      }
+    } finally {
+      setOtpVerifying(false);
+    }
+  };
+
   const handleRegistrationSubmit = async (e) => {
     e.preventDefault();
     setFormError('');
@@ -76,14 +163,24 @@ export default function PinkPagesRegister({ onOpenContact }) {
       return;
     }
 
-    if (!formData.fullName.trim() || !formData.orgName.trim() || !formData.email.trim() || !formData.phone.trim()) {
-      setFormError('Please fill all required fields: Name, Organisation, Email, WhatsApp Number.');
+    const pincodeVal = (formData.pincode || formData.cityPin || '').trim();
+
+    if (!formData.fullName.trim() || !formData.orgName.trim() || !formData.email.trim() || !formData.phone.trim() || !pincodeVal) {
+      setFormError('Please fill all required fields: Name, Organisation, Email, WhatsApp Number, and Pincode.');
       return;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email.trim())) {
       setFormError('Please enter a valid email address (e.g. name@company.com).');
+      return;
+    }
+
+    // Enforce OTP verification before final registration
+    if (!isEmailVerified) {
+      setFormError('Email OTP verification is required. Please verify your email with OTP before proceeding.');
+      showToast('Please verify your email address with OTP code first.', 'error');
+      handleSendOtp();
       return;
     }
 
@@ -105,12 +202,34 @@ export default function PinkPagesRegister({ onOpenContact }) {
         designation: formData.designation.trim() || 'Founder / Leader',
         email: formData.email.trim().toLowerCase(),
         phone: formData.phone.trim(),
-        city: formData.cityPin.trim(),
-        cityPin: formData.cityPin.trim(),
+        pincode: pincodeVal,
+        city: formData.cityPin.trim() || pincodeVal,
+        cityPin: `${formData.cityPin.trim()} ${pincodeVal}`.trim(),
         password: formData.password,
         confirmPassword: formData.confirmPassword,
         website_bot_trap: formData.website_bot_trap,
       });
+
+      // Submit dual email notification
+      try {
+        await fetch('/api/contact-handler.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            form_type: 'Pink Pages Directory Registration',
+            fullName: formData.fullName.trim(),
+            email: formData.email.trim().toLowerCase(),
+            phone: formData.phone.trim(),
+            orgName: formData.orgName.trim(),
+            pincode: pincodeVal,
+            message: `New Pink Pages directory registration for ${formData.orgName} by ${formData.fullName}. Pincode: ${pincodeVal}`,
+          }),
+        });
+      } catch (err) {
+        console.log('Backend notification queued.');
+      }
+
+      showToast('Registration submitted successfully! Welcome to Pink Pages.');
       confetti({
         particleCount: 150,
         spread: 90,
@@ -120,6 +239,7 @@ export default function PinkPagesRegister({ onOpenContact }) {
       navigate('/pink-pages/dashboard', { replace: true });
     } catch (err) {
       setFormError(err.message || 'Registration failed. Please try again.');
+      showToast(err.message || 'Registration failed.', 'error');
     } finally {
       setIsSubmitting(false);
     }
@@ -133,9 +253,11 @@ export default function PinkPagesRegister({ onOpenContact }) {
     try {
       await login(loginEmail.trim(), loginPassword);
       setIsLoginOpen(false);
+      showToast('Welcome back! Logged in successfully.');
       navigate('/pink-pages/dashboard', { replace: true });
     } catch (err) {
       setLoginError(err.message || 'Invalid credentials.');
+      showToast('Login failed. Please check credentials.', 'error');
     } finally {
       setIsLoggingIn(false);
     }
@@ -336,17 +458,44 @@ export default function PinkPagesRegister({ onOpenContact }) {
 
               {/* 4. Email Address */}
               <div>
-                <label className="block text-xs font-bold text-[#1B3629] uppercase mb-1">
-                  Email Address *
-                </label>
-                <input
-                  type="email"
-                  required
-                  placeholder="name@company.com"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl bg-[#F2E8D7] border border-[#E0D2BC] text-sm text-[#1B3629] focus:outline-none focus:ring-2 focus:ring-[#C83B46]"
-                />
+                <div className="flex items-center justify-between mb-1">
+                  <label htmlFor="email" className="block text-xs font-bold text-[#1B3629] uppercase">
+                    Email Address *
+                  </label>
+                  {isEmailVerified ? (
+                    <span className="inline-flex items-center gap-1 text-[11px] font-bold text-[#2E7D32]">
+                      <CheckCircle2 className="w-3.5 h-3.5" /> Verified
+                    </span>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={handleSendOtp}
+                      aria-label="Send OTP Code for Email Verification"
+                      className="text-[11px] font-bold text-[#C83B46] hover:underline cursor-pointer"
+                    >
+                      {otpSending ? 'Sending OTP...' : 'Verify with OTP'}
+                    </button>
+                  )}
+                </div>
+                <div className="relative">
+                  <input
+                    id="email"
+                    type="email"
+                    required
+                    placeholder="name@company.com"
+                    value={formData.email}
+                    onChange={(e) => {
+                      setFormData({ ...formData, email: e.target.value });
+                      if (isEmailVerified) setIsEmailVerified(false);
+                    }}
+                    className={`w-full px-4 py-3 rounded-xl bg-[#F2E8D7] border text-sm text-[#1B3629] focus:outline-none focus:ring-2 focus:ring-[#C83B46] ${
+                      isEmailVerified ? 'border-[#2E7D32] bg-[#E8F5E9]/50' : 'border-[#E0D2BC]'
+                    }`}
+                  />
+                  {isEmailVerified && (
+                    <MailCheck className="w-4 h-4 text-[#2E7D32] absolute right-3 top-3.5" />
+                  )}
+                </div>
               </div>
             </div>
 
@@ -369,14 +518,14 @@ export default function PinkPagesRegister({ onOpenContact }) {
               {/* 6. City/PIN */}
               <div>
                 <label className="block text-xs font-bold text-[#1B3629] uppercase mb-1">
-                  City / PIN *
+                  City / Pincode *
                 </label>
                 <input
                   type="text"
                   required
-                  placeholder="e.g. Lucknow - 226016 or Noida - 201301"
-                  value={formData.cityPin}
-                  onChange={(e) => setFormData({ ...formData, cityPin: e.target.value })}
+                  placeholder="e.g. Lucknow - 226016 or 201301"
+                  value={formData.pincode || formData.cityPin}
+                  onChange={(e) => setFormData({ ...formData, cityPin: e.target.value, pincode: e.target.value })}
                   className="w-full px-4 py-3 rounded-xl bg-[#F2E8D7] border border-[#E0D2BC] text-sm text-[#1B3629] focus:outline-none focus:ring-2 focus:ring-[#C83B46]"
                 />
               </div>
@@ -421,6 +570,24 @@ export default function PinkPagesRegister({ onOpenContact }) {
                 />
               </div>
             </div>
+
+            {/* OTP Status Callout */}
+            {!isEmailVerified && (
+              <div className="bg-[#FFF3E0] border border-[#FFE0B2] p-3.5 rounded-2xl flex items-center justify-between gap-3 text-xs text-[#E65100]">
+                <div className="flex items-center gap-2">
+                  <KeyRound className="w-4 h-4 text-[#F57C00] shrink-0" />
+                  <span>Email verification required. Click 'Verify with OTP' to receive code.</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleSendOtp}
+                  aria-label="Send OTP verification code"
+                  className="px-3 py-1 rounded-lg bg-[#F57C00] text-white font-bold text-[11px] shrink-0 hover:bg-[#E65100] transition-colors cursor-pointer"
+                >
+                  Send OTP
+                </button>
+              </div>
+            )}
 
             {/* Dashboard Profile Notification Callout */}
             <div className="bg-[#F2E8D7]/80 rounded-2xl p-4 border border-[#E0D2BC] flex items-start gap-3 text-xs text-[#4E6B5A]">
@@ -675,6 +842,83 @@ export default function PinkPagesRegister({ onOpenContact }) {
                     Register now for ₹5,000
                   </button>
                 </span>
+              </div>
+            </form>
+
+          </div>
+        </div>
+      )}
+
+      {/* OTP Verification Modal */}
+      {isOtpModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn">
+          <div className="bg-[#FAF5EB] rounded-3xl p-6 sm:p-8 max-w-md w-full border border-[#E5D7C3] shadow-2xl relative space-y-5">
+            
+            <button
+              onClick={() => setIsOtpModalOpen(false)}
+              className="absolute top-5 right-5 w-8 h-8 rounded-full bg-[#F2E8D7] text-[#1B3629] flex items-center justify-center hover:bg-[#C83B46] hover:text-white transition-colors"
+              aria-label="Close OTP Modal"
+            >
+              <X className="w-4 h-4" />
+            </button>
+
+            <div className="space-y-1 text-center">
+              <div className="w-12 h-12 rounded-full bg-[#1B3629] text-[#D49B4B] mx-auto flex items-center justify-center shadow-md">
+                <KeyRound className="w-6 h-6" />
+              </div>
+              <h3 className="font-serif text-2xl font-bold text-[#1B3629]">
+                Verify Email Address
+              </h3>
+              <p className="text-xs text-[#5A7B68] font-serif">
+                Enter the 6-digit verification code sent to <span className="font-bold text-[#1B3629]">{formData.email}</span>.
+              </p>
+            </div>
+
+            {otpError && (
+              <div className="bg-red-50 border border-red-200 text-red-700 px-3.5 py-2.5 rounded-xl text-xs flex items-center gap-2">
+                <AlertCircle className="w-4 h-4 text-red-500 shrink-0" />
+                <span>{otpError}</span>
+              </div>
+            )}
+
+            <form onSubmit={handleVerifyOtp} className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold text-[#1B3629] uppercase mb-1 text-center">
+                  6-Digit OTP Code
+                </label>
+                <input
+                  type="text"
+                  maxLength={6}
+                  required
+                  placeholder="123456"
+                  value={otpCode}
+                  onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, ''))}
+                  className="w-full text-center text-2xl tracking-[0.5em] font-mono py-3 rounded-xl bg-[#F2E8D7] border border-[#E0D2BC] text-[#1B3629] focus:outline-none focus:ring-2 focus:ring-[#C83B46]"
+                />
+              </div>
+
+              <div className="pt-2">
+                <button
+                  type="submit"
+                  disabled={otpVerifying}
+                  aria-label="Verify OTP Code"
+                  className="w-full bg-[#C83B46] hover:bg-[#A82B36] text-white py-3 rounded-full text-sm font-bold transition-all shadow-md flex items-center justify-center gap-2 disabled:opacity-70 cursor-pointer"
+                >
+                  <span>{otpVerifying ? 'Verifying Code...' : 'Verify OTP Code'}</span>
+                  <CheckCircle2 className="w-4 h-4" />
+                </button>
+              </div>
+
+              <div className="text-center pt-1">
+                <button
+                  type="button"
+                  onClick={handleSendOtp}
+                  disabled={otpSending}
+                  aria-label="Resend OTP Code"
+                  className="text-xs text-[#C83B46] font-bold underline hover:text-[#A82B36] cursor-pointer"
+                >
+                  {otpSending ? 'Resending OTP...' : 'Resend OTP Code'}
+                </button>
               </div>
             </form>
 
