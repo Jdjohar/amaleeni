@@ -52,18 +52,28 @@ try {
     }
 
     // Send OTP email
-    sendOTPEmail($email, $otpCode);
+    $mailSent = sendOTPEmail($email, $otpCode);
 
-    echo json_encode([
-        'status' => 'success',
-        'success' => true,
-        'message' => 'Verification OTP sent to ' . $email . '. Please check your inbox or spam folder.',
-        'expires_in' => 600
-    ]);
-} catch (Exception $e) {
+    if ($mailSent) {
+        echo json_encode([
+            'status' => 'success',
+            'success' => true,
+            'message' => 'Verification OTP sent to ' . $email . '. Please check your inbox or spam folder.',
+            'expires_in' => 600
+        ]);
+    } else {
+        http_response_code(500);
+        echo json_encode([
+            'status' => 'error',
+            'success' => false,
+            'message' => 'Unable to send OTP email to ' . $email . '. Please check server mail settings or Zoho SMTP configuration in config.php.'
+        ]);
+    }
+} catch (Throwable $e) {
     http_response_code(500);
     echo json_encode([
         'status' => 'error',
-        'message' => 'Failed to send OTP code. Please try again.'
+        'success' => false,
+        'message' => 'Failed to send OTP code: ' . $e->getMessage()
     ]);
 }

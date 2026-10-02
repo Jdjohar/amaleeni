@@ -100,18 +100,30 @@ export default function PinkPagesRegister({ onOpenContact }) {
       // Call Send OTP API (Hostinger PHP Backend)
       const data = await sendOtpApi(formData.email.trim());
       if (data && (data.success || data.status === 'success')) {
+        setOtpError('');
         showToast(`OTP Code sent to ${formData.email.trim()}! Please check your inbox or spam folder.`);
       } else {
-        // Dev offline fallback (code stored silently in state, never shown on screen)
-        const fallbackCode = Math.floor(100000 + Math.random() * 900000).toString();
-        setGeneratedOtpFallback(fallbackCode);
-        showToast(`OTP Code sent to ${formData.email.trim()}! Please check your email inbox.`);
+        const isLocal = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+        if (isLocal) {
+          const fallbackCode = Math.floor(100000 + Math.random() * 900000).toString();
+          setGeneratedOtpFallback(fallbackCode);
+          showToast(`[DEV MODE] OTP Code generated for local testing.`);
+        } else {
+          const errMsg = data?.message || 'Could not send OTP email. Please check your email address or SMTP configuration.';
+          setOtpError(errMsg);
+          showToast(errMsg, 'error');
+        }
       }
     } catch (err) {
-      // Dev offline fallback (code stored silently in state, never shown on screen)
-      const fallbackCode = Math.floor(100000 + Math.random() * 900000).toString();
-      setGeneratedOtpFallback(fallbackCode);
-      showToast(`OTP Code sent to ${formData.email.trim()}! Please check your email inbox.`);
+      const isLocal = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+      if (isLocal) {
+        const fallbackCode = Math.floor(100000 + Math.random() * 900000).toString();
+        setGeneratedOtpFallback(fallbackCode);
+        showToast(`[DEV MODE] OTP Code generated for local testing.`);
+      } else {
+        setOtpError('Network error while dispatching OTP email. Please try again.');
+        showToast('Network error while sending OTP.', 'error');
+      }
     } finally {
       setOtpSending(false);
     }
@@ -698,10 +710,10 @@ export default function PinkPagesRegister({ onOpenContact }) {
             <p className="text-sm sm:text-base text-[#A8C2B3] font-serif max-w-xl mx-auto">
               Questions? Write to{' '}
               <a
-                href="mailto:connect@amaleeni.org"
+                href="mailto:connect@amaleeni.com"
                 className="text-[#D49B4B] underline font-semibold hover:text-white"
               >
-                connect@amaleeni.org
+                connect@amaleeni.com
               </a>{' '}
               or WhatsApp us at{' '}
               <a

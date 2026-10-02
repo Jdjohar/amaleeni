@@ -39,16 +39,16 @@ define('JWT_SECRET', 'ama_pink_pages_sec_key_9874523498234876234'); // Change to
 // ==========================================
 // Enable SMTP to send emails via Zoho (set false to fall back to PHP mail())
 define('USE_SMTP', true);
-define('SMTP_HOST', 'smtppro.zoho.in'); // Zoho India SMTP: smtppro.zoho.in (or smtp.zoho.com for US)
+define('SMTP_HOST', 'smtp.zoho.in'); // Zoho India SMTP: smtp.zoho.in (or smtppro.zoho.in / smtp.zoho.com)
 define('SMTP_PORT', 465);               // 465 for SSL or 587 for TLS
 define('SMTP_SECURE', 'ssl');           // 'ssl' or 'tls'
-define('SMTP_USER', 'hello@amaleeni.org');  // <-- Replace with your Zoho email address
+define('SMTP_USER', 'hello@amaleeni.com');  // <-- Zoho email address (.com)
 define('SMTP_PASS', 'AmaEvent@2026');   // <-- Replace with your Zoho Password / App Password
 
-define('MAIL_FROM_EMAIL', 'hello@amaleeni.org');
+define('MAIL_FROM_EMAIL', 'hello@amaleeni.com');
 define('MAIL_FROM_NAME', 'Amaleeni Foundation');
-define('SECRETARIAT_EMAIL', 'hello@amaleeni.org');
-define('ADMIN_NOTIFICATION_EMAIL', 'hello@amaleeni.org'); // Admin email recipient for form alerts
+define('SECRETARIAT_EMAIL', 'hello@amaleeni.com');
+define('ADMIN_NOTIFICATION_EMAIL', 'hello@amaleeni.com'); // Admin email recipient for form alerts
 
 // ==========================================
 // 5. ALLOWED CORS ORIGINS (Vercel + Localhost + Hostinger)
@@ -57,6 +57,8 @@ $allowed_origins = [
     'http://localhost:5173',
     'http://localhost:3000',
     'https://amaleeni.vercel.app',
+    'https://amaleeni.com',
+    'https://www.amaleeni.com',
     'https://amaleeni.org',
     'https://www.amaleeni.org',
     'https://linen-oryx-691439.hostingersite.com'

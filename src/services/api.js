@@ -189,11 +189,11 @@ export async function loginUserApi(identifier, password, botTrap = '') {
   }
 
   // Provide demo test account fallback
-  if ((trimmedId.toLowerCase() === 'member@amaleeni.org' || trimmedId.includes('9876543210')) && password === 'Amaleeni@2027') {
+  if ((trimmedId.toLowerCase() === 'member@amaleeni.com' || trimmedId.toLowerCase() === 'member@amaleeni.org' || trimmedId.includes('9876543210')) && password === 'Amaleeni@2027') {
     const demoUser = {
       id: 9999,
       full_name: 'Dr. Priya Sharma',
-      email: 'member@amaleeni.org',
+      email: 'member@amaleeni.com',
       phone: '+91 98765 43210',
       org_name: 'Priya Biotech Innovations',
       designation: 'Founder & Managing Director',

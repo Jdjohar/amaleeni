@@ -66,7 +66,7 @@ export default function ContactPage() {
     {
       title: 'Pink Pages registration & summit attendance',
       desc: 'Delegate passes, enterprise directory onboarding, and attendee inquiries.',
-      email: 'delegates@amaleeni.org',
+      email: 'delegates@amaleeni.com',
       phone: '+91 98765 43210',
       icon: Users,
       badge: 'Delegates Desk',
@@ -74,7 +74,7 @@ export default function ContactPage() {
     {
       title: 'Partnership, sponsorship and CSR',
       desc: 'Institutional alliances, corporate sponsorships, exhibition pavilions, and CSR impact desks.',
-      email: 'partner@amaleeni.org',
+      email: 'partner@amaleeni.com',
       phone: '+91 98765 43210',
       icon: Award,
       badge: 'Partnership Desk',
@@ -82,7 +82,7 @@ export default function ContactPage() {
     {
       title: 'Speaking, mentoring and nominations',
       desc: 'Keynote inquiries, masterclass mentors, pitch floor judges, and speaker nominations.',
-      email: 'speakers@amaleeni.org',
+      email: 'speakers@amaleeni.com',
       phone: null,
       icon: Compass,
       badge: 'Speaker Desk',
@@ -90,7 +90,7 @@ export default function ContactPage() {
     {
       title: 'Press and media',
       desc: 'Accreditation, press releases, interviews with convenors, and official media partnerships.',
-      email: 'media@amaleeni.org',
+      email: 'media@amaleeni.com',
       phone: null,
       icon: Globe2,
       badge: 'Media Desk',
@@ -98,7 +98,7 @@ export default function ContactPage() {
     {
       title: 'Anything else',
       desc: 'General inquiries, volunteer requests, feedback, or foundation governance.',
-      email: 'hello@amaleeni.org',
+      email: 'hello@amaleeni.com',
       phone: null,
       icon: Building2,
       badge: 'General Desk',
@@ -189,10 +189,10 @@ export default function ContactPage() {
                 </span>
                 <h3 className="font-serif text-lg font-bold text-[#1B3629]">General Enquiries</h3>
                 <a
-                  href="mailto:hello@amaleeni.org"
+                  href="mailto:hello@amaleeni.com"
                   className="text-base font-bold text-[#1B3629] hover:text-[#C83B46] block transition-colors underline"
                 >
-                  hello@amaleeni.org
+                  hello@amaleeni.com
                 </a>
                 <p className="text-xs text-[#5A7B68] font-serif">
                   Routed to the central foundation secretariat.

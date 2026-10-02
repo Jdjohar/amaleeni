@@ -36,7 +36,7 @@ export default function LegalPage() {
 
             <h3 className="font-serif text-xl font-bold text-[#1B3629] pt-2">Contact &amp; Inquiries</h3>
             <p>
-              For privacy requests or terms clarification, please contact the Amaleeni Foundation Secretariat at secretariat@amaleeni.org.
+              For privacy requests or terms clarification, please contact the Amaleeni Foundation Secretariat at secretariat@amaleeni.com.
             </p>
           </div>
         </div>

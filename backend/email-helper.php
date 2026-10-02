@@ -9,7 +9,7 @@ function sendEmailNotification($toEmail, $toName, $subject, $htmlContent) {
     $mailSent = false;
 
     // 1. Try sending via Zoho SMTP socket if configured
-    if (defined('USE_SMTP') && USE_SMTP === true && !empty(SMTP_HOST) && !empty(SMTP_USER)) {
+    if (defined('USE_SMTP') && USE_SMTP === true && defined('SMTP_USER') && !empty(SMTP_USER)) {
         try {
             $mailSent = sendViaSmtpSocket($toEmail, $toName, $subject, $htmlContent);
         } catch (Throwable $e) {
@@ -21,9 +21,9 @@ function sendEmailNotification($toEmail, $toName, $subject, $htmlContent) {
     // 2. If SMTP socket was not used or failed, fall back to native Hostinger PHP mail()
     if (!$mailSent) {
         try {
-            $fromMail = defined('MAIL_FROM_EMAIL') ? MAIL_FROM_EMAIL : 'hello@amaleeni.org';
+            $fromMail = defined('MAIL_FROM_EMAIL') ? MAIL_FROM_EMAIL : 'hello@amaleeni.com';
             $fromName = defined('MAIL_FROM_NAME') ? MAIL_FROM_NAME : 'Amaleeni Foundation';
-            $replyTo = defined('SECRETARIAT_EMAIL') ? SECRETARIAT_EMAIL : 'hello@amaleeni.org';
+            $replyTo = defined('SECRETARIAT_EMAIL') ? SECRETARIAT_EMAIL : 'hello@amaleeni.com';
 
             $headers = [
                 'MIME-Version: 1.0',
@@ -34,7 +34,10 @@ function sendEmailNotification($toEmail, $toName, $subject, $htmlContent) {
             ];
 
             $headersStr = implode("\r\n", $headers);
-            $mailSent = @mail($toEmail, $subject, $htmlContent, $headersStr, "-f " . $fromMail);
+            $mailSent = @mail($toEmail, $subject, $htmlContent, $headersStr);
+            if (!$mailSent) {
+                $mailSent = @mail($toEmail, $subject, $htmlContent, $headersStr, "-f " . $fromMail);
+            }
         } catch (Throwable $e) {
             error_log('PHP mail() error: ' . $e->getMessage());
             $mailSent = false;
@@ -48,84 +51,127 @@ function sendEmailNotification($toEmail, $toName, $subject, $htmlContent) {
  * Direct Lightweight Socket Connection to Zoho SMTP (SSL/TLS)
  */
 function sendViaSmtpSocket($toEmail, $toName, $subject, $htmlContent) {
-    try {
-        $host = (defined('SMTP_SECURE') && SMTP_SECURE === 'ssl' ? 'ssl://' : '') . SMTP_HOST;
-        $port = defined('SMTP_PORT') ? SMTP_PORT : 465;
-
-        $socket = @fsockopen($host, $port, $errno, $errstr, 5);
-        if (!$socket) {
-            return false;
-        }
-
-        stream_set_timeout($socket, 5);
-
-        $read = function($socket) {
-            $res = '';
-            while ($str = fgets($socket, 512)) {
-                $res .= $str;
-                if (substr($str, 3, 1) === ' ') break;
-            }
-            return $res;
-        };
-
-        $write = function($socket, $cmd) {
-            fputs($socket, $cmd . "\r\n");
-        };
-
-        $read($socket); // read banner
-
-        $write($socket, "EHLO " . (gethostname() ?: 'amaleeni.org'));
-        $read($socket);
-
-        if (defined('SMTP_SECURE') && SMTP_SECURE === 'tls') {
-            $write($socket, "STARTTLS");
-            $read($socket);
-            @stream_socket_enable_crypto($socket, true, STREAM_CRYPTO_METHOD_TLS_CLIENT);
-            $write($socket, "EHLO " . (gethostname() ?: 'amaleeni.org'));
-            $read($socket);
-        }
-
-        $write($socket, "AUTH LOGIN");
-        $read($socket);
-
-        $write($socket, base64_encode(SMTP_USER));
-        $read($socket);
-
-        $write($socket, base64_encode(SMTP_PASS));
-        $authRes = $read($socket);
-
-        if (strpos($authRes, '235') === false) {
-            @fclose($socket);
-            return false;
-        }
-
-        $write($socket, "MAIL FROM: <" . SMTP_USER . ">");
-        $read($socket);
-
-        $write($socket, "RCPT TO: <" . $toEmail . ">");
-        $read($socket);
-
-        $write($socket, "DATA");
-        $read($socket);
-
-        $headers  = "MIME-Version: 1.0\r\n";
-        $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
-        $headers .= "From: " . MAIL_FROM_NAME . " <" . SMTP_USER . ">\r\n";
-        $headers .= "To: " . ($toName ? "$toName <$toEmail>" : $toEmail) . "\r\n";
-        $headers .= "Reply-To: " . SECRETARIAT_EMAIL . "\r\n";
-        $headers .= "Subject: " . $subject . "\r\n";
-        $headers .= "Date: " . date('r') . "\r\n";
-
-        $write($socket, $headers . "\r\n" . $htmlContent . "\r\n.");
-        $read($socket);
-
-        $write($socket, "QUIT");
-        @fclose($socket);
-
-        return true;
-    } catch (Throwable $t) {
+    if (!defined('SMTP_USER') || !defined('SMTP_PASS') || empty(SMTP_USER) || empty(SMTP_PASS)) {
         return false;
     }
+
+    $primaryHost = defined('SMTP_HOST') ? SMTP_HOST : 'smtp.zoho.in';
+    $primaryPort = defined('SMTP_PORT') ? SMTP_PORT : 465;
+    $primarySecure = defined('SMTP_SECURE') ? SMTP_SECURE : 'ssl';
+
+    // Host & Port candidate combinations for Zoho Mail / Hostinger
+    $candidates = [
+        ['host' => $primaryHost, 'port' => $primaryPort, 'secure' => $primarySecure],
+        ['host' => 'smtp.zoho.in', 'port' => 465, 'secure' => 'ssl'],
+        ['host' => 'smtp.zoho.in', 'port' => 587, 'secure' => 'tls'],
+        ['host' => 'smtp.zoho.com', 'port' => 465, 'secure' => 'ssl'],
+        ['host' => 'smtppro.zoho.in', 'port' => 465, 'secure' => 'ssl'],
+    ];
+
+    $seen = [];
+    $uniqueCandidates = [];
+    foreach ($candidates as $c) {
+        $key = $c['host'] . ':' . $c['port'] . ':' . $c['secure'];
+        if (!isset($seen[$key])) {
+            $seen[$key] = true;
+            $uniqueCandidates[] = $c;
+        }
+    }
+
+    foreach ($uniqueCandidates as $config) {
+        try {
+            $hostStr = ($config['secure'] === 'ssl' ? 'ssl://' : '') . $config['host'];
+            $socket = @fsockopen($hostStr, $config['port'], $errno, $errstr, 4);
+            if (!$socket) {
+                continue;
+            }
+
+            stream_set_timeout($socket, 4);
+
+            $read = function($s) {
+                $res = '';
+                while ($str = fgets($s, 512)) {
+                    $res .= $str;
+                    if (substr($str, 3, 1) === ' ') break;
+                }
+                return $res;
+            };
+
+            $write = function($s, $cmd) {
+                fputs($s, $cmd . "\r\n");
+            };
+
+            $banner = $read($socket);
+            if (empty($banner)) {
+                @fclose($socket);
+                continue;
+            }
+
+            $write($socket, "EHLO " . (gethostname() ?: 'amaleeni.com'));
+            $read($socket);
+
+            if ($config['secure'] === 'tls') {
+                $write($socket, "STARTTLS");
+                $tlsRes = $read($socket);
+                if (strpos($tlsRes, '220') === false) {
+                    @fclose($socket);
+                    continue;
+                }
+                @stream_socket_enable_crypto($socket, true, STREAM_CRYPTO_METHOD_TLS_CLIENT);
+                $write($socket, "EHLO " . (gethostname() ?: 'amaleeni.com'));
+                $read($socket);
+            }
+
+            $write($socket, "AUTH LOGIN");
+            $read($socket);
+
+            $write($socket, base64_encode(SMTP_USER));
+            $read($socket);
+
+            $write($socket, base64_encode(SMTP_PASS));
+            $authRes = $read($socket);
+
+            if (strpos($authRes, '235') === false) {
+                error_log("SMTP Auth failed for " . $config['host'] . ": " . trim($authRes));
+                @fclose($socket);
+                continue;
+            }
+
+            $write($socket, "MAIL FROM: <" . SMTP_USER . ">");
+            $read($socket);
+
+            $write($socket, "RCPT TO: <" . $toEmail . ">");
+            $read($socket);
+
+            $write($socket, "DATA");
+            $read($socket);
+
+            $fromName = defined('MAIL_FROM_NAME') ? MAIL_FROM_NAME : 'Amaleeni Foundation';
+            $replyTo = defined('SECRETARIAT_EMAIL') ? SECRETARIAT_EMAIL : SMTP_USER;
+
+            $headers  = "MIME-Version: 1.0\r\n";
+            $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
+            $headers .= "From: " . $fromName . " <" . SMTP_USER . ">\r\n";
+            $headers .= "To: " . ($toName ? "$toName <$toEmail>" : $toEmail) . "\r\n";
+            $headers .= "Reply-To: " . $replyTo . "\r\n";
+            $headers .= "Subject: " . $subject . "\r\n";
+            $headers .= "Date: " . date('r') . "\r\n";
+
+            $write($socket, $headers . "\r\n" . $htmlContent . "\r\n.");
+            $dataRes = $read($socket);
+
+            $write($socket, "QUIT");
+            @fclose($socket);
+
+            if (strpos($dataRes, '250') !== false || strpos($dataRes, '235') !== false || strpos($dataRes, 'OK') !== false) {
+                return true;
+            }
+        } catch (Throwable $t) {
+            error_log("SMTP Exception on " . $config['host'] . ": " . $t->getMessage());
+        }
+    }
+
+    return false;
 }
 
 /**
@@ -211,7 +257,7 @@ function sendFormNotificationEmail($userEmail, $userName, $formName, $formData) 
     <body style='font-family:sans-serif; background:#1B3629; color:#FAF5EB; padding:20px;'>
       <div style='max-width:650px; margin:0 auto; background:#ffffff; color:#1B3629; border-radius:16px; padding:24px; border:2px solid #C83B46;'>
         <h2 style='color:#C83B46; margin-top:0;'>New Lead Notification: {$formName}</h2>
-        <p>A new submission was made on amaleeni.org:</p>
+        <p>A new submission was made on amaleeni.com:</p>
         <table style='width:100%; border-collapse:collapse; margin:16px 0;'>{$fieldsHtml}</table>
         <p style='font-size:12px; color:#8A755A;'>Timestamp: " . date('Y-m-d H:i:s T') . "</p>
       </div>
@@ -226,7 +272,7 @@ function sendFormNotificationEmail($userEmail, $userName, $formName, $formData) 
  */
 function sendRegistrationEmail($user, $profile) {
     $subject = "Welcome to Pink Pages - Registration Confirmed ({$profile['ref_id']})";
-    $dashboardUrl = "https://amaleeni.org/pink-pages/dashboard";
+    $dashboardUrl = "https://amaleeni.com/pink-pages/dashboard";
 
     $body = "
     <!DOCTYPE html>

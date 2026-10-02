@@ -88,7 +88,7 @@ export default function LoginPage() {
   };
 
   const handleDemoFill = () => {
-    setEmail('member@amaleeni.org');
+    setEmail('member@amaleeni.com');
     setPassword('Amaleeni@2027');
     setErrorMsg('');
   };
@@ -232,7 +232,7 @@ export default function LoginPage() {
               onClick={handleDemoFill}
               className="text-xs font-bold text-[#C83B46] hover:underline inline-flex items-center gap-1 cursor-pointer"
             >
-              <span>Auto-fill Demo Account (member@amaleeni.org)</span>
+              <span>Auto-fill Demo Account (member@amaleeni.com)</span>
             </button>
           </div>
 

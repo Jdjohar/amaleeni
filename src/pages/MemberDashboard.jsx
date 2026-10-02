@@ -531,7 +531,7 @@ export default function MemberDashboard({ onOpenContact }) {
         email: user.email,
         phone: user.phone,
         address: `${user.city || 'Lucknow'}, ${user.state_country || 'Uttar Pradesh'}`,
-        website: user.website_url || 'https://amaleeni.org',
+        website: user.website_url || 'https://amaleeni.com',
         seeking: user.seeking || 'Capital & Investment, Market Access',
         isCurrentUser: true,
       }
