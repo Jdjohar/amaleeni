@@ -24,6 +24,27 @@ if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
     exit;
 }
 
+// Check if this email is already registered before sending OTP
+try {
+    $pdo = getDbConnection();
+    if ($pdo) {
+        $checkStmt = $pdo->prepare("SELECT id FROM users WHERE email = :email LIMIT 1");
+        $checkStmt->execute([':email' => $email]);
+        if ($checkStmt->fetch()) {
+            http_response_code(409);
+            echo json_encode([
+                'status' => 'error',
+                'success' => false,
+                'is_duplicate' => true,
+                'message' => 'An account with this email address is already registered. Please log in instead.'
+            ]);
+            exit;
+        }
+    }
+} catch (Throwable $dbCheckErr) {
+    // Continue safely if db check fails
+}
+
 // Generate 6-digit OTP code
 $otpCode = (string) rand(100000, 999999);
 $expiresAt = date('Y-m-d H:i:s', strtotime('+10 minutes'));
@@ -35,9 +56,23 @@ $_SESSION['otp_' . md5($email)] = [
     'verified' => false
 ];
 
+// 1. Save in Database if available (auto-creates table if missing)
 try {
     $pdo = getDbConnection();
     if ($pdo) {
+        // Auto-create email_otps table if it does not exist in MySQL
+        $pdo->exec("
+            CREATE TABLE IF NOT EXISTS `email_otps` (
+              `id` INT AUTO_INCREMENT PRIMARY KEY,
+              `email` VARCHAR(191) NOT NULL,
+              `otp_code` VARCHAR(10) NOT NULL,
+              `expires_at` DATETIME NOT NULL,
+              `verified` TINYINT(1) DEFAULT 0,
+              `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+              INDEX idx_email_otp (`email`, `otp_code`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+        ");
+
         // Invalidate previous OTPs for this email
         $updateStmt = $pdo->prepare("UPDATE email_otps SET verified = 1 WHERE email = :email");
         $updateStmt->execute([':email' => $email]);
@@ -50,8 +85,13 @@ try {
             ':expires_at' => $expiresAt
         ]);
     }
+} catch (Throwable $dbErr) {
+    error_log("Database OTP storage warning: " . $dbErr->getMessage());
+    // Session fallback is already populated above, so execution continues!
+}
 
-    // Send OTP email
+// 2. Dispatch OTP email
+try {
     $mailSent = sendOTPEmail($email, $otpCode);
 
     if ($mailSent) {

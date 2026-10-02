@@ -82,9 +82,22 @@ export default function PinkPagesRegister({ onOpenContact }) {
     }
   };
 
+  const getPasswordStrength = (pass) => {
+    return {
+      length: (pass || '').length >= 8,
+      hasUpper: /[A-Z]/.test(pass || ''),
+      hasLower: /[a-z]/.test(pass || ''),
+      hasNumber: /[0-9]/.test(pass || ''),
+      hasSpecial: /[!@#$%^&*(),.?":{}|<>]/.test(pass || ''),
+    };
+  };
+
+  const passStrength = getPasswordStrength(formData.password);
+
   // Trigger Send OTP code to email
   const handleSendOtp = async (e) => {
     if (e) e.preventDefault();
+    setFormError('');
     setOtpError('');
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email.trim())) {
@@ -94,22 +107,24 @@ export default function PinkPagesRegister({ onOpenContact }) {
     }
 
     setOtpSending(true);
-    setIsOtpModalOpen(true);
     
     try {
       // Call Send OTP API (Hostinger PHP Backend)
       const data = await sendOtpApi(formData.email.trim());
       if (data && (data.success || data.status === 'success')) {
         setOtpError('');
+        setIsOtpModalOpen(true);
         showToast(`OTP Code sent to ${formData.email.trim()}! Please check your inbox or spam folder.`);
       } else {
         const isLocal = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
         if (isLocal) {
+          setIsOtpModalOpen(true);
           const fallbackCode = Math.floor(100000 + Math.random() * 900000).toString();
           setGeneratedOtpFallback(fallbackCode);
           showToast(`[DEV MODE] OTP Code generated for local testing.`);
         } else {
           const errMsg = data?.message || 'Could not send OTP email. Please check your email address or SMTP configuration.';
+          setFormError(errMsg);
           setOtpError(errMsg);
           showToast(errMsg, 'error');
         }
@@ -117,10 +132,12 @@ export default function PinkPagesRegister({ onOpenContact }) {
     } catch (err) {
       const isLocal = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
       if (isLocal) {
+        setIsOtpModalOpen(true);
         const fallbackCode = Math.floor(100000 + Math.random() * 900000).toString();
         setGeneratedOtpFallback(fallbackCode);
         showToast(`[DEV MODE] OTP Code generated for local testing.`);
       } else {
+        setFormError('Network error while dispatching OTP email. Please try again.');
         setOtpError('Network error while dispatching OTP email. Please try again.');
         showToast('Network error while sending OTP.', 'error');
       }
@@ -178,7 +195,16 @@ export default function PinkPagesRegister({ onOpenContact }) {
     const pincodeVal = (formData.pincode || formData.cityPin || '').trim();
 
     if (!formData.fullName.trim() || !formData.orgName.trim() || !formData.email.trim() || !formData.phone.trim() || !pincodeVal) {
-      setFormError('Please fill all required fields: Name, Organisation, Email, WhatsApp Number, and Pincode.');
+      setFormError('Please fill all required fields: Name, Organisation, Email, WhatsApp Number, and Pincode / Postal Code.');
+      return;
+    }
+
+    // International Mobile / WhatsApp Number Validation (7-15 digits, supports +country code)
+    const cleanPhoneDigits = formData.phone.trim().replace(/[^\d+]/g, '');
+    const phoneRegex = /^\+?[0-9]{7,15}$/;
+    if (!phoneRegex.test(cleanPhoneDigits)) {
+      setFormError('Please enter a valid WhatsApp / Mobile number (7–15 digits, international format supported, e.g. +91 98765 43210 or 9876543210).');
+      showToast('Please enter a valid mobile number.', 'error');
       return;
     }
 
@@ -196,8 +222,10 @@ export default function PinkPagesRegister({ onOpenContact }) {
       return;
     }
 
-    if (formData.password.length < 6) {
-      setFormError('Password must be at least 6 characters long.');
+    // Modern Popular Password Validation (min 8 chars, 1 upper, 1 lower, 1 number, 1 special char)
+    const passCheck = getPasswordStrength(formData.password);
+    if (!passCheck.length || !passCheck.hasUpper || !passCheck.hasLower || !passCheck.hasNumber || !passCheck.hasSpecial) {
+      setFormError('Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.');
       return;
     }
 
@@ -515,27 +543,27 @@ export default function PinkPagesRegister({ onOpenContact }) {
               {/* 5. Whatsapp No. */}
               <div>
                 <label className="block text-xs font-bold text-[#1B3629] uppercase mb-1">
-                  WhatsApp No. *
+                  WhatsApp / Mobile No. * (International format allowed)
                 </label>
                 <input
                   type="tel"
                   required
-                  placeholder="+91 98765 43210"
+                  placeholder="+91 98765 43210 or +1 415 555 2671"
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                   className="w-full px-4 py-3 rounded-xl bg-[#F2E8D7] border border-[#E0D2BC] text-sm text-[#1B3629] focus:outline-none focus:ring-2 focus:ring-[#C83B46]"
                 />
               </div>
 
-              {/* 6. City/PIN */}
+              {/* 6. Pincode / Postal Code */}
               <div>
                 <label className="block text-xs font-bold text-[#1B3629] uppercase mb-1">
-                  City / Pincode *
+                  Pincode / Postal Code *
                 </label>
                 <input
                   type="text"
                   required
-                  placeholder="e.g. Lucknow - 226016 or 201301"
+                  placeholder="e.g. 226016 or 10001 or W1A 1AA"
                   value={formData.pincode || formData.cityPin}
                   onChange={(e) => setFormData({ ...formData, cityPin: e.target.value, pincode: e.target.value })}
                   className="w-full px-4 py-3 rounded-xl bg-[#F2E8D7] border border-[#E0D2BC] text-sm text-[#1B3629] focus:outline-none focus:ring-2 focus:ring-[#C83B46]"
@@ -547,7 +575,7 @@ export default function PinkPagesRegister({ onOpenContact }) {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
               <div>
                 <label className="block text-xs font-bold text-[#1B3629] uppercase mb-1">
-                  Password * (min. 6 characters)
+                  Password * (Strong Password)
                 </label>
                 <div className="relative">
                   <input
@@ -566,6 +594,26 @@ export default function PinkPagesRegister({ onOpenContact }) {
                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
                 </div>
+                {/* Realtime Password Criteria Checklist */}
+                {formData.password.length > 0 && (
+                  <div className="mt-2 text-[11px] grid grid-cols-2 gap-1 p-2.5 rounded-xl bg-[#FAF5EB] border border-[#E0D2BC]">
+                    <span className={passStrength.length ? "text-green-700 font-bold" : "text-[#8A755A]"}>
+                      {passStrength.length ? "✓" : "○"} Min. 8 chars
+                    </span>
+                    <span className={passStrength.hasUpper ? "text-green-700 font-bold" : "text-[#8A755A]"}>
+                      {passStrength.hasUpper ? "✓" : "○"} Uppercase (A-Z)
+                    </span>
+                    <span className={passStrength.hasLower ? "text-green-700 font-bold" : "text-[#8A755A]"}>
+                      {passStrength.hasLower ? "✓" : "○"} Lowercase (a-z)
+                    </span>
+                    <span className={passStrength.hasNumber ? "text-green-700 font-bold" : "text-[#8A755A]"}>
+                      {passStrength.hasNumber ? "✓" : "○"} Number (0-9)
+                    </span>
+                    <span className={`col-span-2 ${passStrength.hasSpecial ? "text-green-700 font-bold" : "text-[#8A755A]"}`}>
+                      {passStrength.hasSpecial ? "✓" : "○"} Special character (!@#$%...)
+                    </span>
+                  </div>
+                )}
               </div>
 
               <div>
@@ -600,14 +648,6 @@ export default function PinkPagesRegister({ onOpenContact }) {
                 </button>
               </div>
             )}
-
-            {/* Dashboard Profile Notification Callout */}
-            <div className="bg-[#F2E8D7]/80 rounded-2xl p-4 border border-[#E0D2BC] flex items-start gap-3 text-xs text-[#4E6B5A]">
-              <Sparkles className="w-4 h-4 text-[#C83B46] shrink-0 mt-0.5" />
-              <p className="font-serif leading-relaxed">
-                <span className="font-bold text-[#1B3629]">Dashboard Profile:</span> Additional details (Sector, Profile Category, Website, Opportunities Seeking, and Business Overview) are customized directly inside your Member Dashboard after registration.
-              </p>
-            </div>
 
             {/* Submit CTA */}
             <div className="pt-2">

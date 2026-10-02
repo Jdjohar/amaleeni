@@ -87,12 +87,6 @@ export default function LoginPage() {
     }
   };
 
-  const handleDemoFill = () => {
-    setEmail('member@amaleeni.com');
-    setPassword('Amaleeni@2027');
-    setErrorMsg('');
-  };
-
   return (
     <div className="paper-texture min-h-screen pt-28 sm:pt-32 pb-20 flex items-center justify-center">
       <div className="max-w-md w-full mx-auto px-4 sm:px-6">
@@ -218,23 +212,6 @@ export default function LoginPage() {
             </div>
 
           </form>
-
-          {/* Quick Demo Credentials Box */}
-          <div className="bg-[#F2E8D7]/80 p-3.5 rounded-2xl border border-[#E0D2BC] text-center space-y-1.5">
-            <p className="text-[11px] font-bold text-[#1B3629] uppercase tracking-wider">
-              Testing credentials?
-            </p>
-            <p className="text-xs text-[#5A7B68]">
-              You can log in with your freshly registered credentials or use our demo:
-            </p>
-            <button
-              type="button"
-              onClick={handleDemoFill}
-              className="text-xs font-bold text-[#C83B46] hover:underline inline-flex items-center gap-1 cursor-pointer"
-            >
-              <span>Auto-fill Demo Account (member@amaleeni.com)</span>
-            </button>
-          </div>
 
           {/* Register Callout */}
           <div className="text-center pt-2 border-t border-[#EAE0D0] text-xs text-[#7A6750]">

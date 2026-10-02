@@ -74,14 +74,20 @@ if (empty($password) || strlen($password) < 6) {
 $pdo = getDbConnection();
 
 // ==========================================
-// 3. CHECK FOR DUPLICATE EMAIL (PDO Prepared Statement)
+// 3. CHECK FOR DUPLICATE EMAIL OR PHONE (PDO Prepared Statement)
 // ==========================================
-$stmt = $pdo->prepare("SELECT id FROM users WHERE email = :email LIMIT 1");
-$stmt->execute([':email' => $email]);
-if ($stmt->fetch()) {
-    http_response_code(409);
-    echo json_encode(['status' => 'error', 'message' => 'An account with this email already exists. Please log in.']);
-    exit;
+if ($pdo) {
+    $stmt = $pdo->prepare("SELECT id, email, phone FROM users WHERE email = :email OR (phone = :phone AND phone != '') LIMIT 1");
+    $stmt->execute([':email' => $email, ':phone' => $phone]);
+    $existingUser = $stmt->fetch();
+    if ($existingUser) {
+        http_response_code(409);
+        $errMsg = (strtolower($existingUser['email']) === $email) 
+            ? 'An account with this email address already exists. Please log into your account.' 
+            : 'An account with this WhatsApp number already exists. Please log into your account.';
+        echo json_encode(['status' => 'error', 'message' => $errMsg]);
+        exit;
+    }
 }
 
 // ==========================================
