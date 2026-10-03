@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
-import { sendOtpApi, verifyOtpApi } from '../services/api';
+import { sendOtpApi, verifyOtpApi, submitContactFormApi } from '../services/api';
 import {
   Sparkles,
   ArrowRight,
@@ -252,18 +252,14 @@ export default function PinkPagesRegister({ onOpenContact }) {
 
       // Submit dual email notification
       try {
-        await fetch('/api/contact-handler.php', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            form_type: 'Pink Pages Directory Registration',
-            fullName: formData.fullName.trim(),
-            email: formData.email.trim().toLowerCase(),
-            phone: formData.phone.trim(),
-            orgName: formData.orgName.trim(),
-            pincode: pincodeVal,
-            message: `New Pink Pages directory registration for ${formData.orgName} by ${formData.fullName}. Pincode: ${pincodeVal}`,
-          }),
+        await submitContactFormApi({
+          form_type: 'Pink Pages Directory Registration',
+          fullName: formData.fullName.trim(),
+          email: formData.email.trim().toLowerCase(),
+          phone: formData.phone.trim(),
+          orgName: formData.orgName.trim(),
+          pincode: pincodeVal,
+          message: `New Pink Pages directory registration for ${formData.orgName} by ${formData.fullName}. Pincode: ${pincodeVal}`,
         });
       } catch (err) {
         console.log('Backend notification queued.');

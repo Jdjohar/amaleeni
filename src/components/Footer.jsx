@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { MapPin, Calendar, Heart, ArrowRight } from 'lucide-react';
 import { useToast } from '../context/ToastContext';
+import { subscribeNewsletterApi } from '../services/api';
 
 export default function Footer() {
   const { showToast, showThankYouModal } = useToast();
@@ -17,11 +18,7 @@ export default function Footer() {
 
     setIsSubmitting(true);
     try {
-      await fetch('/api/newsletter.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: newsletterEmail.trim() }),
-      });
+      await subscribeNewsletterApi(newsletterEmail.trim());
     } catch (err) {
       console.log('Newsletter handler fallback invoked.');
     } finally {

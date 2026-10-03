@@ -55,6 +55,28 @@ async function postRequest(endpoint, payload) {
 }
 
 /**
+ * Submit Contact / Inquiry Form API (Hostinger PHP Backend)
+ */
+export async function submitContactFormApi(payload) {
+  const result = await postRequest('contact-handler.php', payload);
+  if (result.ok) {
+    return result.data;
+  }
+  return { status: 'error', ok: false, message: result.error || 'Failed to submit form inquiry.' };
+}
+
+/**
+ * Subscribe Newsletter API (Hostinger PHP Backend)
+ */
+export async function subscribeNewsletterApi(email) {
+  const result = await postRequest('newsletter.php', { email });
+  if (result.ok) {
+    return result.data;
+  }
+  return { status: 'error', ok: false, message: result.error || 'Failed to subscribe newsletter.' };
+}
+
+/**
  * Send OTP Code via Hostinger / Zoho SMTP API
  */
 export async function sendOtpApi(email) {

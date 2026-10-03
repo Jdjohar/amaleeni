@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { CheckCircle2, Send, Sparkles, User, Mail, Phone, Building2, MapPin, Target, ShieldCheck } from 'lucide-react';
-import confetti from 'canvas-confetti';
+import { submitContactFormApi } from '../services/api';
 
 export default function RegisterPage() {
   const location = useLocation();
@@ -88,20 +88,16 @@ export default function RegisterPage() {
     setSubmitted(true);
 
     try {
-      await fetch('/api/contact-handler.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          form_type: 'Summit Delegate Registration Inquiry',
-          fullName: formData.fullName.trim(),
-          email: formData.email.trim(),
-          phone: formData.phone.trim(),
-          orgName: formData.organization.trim(),
-          category: formData.category,
-          pincode: formData.pincode,
-          seeking: formData.seeking,
-          message: formData.comments.trim(),
-        }),
+      await submitContactFormApi({
+        form_type: 'Summit Delegate Registration Inquiry',
+        fullName: formData.fullName.trim(),
+        email: formData.email.trim(),
+        phone: formData.phone.trim(),
+        orgName: (formData.orgName || '').trim(),
+        category: formData.delegateType,
+        pincode: formData.location,
+        seeking: formData.seeking,
+        message: formData.comments.trim(),
       });
     } catch (err) {
       console.log('Backend notification dispatched.');

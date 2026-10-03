@@ -3,6 +3,8 @@ import { X, Send, CheckCircle2, Building2, User, Mail, Phone, MapPin, Sparkles }
 import confetti from 'canvas-confetti';
 import { useToast } from '../context/ToastContext';
 
+import { submitContactFormApi } from '../services/api';
+
 export default function ContactModal({ isOpen, onClose }) {
   const { showToast } = useToast();
   const [formData, setFormData] = useState({
@@ -25,19 +27,15 @@ export default function ContactModal({ isOpen, onClose }) {
     setIsSubmitting(true);
 
     try {
-      await fetch('/api/contact-handler.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          form_type: 'Single Window Consultation Application',
-          fullName: formData.fullName.trim(),
-          email: formData.email.trim(),
-          phone: formData.phone.trim(),
-          sector: formData.sector,
-          district: formData.district,
-          investmentRange: formData.investmentRange,
-          message: formData.message.trim(),
-        }),
+      await submitContactFormApi({
+        form_type: 'Single Window Consultation Application',
+        fullName: formData.fullName.trim(),
+        email: formData.email.trim(),
+        phone: formData.phone.trim(),
+        sector: formData.sector,
+        district: formData.district,
+        investmentRange: formData.investmentRange,
+        message: formData.message.trim(),
       });
     } catch (err) {
       console.log('Backend notification dispatched.');

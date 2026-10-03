@@ -9,7 +9,7 @@ import {
   ArrowRight,
   User
 } from 'lucide-react';
-import confetti from 'canvas-confetti';
+import { submitContactFormApi } from '../services/api';
 
 export default function TeamPage() {
   const location = useLocation();
@@ -110,18 +110,14 @@ export default function TeamPage() {
     setFormSubmitted(true);
 
     try {
-      await fetch('/api/contact-handler.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          form_type: 'Lineup Nomination / Secretariat Lead Application',
-          fullName: formData.name.trim(),
-          email: formData.email.trim(),
-          phone: formData.phone.trim(),
-          orgName: formData.organization.trim(),
-          nominationType: nominationType,
-          message: formData.bio.trim(),
-        }),
+      await submitContactFormApi({
+        form_type: 'Lineup Nomination / Secretariat Lead Application',
+        fullName: formData.name.trim(),
+        email: formData.email.trim(),
+        phone: formData.phone.trim(),
+        orgName: formData.organization.trim(),
+        nominationType: nominationType,
+        message: formData.bio.trim(),
       });
     } catch (err) {
       console.log('Backend notification dispatched.');

@@ -4,6 +4,8 @@ import { Send, CheckCircle2, Sparkles, Building2, ShieldCheck, Target, HeartHand
 import confetti from 'canvas-confetti';
 import { useToast } from '../context/ToastContext';
 
+import { submitContactFormApi } from '../services/api';
+
 export default function PartnerPage() {
   const location = useLocation();
   const { showToast } = useToast();
@@ -34,18 +36,14 @@ export default function PartnerPage() {
     setIsSubmitting(true);
 
     try {
-      await fetch('/api/contact-handler.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          form_type: 'CSR & Partnership Inquiry',
-          fullName: formData.contactName.trim(),
-          email: formData.email.trim(),
-          phone: formData.phone.trim(),
-          orgName: formData.orgName.trim(),
-          partnerTier: formData.partnerTier,
-          message: formData.message.trim(),
-        }),
+      await submitContactFormApi({
+        form_type: 'CSR & Partnership Inquiry',
+        fullName: formData.contactName.trim(),
+        email: formData.email.trim(),
+        phone: formData.phone.trim(),
+        orgName: formData.orgName.trim(),
+        partnerTier: formData.partnerTier,
+        message: formData.message.trim(),
       });
     } catch (err) {
       console.log('Backend partnership notification dispatched.');

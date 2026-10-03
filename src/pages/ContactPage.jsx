@@ -19,6 +19,8 @@ import {
 import confetti from 'canvas-confetti';
 import { useToast } from '../context/ToastContext';
 
+import { submitContactFormApi } from '../services/api';
+
 export default function ContactPage() {
   const { showToast } = useToast();
   const [formSubmitted, setFormSubmitted] = useState(false);
@@ -36,17 +38,13 @@ export default function ContactPage() {
     setIsSubmitting(true);
 
     try {
-      await fetch('/api/contact-handler.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          form_type: 'Secretariat Direct Contact Enquiry',
-          fullName: formData.name.trim(),
-          email: formData.email.trim(),
-          phone: formData.phone.trim(),
-          category: formData.category,
-          message: formData.message.trim(),
-        }),
+      await submitContactFormApi({
+        form_type: 'Secretariat Direct Contact Enquiry',
+        fullName: formData.name.trim(),
+        email: formData.email.trim(),
+        phone: formData.phone.trim(),
+        category: formData.category,
+        message: formData.message.trim(),
       });
     } catch (err) {
       console.log('Backend contact notification dispatched.');
