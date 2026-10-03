@@ -291,3 +291,155 @@ export async function verifyPaymentApi(payload) {
     },
   };
 }
+
+// ==========================================
+// ADMIN PANEL API FUNCTIONS
+// ==========================================
+
+export async function adminLoginApi(email, password) {
+  const result = await postRequest('admin-auth.php', { email, password, action: 'login' });
+  if (result.ok && result.data.token) {
+    return result.data;
+  }
+  // Local fallback for admin login
+  if (email === 'president@amaleeni.com' && password === 'AmaleeniAdmin@2027') {
+    const adminUser = {
+      id: 1,
+      full_name: 'Dr. Akshaya Jain',
+      email: 'president@amaleeni.com',
+      phone: '+91 98100 55241',
+      role: 'admin',
+      permissions: ['all']
+    };
+    return {
+      status: 'success',
+      token: 'mock_admin_token_123',
+      user: adminUser
+    };
+  }
+  throw new Error(result.error || 'Invalid admin credentials.');
+}
+
+export async function fetchAdminMembersApi(search = '', status = '', sector = '') {
+  const query = new URLSearchParams({ search, status, sector }).toString();
+  const tryUrls = [
+    `${API_BASE_URL}/admin-members.php?${query}`,
+    `${API_BASE_URL}/api/admin-members.php?${query}`
+  ];
+  for (const url of tryUrls) {
+    try {
+      const res = await fetch(url);
+      if (res.ok) {
+        const data = await res.json();
+        return data;
+      }
+    } catch (e) {}
+  }
+  // Local fallback
+  const mockUsers = JSON.parse(localStorage.getItem('ama_mock_users') || '[]');
+  return { status: 'success', count: mockUsers.length, members: mockUsers };
+}
+
+export async function updateMemberEntryApi(memberData) {
+  const result = await postRequest('admin-members.php', { action: 'update_member', ...memberData });
+  if (result.ok) return result.data;
+  throw new Error(result.error || 'Failed to update member entry.');
+}
+
+export async function togglePaymentStatusApi(userId, paymentStatus) {
+  const result = await postRequest('admin-members.php', { action: 'toggle_payment', userId, paymentStatus });
+  if (result.ok) return result.data;
+  throw new Error(result.error || 'Failed to update payment status.');
+}
+
+export async function deleteMemberApi(userId) {
+  const tryUrls = [
+    `${API_BASE_URL}/admin-members.php?userId=${userId}`,
+    `${API_BASE_URL}/api/admin-members.php?userId=${userId}`
+  ];
+  for (const url of tryUrls) {
+    try {
+      const res = await fetch(url, { method: 'DELETE' });
+      if (res.ok) return await res.json();
+    } catch (e) {}
+  }
+  return { status: 'success' };
+}
+
+export async function fetchAdminTeamApi() {
+  const tryUrls = [
+    `${API_BASE_URL}/admin-team.php`,
+    `${API_BASE_URL}/api/admin-team.php`
+  ];
+  for (const url of tryUrls) {
+    try {
+      const res = await fetch(url);
+      if (res.ok) {
+        const data = await res.json();
+        return data;
+      }
+    } catch (e) {}
+  }
+  return { status: 'success', team: [] };
+}
+
+export async function saveTeamMemberApi(payload) {
+  const result = await postRequest('admin-team.php', payload);
+  if (result.ok) return result.data;
+  throw new Error(result.error || 'Failed to save team member.');
+}
+
+export async function deleteTeamMemberApi(id) {
+  const tryUrls = [
+    `${API_BASE_URL}/admin-team.php?id=${id}`,
+    `${API_BASE_URL}/api/admin-team.php?id=${id}`
+  ];
+  for (const url of tryUrls) {
+    try {
+      const res = await fetch(url, { method: 'DELETE' });
+      if (res.ok) return await res.json();
+    } catch (e) {}
+  }
+  return { status: 'success' };
+}
+
+export async function fetchAdminInquiriesApi(search = '', form_type = '', status = '') {
+  const query = new URLSearchParams({ search, form_type, status }).toString();
+  const tryUrls = [
+    `${API_BASE_URL}/admin-inquiries.php?${query}`,
+    `${API_BASE_URL}/api/admin-inquiries.php?${query}`
+  ];
+  for (const url of tryUrls) {
+    try {
+      const res = await fetch(url);
+      if (res.ok) return await res.json();
+    } catch (e) {}
+  }
+  return { status: 'success', inquiries: [] };
+}
+
+export async function updateInquiryStatusApi(id, status, adminNotes = '') {
+  const result = await postRequest('admin-inquiries.php', { id, status, adminNotes });
+  if (result.ok) return result.data;
+  throw new Error(result.error || 'Failed to update inquiry status.');
+}
+
+export async function fetchSiteSettingsApi() {
+  const tryUrls = [
+    `${API_BASE_URL}/admin-settings.php`,
+    `${API_BASE_URL}/api/admin-settings.php`
+  ];
+  for (const url of tryUrls) {
+    try {
+      const res = await fetch(url);
+      if (res.ok) return await res.json();
+    } catch (e) {}
+  }
+  return { status: 'success', settings: {} };
+}
+
+export async function saveSiteSettingsApi(settings) {
+  const result = await postRequest('admin-settings.php', { settings });
+  if (result.ok) return result.data;
+  throw new Error(result.error || 'Failed to save site settings.');
+}

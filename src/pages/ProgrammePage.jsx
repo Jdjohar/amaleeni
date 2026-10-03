@@ -12,7 +12,7 @@ export default function ProgrammePage() {
         el.scrollIntoView({ behavior: 'smooth' });
       }
     } else {
-      window.scrollTo(0, 0);
+    window.scrollTo(0, 0);
     }
   }, [location]);
 
@@ -171,7 +171,7 @@ export default function ProgrammePage() {
               India
             </h2>
             <p className="text-base text-[#A8C2B3] font-serif mt-3">
-              [Full address], India. Designed for world-class conventions, pitch floors, and delegate hospitality.
+              India. Designed for world-class conventions, pitch floors, and delegate hospitality.
             </p>
           </div>
 
@@ -183,7 +183,7 @@ export default function ProgrammePage() {
               </div>
               <h4 className="font-serif text-xl font-bold text-white">Air Connectivity</h4>
               <p className="text-sm text-[#A8C2B3]">
-                [X] km from International Airport, connecting direct daily flights to major metropolitan cities.
+                International Airport, connecting direct daily flights to major metropolitan cities.
               </p>
             </div>
 
@@ -193,7 +193,7 @@ export default function ProgrammePage() {
               </div>
               <h4 className="font-serif text-xl font-bold text-white">Rail Connectivity</h4>
               <p className="text-sm text-[#A8C2B3]">
-                [X] km from central Railway Station, key junction on the national rail network.
+               central Railway Station, key junction on the national rail network.
               </p>
             </div>
 

@@ -9,7 +9,7 @@ import {
   ArrowRight,
   User
 } from 'lucide-react';
-import { submitContactFormApi } from '../services/api';
+import { submitContactFormApi, fetchAdminTeamApi } from '../services/api';
 
 export default function TeamPage() {
   const location = useLocation();
@@ -25,7 +25,10 @@ export default function TeamPage() {
     bio: '',
   });
 
+  const [teamRoster, setTeamRoster] = useState([]);
+
   useEffect(() => {
+    loadDynamicTeam();
     if (location.hash === '#form') {
       const el = document.getElementById('form');
       if (el) {
@@ -36,8 +39,19 @@ export default function TeamPage() {
     }
   }, [location]);
 
-  // Exact Roster from Amaleeni Secretariat Table with Added Member Photos
-  const officialRoster = [
+  const loadDynamicTeam = async () => {
+    try {
+      const res = await fetchAdminTeamApi();
+      if (res && res.team && res.team.length > 0) {
+        setTeamRoster(res.team);
+        return;
+      }
+    } catch (e) {}
+    setTeamRoster(defaultRoster);
+  };
+
+  // Default Roster Fallback
+  const defaultRoster = [
     {
       name: 'Dr. Akshaya Jain',
       role: 'President, Amaleeni Foundation',
@@ -95,6 +109,8 @@ export default function TeamPage() {
       image: '/assets/RAMAKRISHNA.png',
     },
   ];
+
+  const officialRoster = teamRoster.length > 0 ? teamRoster : defaultRoster;
 
   const filteredTeam =
     activeTab === 'all'

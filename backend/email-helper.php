@@ -254,7 +254,9 @@ function sendFormNotificationEmail($userEmail, $userName, $formName, $formData) 
     sendEmailNotification($userEmail, $userName, $userSubject, $userBody);
 
     // 2. Send Admin Notification Alert
-    $adminEmail = defined('ADMIN_NOTIFICATION_EMAIL') ? ADMIN_NOTIFICATION_EMAIL : SECRETARIAT_EMAIL;
+    $adminEmailRaw = defined('ADMIN_NOTIFICATION_EMAIL') ? ADMIN_NOTIFICATION_EMAIL : (defined('SECRETARIAT_EMAIL') ? SECRETARIAT_EMAIL : 'delegates@amaleeni.com');
+    $adminRecipients = array_unique(array_filter(array_map('trim', explode(',', $adminEmailRaw))));
+
     $adminSubject = "[ADMIN ALERT] New Submission: {$formName} (" . ($userName ?: $userEmail) . ")";
     $adminBody = "
     <!DOCTYPE html>
@@ -263,14 +265,19 @@ function sendFormNotificationEmail($userEmail, $userName, $formName, $formData) 
     <body style='font-family:sans-serif; background:#1B3629; color:#FAF5EB; padding:20px;'>
       <div style='max-width:650px; margin:0 auto; background:#ffffff; color:#1B3629; border-radius:16px; padding:24px; border:2px solid #C83B46;'>
         <h2 style='color:#C83B46; margin-top:0;'>New Lead Notification: {$formName}</h2>
-        <p>A new submission was made on amaleeni.com:</p>
+        <p>A new submission was made on amaleeni.com by <strong>" . htmlspecialchars($userName ?: $userEmail) . "</strong>:</p>
         <table style='width:100%; border-collapse:collapse; margin:16px 0;'>{$fieldsHtml}</table>
         <p style='font-size:12px; color:#8A755A;'>Timestamp: " . date('Y-m-d H:i:s T') . "</p>
       </div>
     </body>
     </html>
     ";
-    sendEmailNotification($adminEmail, 'Amaleeni Admin', $adminSubject, $adminBody);
+
+    foreach ($adminRecipients as $admMail) {
+        if (filter_var($admMail, FILTER_VALIDATE_EMAIL)) {
+            sendEmailNotification($admMail, 'Amaleeni Secretariat', $adminSubject, $adminBody);
+        }
+    }
 }
 
 /**

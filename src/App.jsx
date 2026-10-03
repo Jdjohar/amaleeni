@@ -29,6 +29,16 @@ import RefundCancellationPage from './pages/RefundCancellationPage';
 import ImpactStoriesPage from './pages/ImpactStoriesPage';
 import CSRPartnershipsPage from './pages/CSRPartnershipsPage';
 
+import { AdminAuthProvider } from './context/AdminAuthContext';
+import AdminRoute from './components/AdminRoute';
+import AdminLoginPage from './pages/admin/AdminLoginPage';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminMembersPage from './pages/admin/AdminMembersPage';
+import AdminTeamPage from './pages/admin/AdminTeamPage';
+import AdminInquiriesPage from './pages/admin/AdminInquiriesPage';
+import AdminSubscribersPage from './pages/admin/AdminSubscribersPage';
+import AdminSettingsPage from './pages/admin/AdminSettingsPage';
+
 export default function App() {
   const [isContactOpen, setIsContactOpen] = useState(false);
 
@@ -38,60 +48,71 @@ export default function App() {
   return (
     <Router>
       <ToastProvider>
-        <AuthProvider>
-          <div className="min-h-screen bg-[#F8F3EA] text-[#1B3629] relative overflow-x-hidden selection:bg-[#C83B46] selection:text-white flex flex-col justify-between">
-            
-            {/* Header with smooth scroll navigation for client presentation */}
-            <Header onOpenContact={handleOpenContact} />
+        <AdminAuthProvider>
+          <AuthProvider>
+            <div className="min-h-screen bg-[#F8F3EA] text-[#1B3629] relative overflow-x-hidden selection:bg-[#C83B46] selection:text-white flex flex-col justify-between">
+              
+              {/* Header with smooth scroll navigation */}
+              <Header onOpenContact={handleOpenContact} />
 
-            <main className="grow">
-              <Routes>
-                <Route path="/" element={<HomePage onOpenContact={handleOpenContact} />} />
-                {/* Pink Pages directory & registration routes */}
-                <Route path="/pink-pages" element={<PinkPages onOpenContact={handleOpenContact} />} />
-                <Route path="/pink-pages/register" element={<PinkPagesRegister onOpenContact={handleOpenContact} />} />
-                <Route path="/pink-pages/enterprise/:id" element={<EnterpriseDetailPage />} />
-                
-                {/* Authentication & Member Portal */}
-                <Route path="/login" element={<LoginPage />} />
-                <Route
-                  path="/pink-pages/dashboard"
-                  element={
-                    <ProtectedRoute>
-                      <MemberDashboard onOpenContact={handleOpenContact} />
-                    </ProtectedRoute>
-                  }
-                />
-                
-                {/* Multi-page routes */}
-                <Route path="/programme" element={<ProgrammePage />} />
-                <Route path="/team" element={<TeamPage />} />
-                <Route path="/advisory-board" element={<AdvisoryBoardPage />} />
-                <Route path="/register" element={<RegisterPage />} />
-                <Route path="/about" element={<AboutPage />} />
-                <Route path="/partner" element={<PartnerPage />} />
-                <Route path="/csr-partnerships" element={<CSRPartnershipsPage />} />
-                <Route path="/impact-stories" element={<ImpactStoriesPage />} />
-                <Route path="/contact" element={<ContactPage />} />
-                
-                {/* Governance & Policy routes */}
-                <Route path="/privacy" element={<PrivacyPage />} />
-                <Route path="/terms" element={<TermsPage />} />
-                <Route path="/grievance-redressal" element={<GrievanceRedressalPage />} />
-                <Route path="/refund-cancellation" element={<RefundCancellationPage />} />
-              </Routes>
-            </main>
+              <main className="grow">
+                <Routes>
+                  {/* ADMIN PANEL ROUTES */}
+                  <Route path="/admin/login" element={<AdminLoginPage />} />
+                  <Route path="/admin" element={<AdminRoute permission="dashboard"><AdminDashboard /></AdminRoute>} />
+                  <Route path="/admin/members" element={<AdminRoute permission="members"><AdminMembersPage /></AdminRoute>} />
+                  <Route path="/admin/team" element={<AdminRoute permission="team"><AdminTeamPage /></AdminRoute>} />
+                  <Route path="/admin/inquiries" element={<AdminRoute permission="inquiries"><AdminInquiriesPage /></AdminRoute>} />
+                  <Route path="/admin/subscribers" element={<AdminRoute permission="subscribers"><AdminSubscribersPage /></AdminRoute>} />
+                  <Route path="/admin/settings" element={<AdminRoute permission="settings"><AdminSettingsPage /></AdminRoute>} />
 
-            {/* Footer */}
-            <Footer onOpenContact={handleOpenContact} />
+                  {/* PUBLIC ROUTES */}
+                  <Route path="/" element={<HomePage onOpenContact={handleOpenContact} />} />
+                  <Route path="/pink-pages" element={<PinkPages onOpenContact={handleOpenContact} />} />
+                  <Route path="/pink-pages/register" element={<PinkPagesRegister onOpenContact={handleOpenContact} />} />
+                  <Route path="/pink-pages/enterprise/:id" element={<EnterpriseDetailPage />} />
+                  
+                  {/* Authentication & Member Portal */}
+                  <Route path="/login" element={<LoginPage />} />
+                  <Route
+                    path="/pink-pages/dashboard"
+                    element={
+                      <ProtectedRoute>
+                        <MemberDashboard onOpenContact={handleOpenContact} />
+                      </ProtectedRoute>
+                    }
+                  />
+                  
+                  {/* Multi-page routes */}
+                  <Route path="/programme" element={<ProgrammePage />} />
+                  <Route path="/team" element={<TeamPage />} />
+                  <Route path="/advisory-board" element={<AdvisoryBoardPage />} />
+                  <Route path="/register" element={<RegisterPage />} />
+                  <Route path="/about" element={<AboutPage />} />
+                  <Route path="/partner" element={<PartnerPage />} />
+                  <Route path="/csr-partnerships" element={<CSRPartnershipsPage />} />
+                  <Route path="/impact-stories" element={<ImpactStoriesPage />} />
+                  <Route path="/contact" element={<ContactPage />} />
+                  
+                  {/* Governance & Policy routes */}
+                  <Route path="/privacy" element={<PrivacyPage />} />
+                  <Route path="/terms" element={<TermsPage />} />
+                  <Route path="/grievance-redressal" element={<GrievanceRedressalPage />} />
+                  <Route path="/refund-cancellation" element={<RefundCancellationPage />} />
+                </Routes>
+              </main>
 
-            {/* Interactive Consultation & Business Inquiry Modal */}
-            <ContactModal isOpen={isContactOpen} onClose={handleCloseContact} />
+              {/* Footer */}
+              <Footer onOpenContact={handleOpenContact} />
 
-            {/* Global WhatsApp Click-to-Chat Button */}
-            <WhatsAppButton />
-          </div>
-        </AuthProvider>
+              {/* Interactive Consultation & Business Inquiry Modal */}
+              <ContactModal isOpen={isContactOpen} onClose={handleCloseContact} />
+
+              {/* Global WhatsApp Click-to-Chat Button */}
+              <WhatsAppButton />
+            </div>
+          </AuthProvider>
+        </AdminAuthProvider>
       </ToastProvider>
     </Router>
   );

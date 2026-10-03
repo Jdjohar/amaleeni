@@ -47,8 +47,8 @@ define('SMTP_PASS', 'AmaEvent@2026');   // <-- Replace with your Zoho Password /
 
 define('MAIL_FROM_EMAIL', 'hello@amaleeni.com');
 define('MAIL_FROM_NAME', 'Amaleeni Foundation');
-define('SECRETARIAT_EMAIL', 'hello@amaleeni.com');
-define('ADMIN_NOTIFICATION_EMAIL', 'hello@amaleeni.com'); // Admin email recipient for form alerts
+define('SECRETARIAT_EMAIL', 'delegates@amaleeni.com');
+define('ADMIN_NOTIFICATION_EMAIL', 'delegates@amaleeni.com, hello@amaleeni.com'); // Admin email recipients for form alerts
 
 // ==========================================
 // 5. ALLOWED CORS ORIGINS (Vercel + Localhost + Hostinger)

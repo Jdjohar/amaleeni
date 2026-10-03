@@ -1,8 +1,11 @@
 import React from 'react';
 import { MessageCircle } from 'lucide-react';
+import { useAdminAuth } from '../context/AdminAuthContext';
 
 export default function WhatsAppButton() {
-  const whatsappNumber = '919810055241';
+  const { siteSettings } = useAdminAuth();
+  const rawNum = siteSettings?.whatsapp_number || '+91 98100 55241';
+  const whatsappNumber = rawNum.replace(/[^0-9]/g, '') || '919810055241';
   const prefilledMessage = encodeURIComponent(
     'Hello Amaleeni Foundation, I would like to inquire about Pink Pages directory and summit registration.'
   );
