@@ -106,7 +106,7 @@ export default function HomePage() {
     <div id="home" className="paper-texture min-h-screen">
       
       {/* 1.1 Hero Section - Mobile & Desktop Responsive */}
-      <section className="relative min-h-[580px] sm:min-h-[680px] lg:min-h-[780px] bg-[url('/assets/background.png')] bg-cover bg-center bg-no-repeat pt-24 sm:pt-28 lg:pt-32 pb-6 lg:pb-12 flex flex-col justify-between overflow-hidden">
+      <section className="relative min-h-[580px] sm:min-h-[680px] lg:min-h-[780px] bg-[url('/assets/background.png')] bg-cover bg-left lg:bg-center bg-no-repeat pt-24 sm:pt-28 lg:pt-32 pb-6 lg:pb-12 flex flex-col justify-between overflow-hidden">
         
         {/* Main Content Container */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full grow flex items-center pb-6 sm:pb-8 lg:pb-12">
@@ -116,7 +116,7 @@ export default function HomePage() {
             <div className="lg:col-span-6 pt-1 pb-2 sm:pb-4 lg:pb-6 relative z-40 space-y-2 sm:space-y-3">
               
               {/* Date & Location Chip */}
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#1B3629]/10 border border-[#1B3629]/20 text-[#1B3629] text-[11px] sm:text-xs font-bold">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FAF5EB]/90 sm:bg-[#1B3629]/10 backdrop-blur-sm border border-[#1B3629]/20 text-[#1B3629] text-[11px] sm:text-xs font-bold shadow-xs">
                 <Calendar className="w-3.5 h-3.5 text-[#C83B46] shrink-0" />
                 <span>12–13 March 2027</span>
                 <span className="text-[#D49B4B]">•</span>
@@ -126,20 +126,20 @@ export default function HomePage() {
 
               {/* Main Headline */}
               <div className="space-y-0 pt-0.5">
-                <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#1B3629] leading-[1.08] tracking-tight">
+                <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#1B3629] leading-[1.08] tracking-tight drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)]">
                   Empowered women,
                 </h1>
-                <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-[#C83B46] leading-[1.08] tracking-tight">
+                <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-[#C83B46] leading-[1.08] tracking-tight drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)]">
                   Stronger India
                 </h2>
               </div>
 
               {/* Subhead Paragraph */}
               <div className="pt-0.5 space-y-1.5 text-[#1B3629] font-serif">
-                <p className="text-base sm:text-xl lg:text-xl font-bold text-[#1B3629] leading-snug">
+                <p className="text-base sm:text-xl lg:text-xl font-bold text-[#10241A] leading-snug drop-shadow-[0_1px_1px_rgba(255,255,255,0.7)]">
                   A safe place for women. Infinite opportunities for your business.
                 </p>
-                <p className="text-sm sm:text-base lg:text-lg text-[#1B3629]/90 font-semibold leading-relaxed">
+                <p className="text-sm sm:text-base lg:text-lg text-[#162E21] font-semibold leading-relaxed drop-shadow-[0_1px_1px_rgba(255,255,255,0.6)]">
                   Amaleeni Womenpreneurs 2027 brings together women entrepreneurs face to face with investors, banks, corporates and policymakers.
                 </p>
               </div>
@@ -166,7 +166,7 @@ export default function HomePage() {
               </div>
 
               {/* Caption Below Buttons */}
-              <p className="text-xs sm:text-sm font-medium text-[#1B3629]/80 font-serif pt-0.5">
+              <p className="text-xs sm:text-sm font-semibold text-[#1B3629]/90 font-serif pt-0.5 drop-shadow-[0_1px_1px_rgba(255,255,255,0.6)]">
                 An initiative of the Amaleeni Foundation – ten years of work with women.
               </p>
             </div>

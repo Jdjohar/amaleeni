@@ -13,6 +13,23 @@ if (!$pdo) {
     exit;
 }
 
+// Auto-heal team_members table if missing
+try {
+    $pdo->exec("
+        CREATE TABLE IF NOT EXISTS `team_members` (
+          `id` INT AUTO_INCREMENT PRIMARY KEY,
+          `name` VARCHAR(191) NOT NULL,
+          `role` VARCHAR(191) NOT NULL,
+          `category` VARCHAR(50) NOT NULL DEFAULT 'Secretariat',
+          `bio` TEXT NULL,
+          `status` VARCHAR(50) DEFAULT 'Confirmed',
+          `image` VARCHAR(255) NULL,
+          `sort_order` INT DEFAULT 0,
+          `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+    ");
+} catch (Throwable $e) {}
+
 $method = $_SERVER['REQUEST_METHOD'];
 
 if ($method === 'GET') {

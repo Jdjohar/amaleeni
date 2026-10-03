@@ -6,11 +6,11 @@ export default function Hero({ onOpenContact }) {
     <section id="home" className="relative pt-24 sm:pt-28 lg:pt-32 pb-0 overflow-hidden paper-texture">
       
       {/* Background Monuments Paper Cut Layer */}
-      <div className="absolute inset-0 z-0 pointer-events-none opacity-40 mix-blend-multiply flex justify-end items-center">
+      <div className="absolute inset-0 z-0 pointer-events-none opacity-40 mix-blend-multiply flex justify-start lg:justify-end items-center">
         <img
           src="/assets/paper-monuments.jpg"
           alt="Indian Architectural Heritage Paper Craft"
-          className="w-full h-full object-cover object-right-top"
+          className="w-full h-full object-cover object-left-top lg:object-right-top"
         />
       </div>
 
@@ -21,22 +21,22 @@ export default function Hero({ onOpenContact }) {
           {/* Left Column: Hero Text */}
           <div className="lg:col-span-5 pt-4 pb-8 z-20">
             <div className="space-y-1">
-              <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl font-extrabold text-[#1B3629] leading-[1.02] tracking-tight mb-3">
+              <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl font-extrabold text-[#1B3629] leading-[1.02] tracking-tight mb-3 drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)]">
                 Empowered women,
               </h1>
-              <h2 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold text-[#C83B46] leading-[1.05] tracking-wider uppercase">
+              <h2 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold text-[#C83B46] leading-[1.05] tracking-wider uppercase drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)]">
                 Stronger India
               </h2>
             </div>
 
             <div className="mt-6 space-y-2 text-[#1B3629] font-serif leading-relaxed">
-              <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#1B3629]">
+              <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#1B3629] drop-shadow-[0_1px_1px_rgba(255,255,255,0.7)]">
                 A safe place for women. Infinite opportunities for your business.
               </p>
-              <p className="text-sm sm:text-base lg:text-lg text-[#2D4D3B] font-medium">
+              <p className="text-sm sm:text-base lg:text-lg text-[#2D4D3B] font-semibold drop-shadow-[0_1px_1px_rgba(255,255,255,0.6)]">
                 Amaleeni Womenpreneurs 2027 brings together women entrepreneurs face to face with investors, banks, corporates and policymakers.
               </p>
-              <p className="text-xs sm:text-sm text-[#614E38] pt-1">
+              <p className="text-xs sm:text-sm text-[#614E38] font-medium pt-1 drop-shadow-[0_1px_1px_rgba(255,255,255,0.6)]">
                 An initiative of the Amaleeni Foundation – ten years of work with women.
               </p>
             </div>

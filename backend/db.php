@@ -24,10 +24,34 @@ function getDbConnection() {
     }
 }
 
+function getSiteSettings($pdo = null) {
+    if (!$pdo) {
+        $pdo = getDbConnection();
+    }
+    static $cachedSettings = null;
+    if ($cachedSettings !== null) return $cachedSettings;
+
+    $cachedSettings = [];
+    if (!$pdo) return $cachedSettings;
+
+    try {
+        $stmt = $pdo->query("SELECT setting_key, setting_value FROM site_settings");
+        if ($stmt) {
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($rows as $r) {
+                $cachedSettings[$r['setting_key']] = $r['setting_value'];
+            }
+        }
+    } catch (Throwable $e) {}
+
+    return $cachedSettings;
+}
+
 function ensureTablesExist($pdo) {
     if (!$pdo) return;
+
+    // 1. Users Table
     try {
-        // 1. Users Table
         $pdo->exec("
             CREATE TABLE IF NOT EXISTS `users` (
               `id` INT AUTO_INCREMENT PRIMARY KEY,
@@ -40,12 +64,37 @@ function ensureTablesExist($pdo) {
               `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
         ");
+    } catch (Throwable $e) {}
 
-        // Add role/permissions if existing table missed them
-        @$pdo->exec("ALTER TABLE `users` ADD COLUMN `role` VARCHAR(20) DEFAULT 'user'");
-        @$pdo->exec("ALTER TABLE `users` ADD COLUMN `permissions` TEXT NULL");
+    try { $pdo->exec("ALTER TABLE `users` ADD COLUMN `role` VARCHAR(20) DEFAULT 'user'"); } catch (Throwable $e) {}
+    try { $pdo->exec("ALTER TABLE `users` ADD COLUMN `permissions` TEXT NULL"); } catch (Throwable $e) {}
 
-        // 2. Profiles Table
+    // 2. Pink Pages Profiles Table
+    try {
+        $pdo->exec("
+            CREATE TABLE IF NOT EXISTS `pink_pages_profiles` (
+              `id` INT AUTO_INCREMENT PRIMARY KEY,
+              `user_id` INT NOT NULL UNIQUE,
+              `ref_id` VARCHAR(50) NOT NULL UNIQUE,
+              `org_name` VARCHAR(200) NOT NULL,
+              `designation` VARCHAR(150) NULL DEFAULT 'Founder / Leader',
+              `category` VARCHAR(100) NOT NULL DEFAULT 'Entrepreneurs & Founders',
+              `sector` VARCHAR(120) NOT NULL,
+              `city` VARCHAR(100) NOT NULL,
+              `state_country` VARCHAR(100) NOT NULL,
+              `website_url` VARCHAR(255) NULL,
+              `seeking` TEXT NULL,
+              `business_description` TEXT NULL,
+              `payment_status` VARCHAR(20) DEFAULT 'PENDING',
+              `payment_amount` DECIMAL(10,2) DEFAULT 5000.00,
+              `razorpay_payment_id` VARCHAR(191) NULL,
+              `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+        ");
+    } catch (Throwable $e) {}
+
+    // Fallback/Legacy Profiles Table
+    try {
         $pdo->exec("
             CREATE TABLE IF NOT EXISTS `profiles` (
               `id` INT AUTO_INCREMENT PRIMARY KEY,
@@ -63,12 +112,13 @@ function ensureTablesExist($pdo) {
               `payment_amount` DECIMAL(10,2) DEFAULT 5000.00,
               `razorpay_payment_id` VARCHAR(191) NULL,
               `ref_id` VARCHAR(50) NOT NULL UNIQUE,
-              `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-              FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE
+              `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
         ");
+    } catch (Throwable $e) {}
 
-        // 3. Team Members Table (/team roster)
+    // 3. Team Members Table (/team roster)
+    try {
         $pdo->exec("
             CREATE TABLE IF NOT EXISTS `team_members` (
               `id` INT AUTO_INCREMENT PRIMARY KEY,
@@ -82,8 +132,10 @@ function ensureTablesExist($pdo) {
               `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
         ");
+    } catch (Throwable $e) {}
 
-        // 4. Site Settings Table (Razorpay Keys, Contact, Social, Map)
+    // 4. Site Settings Table (Razorpay Keys, Contact, Social, Map)
+    try {
         $pdo->exec("
             CREATE TABLE IF NOT EXISTS `site_settings` (
               `setting_key` VARCHAR(191) PRIMARY KEY,
@@ -91,8 +143,10 @@ function ensureTablesExist($pdo) {
               `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
         ");
+    } catch (Throwable $e) {}
 
-        // 5. Contact Submissions Table
+    // 5. Contact Submissions Table
+    try {
         $pdo->exec("
             CREATE TABLE IF NOT EXISTS `contact_submissions` (
               `id` INT AUTO_INCREMENT PRIMARY KEY,
@@ -110,8 +164,22 @@ function ensureTablesExist($pdo) {
               `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
         ");
+    } catch (Throwable $e) {}
 
-        // Seed default super admin user if not exists
+    // 6. Newsletter Subscribers Table
+    try {
+        $pdo->exec("
+            CREATE TABLE IF NOT EXISTS `newsletter_subscribers` (
+              `id` INT AUTO_INCREMENT PRIMARY KEY,
+              `email` VARCHAR(191) NOT NULL UNIQUE,
+              `ip_address` VARCHAR(45) NULL,
+              `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+        ");
+    } catch (Throwable $e) {}
+
+    // Seed default super admin user if not exists
+    try {
         $adminEmail = 'president@amaleeni.com';
         $stmt = $pdo->prepare("SELECT id FROM users WHERE email = :email");
         $stmt->execute([':email' => $adminEmail]);
@@ -120,8 +188,10 @@ function ensureTablesExist($pdo) {
             $ins = $pdo->prepare("INSERT INTO users (full_name, email, phone, password_hash, role) VALUES ('Dr. Akshaya Jain', :email, '+91 98100 55241', :hash, 'admin')");
             $ins->execute([':email' => $adminEmail, ':hash' => $passHash]);
         }
+    } catch (Throwable $e) {}
 
-        // Seed default site settings if empty
+    // Seed default site settings if empty
+    try {
         $checkSt = $pdo->query("SELECT COUNT(*) FROM site_settings")->fetchColumn();
         if ($checkSt == 0) {
             $defaultSettings = [
@@ -140,13 +210,15 @@ function ensureTablesExist($pdo) {
                 'youtube_url' => 'https://youtube.com/@amaleenifoundation',
                 'twitter_url' => 'https://twitter.com/amaleeni',
             ];
-            $stIns = $pdo->prepare("INSERT INTO site_settings (setting_key, setting_value) VALUES (:k, :v)");
+            $stIns = $pdo->prepare("REPLACE INTO site_settings (setting_key, setting_value) VALUES (:k, :v)");
             foreach ($defaultSettings as $k => $v) {
                 $stIns->execute([':k' => $k, ':v' => $v]);
             }
         }
+    } catch (Throwable $e) {}
 
-        // Seed default Team Members if empty
+    // Seed default Team Members if empty
+    try {
         $checkTm = $pdo->query("SELECT COUNT(*) FROM team_members")->fetchColumn();
         if ($checkTm == 0) {
             $initialRoster = [
@@ -163,7 +235,5 @@ function ensureTablesExist($pdo) {
                 $tmIns->execute($row);
             }
         }
-    } catch (Throwable $e) {
-        error_log('Migration note: ' . $e->getMessage());
-    }
+    } catch (Throwable $e) {}
 }

@@ -17,10 +17,18 @@ header('Content-Disposition: attachment; filename=amaleeni_' . $type . '_' . dat
 $output = fopen('php://output', 'w');
 
 if ($type === 'members') {
+    $profTable = 'profiles';
+    try {
+        $st = $pdo->query("SHOW TABLES LIKE 'pink_pages_profiles'");
+        if ($st && $st->rowCount() > 0) {
+            $profTable = 'pink_pages_profiles';
+        }
+    } catch (Throwable $e) {}
+
     fputcsv($output, ['Ref ID', 'Full Name', 'Email', 'Phone', 'Organization', 'Designation', 'Sector', 'Category', 'City', 'State', 'Website', 'Payment Status', 'Registered At']);
     $stmt = $pdo->query("
         SELECT p.ref_id, u.full_name, u.email, u.phone, p.org_name, p.designation, p.sector, p.category, p.city, p.state_country, p.website_url, p.payment_status, u.created_at
-        FROM users u JOIN profiles p ON u.id = p.user_id ORDER BY u.id DESC
+        FROM users u JOIN {$profTable} p ON u.id = p.user_id ORDER BY u.id DESC
     ");
     while ($row = $stmt->fetch()) {
         fputcsv($output, $row);

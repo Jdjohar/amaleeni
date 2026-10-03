@@ -13,21 +13,37 @@ if (!$pdo) {
     exit;
 }
 
+// Auto-heal site_settings table if missing
+try {
+    $pdo->exec("
+        CREATE TABLE IF NOT EXISTS `site_settings` (
+          `setting_key` VARCHAR(191) PRIMARY KEY,
+          `setting_value` LONGTEXT NULL,
+          `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+    ");
+} catch (Throwable $e) {}
+
 $method = $_SERVER['REQUEST_METHOD'];
 
 if ($method === 'GET') {
-    $stmt = $pdo->query("SELECT setting_key, setting_value FROM site_settings");
-    $rows = $stmt->fetchAll();
+    try {
+        $stmt = $pdo->query("SELECT setting_key, setting_value FROM site_settings");
+        $rows = $stmt->fetchAll();
 
-    $settings = [];
-    foreach ($rows as $r) {
-        $settings[$r['setting_key']] = $r['setting_value'];
+        $settings = [];
+        foreach ($rows as $r) {
+            $settings[$r['setting_key']] = $r['setting_value'];
+        }
+
+        echo json_encode([
+            'status' => 'success',
+            'settings' => $settings
+        ]);
+    } catch (Throwable $e) {
+        http_response_code(500);
+        echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
     }
-
-    echo json_encode([
-        'status' => 'success',
-        'settings' => $settings
-    ]);
     exit;
 }
 
@@ -42,23 +58,25 @@ if ($method === 'POST' || $method === 'PUT') {
         exit;
     }
 
-    $stmt = $pdo->prepare("
-        INSERT INTO site_settings (setting_key, setting_value) 
-        VALUES (:k, :v) 
-        ON DUPLICATE KEY UPDATE setting_value = :v
-    ");
+    try {
+        $stmt = $pdo->prepare("REPLACE INTO site_settings (setting_key, setting_value) VALUES (:k, :v)");
 
-    foreach ($newSettings as $key => $val) {
-        if ($key === 'action') continue;
-        $stmt->execute([':k' => $key, ':v' => is_array($val) ? json_encode($val) : strval($val)]);
+        foreach ($newSettings as $key => $val) {
+            if ($key === 'action') continue;
+            $stmt->execute([':k' => $key, ':v' => is_array($val) ? json_encode($val) : strval($val)]);
+        }
+
+        echo json_encode([
+            'status' => 'success',
+            'message' => 'Site settings updated successfully.'
+        ]);
+    } catch (Throwable $e) {
+        http_response_code(500);
+        echo json_encode(['status' => 'error', 'message' => 'Failed to save settings: ' . $e->getMessage()]);
     }
-
-    echo json_encode([
-        'status' => 'success',
-        'message' => 'Site settings updated successfully.'
-    ]);
     exit;
 }
 
 http_response_code(405);
 echo json_encode(['status' => 'error', 'message' => 'Method Not Allowed']);
+

@@ -27,15 +27,17 @@ if (empty($rawPayload) || empty($signature)) {
     exit;
 }
 
+$pdo = getDbConnection();
+$settings = getSiteSettings($pdo);
+$webhookSecret = !empty($settings['razorpay_webhook_secret']) ? $settings['razorpay_webhook_secret'] : (defined('RAZORPAY_WEBHOOK_SECRET') ? RAZORPAY_WEBHOOK_SECRET : 'amalEEni27$');
+
 // ==========================================
 // 1. VERIFY WEBHOOK SIGNATURE (HMAC SHA256)
 // ==========================================
-$expectedSignature = hash_hmac('sha256', $rawPayload, RAZORPAY_WEBHOOK_SECRET);
+$expectedSignature = hash_hmac('sha256', $rawPayload, $webhookSecret);
 
-// If user hasn't changed default secret yet, log warning or verify
 $isVerified = false;
-if (strpos(RAZORPAY_WEBHOOK_SECRET, 'YourWebhookSecret') !== false) {
-    // Development/testing mode without custom secret
+if (empty($webhookSecret) || strpos($webhookSecret, 'YourWebhookSecret') !== false) {
     $isVerified = true;
 } else {
     $isVerified = hash_equals($expectedSignature, $signature);

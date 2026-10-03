@@ -13,6 +13,17 @@ if (!$pdo) {
     exit;
 }
 
+function getProfileTableName($pdo) {
+    try {
+        $st = $pdo->query("SHOW TABLES LIKE 'pink_pages_profiles'");
+        if ($st && $st->rowCount() > 0) {
+            return 'pink_pages_profiles';
+        }
+    } catch (Throwable $e) {}
+    return 'profiles';
+}
+
+$profTable = getProfileTableName($pdo);
 $method = $_SERVER['REQUEST_METHOD'];
 
 if ($method === 'GET') {
@@ -28,7 +39,7 @@ if ($method === 'GET') {
             p.website_url, p.seeking, p.business_description, p.payment_status, p.payment_amount,
             p.razorpay_payment_id, p.ref_id, p.created_at as profile_created_at
         FROM users u
-        LEFT JOIN profiles p ON u.id = p.user_id
+        LEFT JOIN {$profTable} p ON u.id = p.user_id
         WHERE 1=1
     ";
     $params = [];
@@ -69,7 +80,7 @@ if ($method === 'POST' || $method === 'PUT') {
         $userId = intval($data['userId'] ?? 0);
         $newStatus = ($data['paymentStatus'] ?? 'PAID') === 'PAID' ? 'PAID' : 'PENDING';
 
-        $stmt = $pdo->prepare("UPDATE profiles SET payment_status = :st WHERE user_id = :uid");
+        $stmt = $pdo->prepare("UPDATE {$profTable} SET payment_status = :st WHERE user_id = :uid");
         $stmt->execute([':st' => $newStatus, ':uid' => $userId]);
 
         echo json_encode(['status' => 'success', 'message' => "Payment status updated to {$newStatus}."]);
@@ -94,7 +105,7 @@ if ($method === 'POST' || $method === 'PUT') {
 
     // 2. Update profile fields
     $pStmt = $pdo->prepare("
-        UPDATE profiles SET
+        UPDATE {$profTable} SET
             org_name = :org,
             designation = :desig,
             sector = :sec,

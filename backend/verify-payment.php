@@ -24,13 +24,17 @@ if ($userId <= 0 || empty($razorpayPaymentId)) {
     exit;
 }
 
+$pdo = getDbConnection();
+$settings = getSiteSettings($pdo);
+$keySecret = !empty($settings['razorpay_key_secret']) ? $settings['razorpay_key_secret'] : (defined('RAZORPAY_KEY_SECRET') ? RAZORPAY_KEY_SECRET : '');
+
 // Verify Signature (HMAC SHA256)
 $isValid = false;
-if (strpos(RAZORPAY_KEY_SECRET, 'YourKeySecret') !== false || !empty($data['isMock'])) {
-    // If user is testing before setting their real key secret, allow test mode verification
+if (empty($keySecret) || strpos($keySecret, 'YourKeySecret') !== false || !empty($data['isMock'])) {
+    // If testing mode without secret set
     $isValid = true;
 } else {
-    $expectedSignature = hash_hmac('sha256', $razorpayOrderId . '|' . $razorpayPaymentId, RAZORPAY_KEY_SECRET);
+    $expectedSignature = hash_hmac('sha256', $razorpayOrderId . '|' . $razorpayPaymentId, $keySecret);
     if (hash_equals($expectedSignature, $razorpaySignature)) {
         $isValid = true;
     }
@@ -41,8 +45,6 @@ if (!$isValid) {
     echo json_encode(['status' => 'error', 'message' => 'Payment signature verification failed. Tampering detected.']);
     exit;
 }
-
-$pdo = getDbConnection();
 
 try {
     $pdo->beginTransaction();

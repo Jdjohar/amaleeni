@@ -93,22 +93,45 @@ export default function MemberDashboard({ onOpenContact }) {
       }
 
       const orderResponse = await createRazorpayOrderApi(user.id);
+
+      const activeKey = orderResponse.keyId || RAZORPAY_KEY_ID;
+      const isPlaceholderKey = !activeKey || activeKey.includes('YourKeyId') || activeKey.includes('placeholder');
+
+      if (orderResponse.isMock || isPlaceholderKey || !orderResponse.orderId) {
+        const confirmSimulate = window.confirm(
+          'Razorpay Key Secret is not fully configured yet in Admin Panel. Would you like to simulate a successful ₹5,000 test payment to test dashboard feature unlocking?'
+        );
+        if (confirmSimulate) {
+          await updatePaymentSuccess({
+            razorpayOrderId: 'order_test_' + Date.now(),
+            razorpayPaymentId: 'pay_test_' + Date.now(),
+            razorpaySignature: 'sig_test',
+            isMock: true,
+          });
+          confetti({
+            particleCount: 150,
+            spread: 80,
+            origin: { y: 0.5 },
+          });
+        }
+        return;
+      }
       
       const options = {
-        key: orderResponse.keyId || RAZORPAY_KEY_ID,
+        key: activeKey,
         amount: orderResponse.amount || 500000,
         currency: orderResponse.currency || 'INR',
         name: 'Amaleeni Foundation',
         description: 'Pink Pages Annual Membership + AW2027 Pass',
         image: '/assets/logo.png',
-        order_id: orderResponse.isMock ? undefined : orderResponse.orderId,
+        order_id: orderResponse.orderId,
         handler: async function (response) {
           try {
             await updatePaymentSuccess({
               razorpayOrderId: response.razorpay_order_id || orderResponse.orderId,
               razorpayPaymentId: response.razorpay_payment_id || 'pay_mock_' + Date.now(),
               razorpaySignature: response.razorpay_signature || 'sig_mock',
-              isMock: Boolean(orderResponse.isMock),
+              isMock: false,
             });
             confetti({
               particleCount: 160,

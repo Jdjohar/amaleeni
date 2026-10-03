@@ -13,6 +13,27 @@ if (!$pdo) {
     exit;
 }
 
+// Auto-heal contact_submissions table if missing
+try {
+    $pdo->exec("
+        CREATE TABLE IF NOT EXISTS `contact_submissions` (
+          `id` INT AUTO_INCREMENT PRIMARY KEY,
+          `form_type` VARCHAR(191) NOT NULL,
+          `full_name` VARCHAR(191) NULL,
+          `email` VARCHAR(191) NOT NULL,
+          `phone` VARCHAR(50) NULL,
+          `organization` VARCHAR(191) NULL,
+          `sector` VARCHAR(191) NULL,
+          `message` TEXT NULL,
+          `details_json` TEXT NULL,
+          `status` VARCHAR(20) DEFAULT 'NEW',
+          `admin_notes` TEXT NULL,
+          `ip_address` VARCHAR(45) NULL,
+          `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+    ");
+} catch (Throwable $e) {}
+
 $method = $_SERVER['REQUEST_METHOD'];
 
 if ($method === 'GET') {
