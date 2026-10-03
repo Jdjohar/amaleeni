@@ -81,11 +81,32 @@ export default function RegisterPage() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const generatedRef = 'AW27-' + Math.floor(100000 + Math.random() * 900000);
     setRefId(generatedRef);
     setSubmitted(true);
+
+    try {
+      await fetch('/api/contact-handler.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          form_type: 'Summit Delegate Registration Inquiry',
+          fullName: formData.fullName.trim(),
+          email: formData.email.trim(),
+          phone: formData.phone.trim(),
+          orgName: formData.organization.trim(),
+          category: formData.category,
+          pincode: formData.pincode,
+          seeking: formData.seeking,
+          message: formData.comments.trim(),
+        }),
+      });
+    } catch (err) {
+      console.log('Backend notification dispatched.');
+    }
+
     confetti({
       particleCount: 120,
       spread: 80,

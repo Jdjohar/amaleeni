@@ -750,10 +750,10 @@ export default function PinkPagesRegister({ onOpenContact }) {
             <p className="text-sm sm:text-base text-[#A8C2B3] font-serif max-w-xl mx-auto">
               Questions? Write to{' '}
               <a
-                href="mailto:connect@amaleeni.com"
+                href="mailto:delegates@amaleeni.com"
                 className="text-[#D49B4B] underline font-semibold hover:text-white"
               >
-                connect@amaleeni.com
+                delegates@amaleeni.com
               </a>{' '}
               or WhatsApp us at{' '}
               <a

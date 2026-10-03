@@ -85,6 +85,9 @@ export default function AboutPage() {
             <p className="text-xs font-semibold text-[#C83B46] uppercase tracking-wider mt-1">
               Founder &amp; Convenor, Amaleeni Foundation
             </p>
+            <p className="text-xs font-bold text-[#1B3629] mt-2">
+              Direct Contact: <a href="mailto:president@amaleeni.com" className="text-[#C83B46] underline hover:text-[#A82B36]">president@amaleeni.com</a>
+            </p>
           </div>
 
           <div className="md:col-span-8 space-y-4 font-serif text-base text-[#3A5645] leading-relaxed">

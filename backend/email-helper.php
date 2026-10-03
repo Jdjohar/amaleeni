@@ -25,11 +25,13 @@ function sendEmailNotification($toEmail, $toName, $subject, $htmlContent) {
             $fromName = defined('MAIL_FROM_NAME') ? MAIL_FROM_NAME : 'Amaleeni Foundation';
             $replyTo = defined('SECRETARIAT_EMAIL') ? SECRETARIAT_EMAIL : 'hello@amaleeni.com';
 
+            $msgId = "<" . time() . "." . md5(uniqid(rand(), true)) . "@amaleeni.com>";
             $headers = [
                 'MIME-Version: 1.0',
                 'Content-type: text/html; charset=UTF-8',
                 'From: ' . $fromName . ' <' . $fromMail . '>',
                 'Reply-To: ' . $replyTo,
+                'Message-ID: ' . $msgId,
                 'X-Mailer: PHP/' . phpversion()
             ];
 
@@ -146,14 +148,18 @@ function sendViaSmtpSocket($toEmail, $toName, $subject, $htmlContent) {
             $write($socket, "DATA");
             $read($socket);
 
+            $msgId = "<" . time() . "." . md5(uniqid(rand(), true)) . "@amaleeni.com>";
             $fromName = defined('MAIL_FROM_NAME') ? MAIL_FROM_NAME : 'Amaleeni Foundation';
-            $replyTo = defined('SECRETARIAT_EMAIL') ? SECRETARIAT_EMAIL : SMTP_USER;
+            $replyTo = defined('SECRETARIAT_EMAIL') ? SECRETARIAT_EMAIL : 'hello@amaleeni.com';
 
             $headers  = "MIME-Version: 1.0\r\n";
             $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
             $headers .= "From: " . $fromName . " <" . SMTP_USER . ">\r\n";
             $headers .= "To: " . ($toName ? "$toName <$toEmail>" : $toEmail) . "\r\n";
             $headers .= "Reply-To: " . $replyTo . "\r\n";
+            $headers .= "Return-Path: <" . SMTP_USER . ">\r\n";
+            $headers .= "Message-ID: " . $msgId . "\r\n";
+            $headers .= "X-Mailer: Amaleeni Mailer v2.0\r\n";
             $headers .= "Subject: " . $subject . "\r\n";
             $headers .= "Date: " . date('r') . "\r\n";
 

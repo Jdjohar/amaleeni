@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import {
   Sparkles,
   Send,
@@ -105,9 +105,28 @@ export default function TeamPage() {
       ? officialRoster.filter((m) => m.category === 'Secretariat')
       : officialRoster;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setFormSubmitted(true);
+
+    try {
+      await fetch('/api/contact-handler.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          form_type: 'Lineup Nomination / Secretariat Lead Application',
+          fullName: formData.name.trim(),
+          email: formData.email.trim(),
+          phone: formData.phone.trim(),
+          orgName: formData.organization.trim(),
+          nominationType: nominationType,
+          message: formData.bio.trim(),
+        }),
+      });
+    } catch (err) {
+      console.log('Backend notification dispatched.');
+    }
+
     confetti({
       particleCount: 100,
       spread: 70,
@@ -158,7 +177,7 @@ export default function TeamPage() {
                 : 'text-[#1B3629] hover:bg-[#F2E8D7]'
             }`}
           >
-            Leadership &amp; Trustees (5)
+            Leadership &amp; Trustees ({officialRoster.filter((m) => m.category === 'Leadership').length})
           </button>
 
           <button
@@ -169,7 +188,7 @@ export default function TeamPage() {
                 : 'text-[#1B3629] hover:bg-[#F2E8D7]'
             }`}
           >
-            Secretariat &amp; Leads (6)
+            Secretariat &amp; Leads ({officialRoster.filter((m) => m.category === 'Secretariat').length})
           </button>
 
           <button
@@ -200,7 +219,7 @@ export default function TeamPage() {
                 </p>
               </div>
               <span className="text-xs bg-[#FAF5EB]/10 border border-[#FAF5EB]/20 text-[#FAF5EB] px-3 py-1 rounded-full">
-                11 Positions
+                {officialRoster.length} Positions
               </span>
             </div>
 
@@ -255,13 +274,29 @@ export default function TeamPage() {
 
             <div className="p-6 bg-[#F2E8D7] border-t border-[#E0D2BC] text-xs text-[#7A6750] flex flex-col sm:flex-row items-center justify-between gap-3">
               <span>Looking to join the secretariat or coordinate your state chapter?</span>
-              <a
-                href="#form"
-                className="inline-flex items-center gap-1 text-[#C83B46] font-bold hover:underline"
+              <div className="flex items-center gap-4">
+                <Link
+                  to="/advisory-board"
+                  className="inline-flex items-center gap-1.5 text-[#C83B46] font-bold hover:underline"
+                >
+                  <span>See the full Advisory Board →</span>
+                </Link>
+                <a
+                  href="#form"
+                  className="inline-flex items-center gap-1 text-[#1B3629] font-bold hover:underline"
+                >
+                  <span>Apply below</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </a>
+              </div>
+            </div>
+            <div className="mt-6 text-center">
+              <Link
+                to="/advisory-board"
+                className="inline-flex items-center gap-2 text-sm font-bold text-[#C83B46] hover:underline font-serif"
               >
-                <span>Apply below</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </a>
+                <span>See the full Advisory Board →</span>
+              </Link>
             </div>
           </div>
         </section>

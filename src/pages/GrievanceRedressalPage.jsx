@@ -68,7 +68,7 @@ export default function GrievanceRedressalPage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-[#2D5440]">
               <a
-                href="https://wa.me/919876543210"
+                href="https://wa.me/919810055241"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-3 bg-[#244735] hover:bg-[#2F5A43] p-4 rounded-2xl border border-[#345E47] transition-all"
@@ -76,7 +76,7 @@ export default function GrievanceRedressalPage() {
                 <MessageSquare className="w-5 h-5 text-[#D49B4B]" />
                 <div>
                   <span className="text-xs text-[#A8C2B3] block">WhatsApp Channel</span>
-                  <span className="text-sm font-bold text-white">+91 98765 43210</span>
+                  <span className="text-sm font-bold text-white">+91 98100 55241</span>
                 </div>
               </a>
 

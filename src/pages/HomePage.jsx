@@ -94,12 +94,12 @@ export default function HomePage() {
 
   const marqueeSpeakers = [
     { name: 'Dr. Akshaya Jain', title: 'Founder & Convenor, Amaleeni Foundation' },
-    { name: 'Nitinchandra Jain', title: 'Advisory Board / Trustee' },
-    { name: 'Amruta Jain', title: 'Advisory Board / Trustee' },
+    { name: 'Nitinchandra Jain', title: 'Trustee & Strategic Advisor' },
+    { name: 'Amruta Jain', title: 'Trustee & Governing Member' },
     { name: 'Ashwini Kumar', title: 'Design & Communications Lead' },
     { name: 'Ramakrishna Padhy', title: 'Media & PR Lead' },
-    { name: 'Priya Pawar', title: 'Core Operations' },
-    { name: 'Sahil Sharma', title: 'Strategy & Outreach' },
+    { name: 'Priya Pawar', title: 'Core Management & Operations' },
+    { name: 'Sahil Sharma', title: 'Strategy & Technology Outreach' },
   ];
 
   return (

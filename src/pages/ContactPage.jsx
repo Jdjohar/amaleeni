@@ -67,7 +67,7 @@ export default function ContactPage() {
       title: 'Pink Pages registration & summit attendance',
       desc: 'Delegate passes, enterprise directory onboarding, and attendee inquiries.',
       email: 'delegates@amaleeni.com',
-      phone: '+91 98765 43210',
+      phone: '+91 98100 55241',
       icon: Users,
       badge: 'Delegates Desk',
     },
@@ -75,7 +75,7 @@ export default function ContactPage() {
       title: 'Partnership, sponsorship and CSR',
       desc: 'Institutional alliances, corporate sponsorships, exhibition pavilions, and CSR impact desks.',
       email: 'partner@amaleeni.com',
-      phone: '+91 98765 43210',
+      phone: '+91 98100 55241',
       icon: Award,
       badge: 'Partnership Desk',
     },
@@ -142,12 +142,12 @@ export default function ContactPage() {
                 </span>
                 <h3 className="font-serif text-lg font-bold text-[#1B3629]">WhatsApp</h3>
                 <a
-                  href="https://wa.me/919876543210"
+                  href="https://wa.me/919810055241"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-base font-mono font-bold text-[#1B3629] hover:text-[#C83B46] block transition-colors"
                 >
-                  +91 98765 43210
+                  +91 98100 55241
                 </a>
                 <p className="text-xs text-[#5A7B68] font-serif">
                   The primary channel for delegates across India.
@@ -166,10 +166,10 @@ export default function ContactPage() {
                 </span>
                 <h3 className="font-serif text-lg font-bold text-[#1B3629]">Secretariat Desk</h3>
                 <a
-                  href="tel:+919876543210"
+                  href="tel:+919810055241"
                   className="text-base font-mono font-bold text-[#1B3629] hover:text-[#C83B46] block transition-colors"
                 >
-                  +91 98765 43210
+                  +91 98100 55241
                 </a>
                 <p className="text-xs text-[#5A7B68] font-serif flex items-center gap-1">
                   <Clock className="w-3.5 h-3.5 text-[#7A6750]" />
@@ -458,11 +458,11 @@ export default function ContactPage() {
                 Amaleeni Foundation
               </h3>
               <p className="text-sm text-[#3E5C4B] font-serif leading-relaxed">
-                Registered under Section 8 of the Companies Act, 2013.<br />
-                Sector 14, Indira Nagar, Lucknow, Uttar Pradesh - 226016, India.
+                Registered Trust (NGO Darpan ID: MH/2022/0311250; LEI: 9845008F0CBFA6D37097)<br />
+                Krishna Co-op Society, Boat Club Road, Pune, Maharashtra 411003, India.
               </p>
               <div className="pt-2 text-xs text-[#7A6750] border-t border-[#E0D2BC] flex items-center justify-between">
-                <span>CIN / Reg: Verified Non-Profit</span>
+                <span>LEI Verified Registered Trust</span>
                 <span className="text-[#2E7D32] font-semibold">Government Registered</span>
               </div>
             </div>

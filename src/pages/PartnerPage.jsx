@@ -74,11 +74,11 @@ export default function PartnerPage() {
   }
 
   const tiers = [
-    { title: 'Principal Partner', level: '[Investment Level]', benefits: ['Prominent branding across all mainstage sessions & press collateral', 'VIP access to state government roundtable', 'Curated meeting matchmaking with top delegates'] },
-    { title: 'Capital Track Sponsor', level: '[Investment Level]', benefits: ['Exclusive naming rights for Capital Pitch Floor & Bank Desks', 'Direct access to startup dealflow & founder pitch decks', 'Dedicated keynote spot'] },
-    { title: 'Policy Track Sponsor', level: '[Investment Level]', benefits: ['Branding across Single-Window Policy Helpdesks', 'Inclusion in policy walkthrough sessions', 'Official report co-branding'] },
-    { title: 'Market Track Sponsor', level: '[Investment Level]', benefits: ['Corporate buyer booth & vendor onboarding lounge', 'Logo on export & e-commerce workshop collateral', 'Exhibition floor priority placement'] },
-    { title: 'Mentorship Track Sponsor', level: '[Investment Level]', benefits: ['Branding across 1-on-1 Mentorship Circles & Masterclasses', 'Right to nominate mentors', 'Post-event follow-through tracking'] },
+    { title: 'Principal Partner', benefits: ['Prominent branding across all mainstage sessions & press collateral', 'VIP access to state government roundtable', 'Curated meeting matchmaking with top delegates'] },
+    { title: 'Capital Track Sponsor', benefits: ['Exclusive naming rights for Capital Pitch Floor & Bank Desks', 'Direct access to startup dealflow & founder pitch decks', 'Dedicated keynote spot'] },
+    { title: 'Policy Track Sponsor', benefits: ['Branding across Single-Window Policy Helpdesks', 'Inclusion in policy walkthrough sessions', 'Official report co-branding'] },
+    { title: 'Market Track Sponsor', benefits: ['Corporate buyer booth & vendor onboarding lounge', 'Logo on export & e-commerce workshop collateral', 'Exhibition floor priority placement'] },
+    { title: 'Mentorship Track Sponsor', benefits: ['Branding across 1-on-1 Mentorship Circles & Masterclasses', 'Right to nominate mentors', 'Post-event follow-through tracking'] },
   ];
 
   return (
@@ -159,8 +159,7 @@ export default function PartnerPage() {
           {tiers.map((t, idx) => (
             <div key={idx} className="bg-[#FAF5EB] rounded-3xl p-8 border border-[#E5D7C3] shadow-md flex flex-col justify-between">
               <div>
-                <span className="text-xs font-bold text-[#C83B46] uppercase tracking-wider">{t.level}</span>
-                <h3 className="font-serif text-2xl font-bold text-[#1B3629] mt-1 mb-4">{t.title}</h3>
+                <h3 className="font-serif text-2xl font-bold text-[#1B3629] mb-4">{t.title}</h3>
                 <ul className="space-y-3">
                   {t.benefits.map((b, i) => (
                     <li key={i} className="flex items-start gap-2.5 text-xs text-[#4E6B5A] font-serif">
