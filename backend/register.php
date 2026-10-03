@@ -73,6 +73,36 @@ if (empty($password) || strlen($password) < 6) {
 
 $pdo = getDbConnection();
 
+// Auto-heal pink_pages_profiles table if missing (Must run BEFORE transaction to prevent implicit commit)
+if ($pdo) {
+    try {
+        $pdo->exec("
+            CREATE TABLE IF NOT EXISTS `pink_pages_profiles` (
+              `id` INT AUTO_INCREMENT PRIMARY KEY,
+              `user_id` INT NOT NULL UNIQUE,
+              `ref_id` VARCHAR(50) NOT NULL UNIQUE,
+              `org_name` VARCHAR(200) NOT NULL,
+              `designation` VARCHAR(150) NULL DEFAULT 'Founder / Leader',
+              `category` VARCHAR(100) NOT NULL DEFAULT 'Entrepreneurs & Founders',
+              `sector` VARCHAR(120) NOT NULL,
+              `city` VARCHAR(100) NOT NULL,
+              `state_country` VARCHAR(100) NOT NULL,
+              `website_url` VARCHAR(255) NULL,
+              `seeking` TEXT NULL,
+              `business_description` TEXT NULL,
+              `payment_status` VARCHAR(20) DEFAULT 'PENDING',
+              `payment_amount` DECIMAL(10,2) DEFAULT 5000.00,
+              `razorpay_payment_id` VARCHAR(191) NULL,
+              `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+        ");
+    } catch (Throwable $e) {}
+
+    try {
+        $pdo->exec("ALTER TABLE `pink_pages_profiles` ADD COLUMN `designation` VARCHAR(150) NULL DEFAULT 'Founder / Leader' AFTER `org_name`");
+    } catch (Throwable $e) {}
+}
+
 // ==========================================
 // 3. CHECK FOR DUPLICATE EMAIL OR PHONE (PDO Prepared Statement)
 // ==========================================
@@ -115,55 +145,26 @@ try {
     ]);
     $userId = $pdo->lastInsertId();
 
-    // Ensure designation column exists
-    try {
-        $pdo->exec("ALTER TABLE `pink_pages_profiles` ADD COLUMN `designation` VARCHAR(150) NULL DEFAULT 'Founder / Leader' AFTER `org_name`");
-    } catch (Throwable $colErr) {
-        // ignore safely
-    }
-
     // Insert Pink Pages profile with payment_status = 'PENDING'
-    try {
-        $profileStmt = $pdo->prepare("
-            INSERT INTO pink_pages_profiles 
-            (user_id, ref_id, org_name, designation, category, sector, city, state_country, website_url, seeking, business_description, payment_status, payment_amount, created_at)
-            VALUES 
-            (:user_id, :ref_id, :org_name, :designation, :category, :sector, :city, :state_country, :website_url, :seeking, :business_description, 'PENDING', 5000.00, NOW())
-        ");
-        $profileStmt->execute([
-            ':user_id' => $userId,
-            ':ref_id' => $refId,
-            ':org_name' => $orgName,
-            ':designation' => $designation,
-            ':category' => $category,
-            ':sector' => $sector,
-            ':city' => $city,
-            ':state_country' => $stateCountry,
-            ':website_url' => $websiteUrl,
-            ':seeking' => $seeking,
-            ':business_description' => $businessDescription
-        ]);
-    } catch (Throwable $profErr) {
-        // Fallback without designation
-        $profileStmt = $pdo->prepare("
-            INSERT INTO pink_pages_profiles 
-            (user_id, ref_id, org_name, category, sector, city, state_country, website_url, seeking, business_description, payment_status, payment_amount, created_at)
-            VALUES 
-            (:user_id, :ref_id, :org_name, :category, :sector, :city, :state_country, :website_url, :seeking, :business_description, 'PENDING', 5000.00, NOW())
-        ");
-        $profileStmt->execute([
-            ':user_id' => $userId,
-            ':ref_id' => $refId,
-            ':org_name' => $orgName,
-            ':category' => $category,
-            ':sector' => $sector,
-            ':city' => $city,
-            ':state_country' => $stateCountry,
-            ':website_url' => $websiteUrl,
-            ':seeking' => $seeking,
-            ':business_description' => $businessDescription
-        ]);
-    }
+    $profileStmt = $pdo->prepare("
+        INSERT INTO pink_pages_profiles 
+        (user_id, ref_id, org_name, designation, category, sector, city, state_country, website_url, seeking, business_description, payment_status, payment_amount, created_at)
+        VALUES 
+        (:user_id, :ref_id, :org_name, :designation, :category, :sector, :city, :state_country, :website_url, :seeking, :business_description, 'PENDING', 5000.00, NOW())
+    ");
+    $profileStmt->execute([
+        ':user_id' => $userId,
+        ':ref_id' => $refId,
+        ':org_name' => $orgName,
+        ':designation' => $designation,
+        ':category' => $category,
+        ':sector' => $sector,
+        ':city' => $city,
+        ':state_country' => $stateCountry,
+        ':website_url' => $websiteUrl,
+        ':seeking' => $seeking,
+        ':business_description' => $businessDescription
+    ]);
 
     $pdo->commit();
 
@@ -188,12 +189,16 @@ try {
     ];
 
     // Send Registration Email Notification
-    sendRegistrationEmail($userPayload, [
-        'ref_id' => $refId,
-        'org_name' => $orgName,
-        'sector' => $sector,
-        'category' => $category
-    ]);
+    try {
+        sendRegistrationEmail($userPayload, [
+            'ref_id' => $refId,
+            'org_name' => $orgName,
+            'sector' => $sector,
+            'category' => $category
+        ]);
+    } catch (Throwable $mailErr) {
+        error_log('Registration email notification note: ' . $mailErr->getMessage());
+    }
 
     echo json_encode([
         'status' => 'success',
@@ -202,13 +207,13 @@ try {
         'user' => $userPayload
     ]);
 
-} catch (Exception $e) {
-    if ($pdo->inTransaction()) {
+} catch (Throwable $e) {
+    if ($pdo && $pdo->inTransaction()) {
         $pdo->rollBack();
     }
     http_response_code(500);
     echo json_encode([
         'status' => 'error',
-        'message' => 'Registration failed due to a server error. Please try again.'
+        'message' => 'Registration failed: ' . $e->getMessage()
     ]);
 }

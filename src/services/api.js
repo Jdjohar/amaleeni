@@ -108,7 +108,10 @@ export async function registerUserApi(formData) {
     return result.data;
   }
 
-  // --- LOCAL FALLBACK SIMULATION (Works even before Hostinger upload) ---
+  // If server responded with a specific HTTP error (e.g. 409 duplicate, 422 validation, 500 server error)
+  if (result.status && result.status !== 404) {
+    throw new Error(result.error || 'Registration failed. Please try again.');
+  }
   console.info('Using local client-side storage simulation for registration.');
   const existingUsers = JSON.parse(localStorage.getItem('ama_mock_users') || '[]');
   
