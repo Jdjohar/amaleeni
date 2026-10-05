@@ -38,9 +38,32 @@ import AdminTeamPage from './pages/admin/AdminTeamPage';
 import AdminInquiriesPage from './pages/admin/AdminInquiriesPage';
 import AdminSubscribersPage from './pages/admin/AdminSubscribersPage';
 import AdminSettingsPage from './pages/admin/AdminSettingsPage';
+import ComingSoonPage from './pages/ComingSoonPage';
 
 export default function App() {
   const [isContactOpen, setIsContactOpen] = useState(false);
+
+  // Check if current hostname is the custom domain (amaleeni.com or www.amaleeni.com)
+  const hostname = window.location.hostname.toLowerCase();
+  const searchParams = new URLSearchParams(window.location.search);
+  
+  // Allow preview mode if ?preview=true is added in URL or saved in localStorage
+  const hasPreviewParam = searchParams.get('preview') === 'true';
+  if (hasPreviewParam) {
+    localStorage.setItem('amaleeni_preview_active', 'true');
+  }
+  const isPreviewMode = localStorage.getItem('amaleeni_preview_active') === 'true';
+
+  const isCustomDomain = hostname === 'amaleeni.com' || hostname === 'www.amaleeni.com';
+
+  // If on custom domain and not in preview mode, render Coming Soon page
+  if (isCustomDomain && !isPreviewMode) {
+    return (
+      <ToastProvider>
+        <ComingSoonPage />
+      </ToastProvider>
+    );
+  }
 
   const handleOpenContact = () => setIsContactOpen(true);
   const handleCloseContact = () => setIsContactOpen(false);
