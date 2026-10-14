@@ -2,6 +2,7 @@
 require_once __DIR__ . '/cors.php';
 require_once __DIR__ . '/db.php';
 require_once __DIR__ . '/email-helper.php';
+require_once __DIR__ . '/auth-helper.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
@@ -10,21 +11,35 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 $rawInput = file_get_contents('php://input');
-$data = json_decode($rawInput, true) ?? $_POST;
+if (!empty($rawInput)) {
+    $data = json_decode($rawInput, true);
+    if (json_last_error() !== JSON_ERROR_NONE && empty($_POST)) {
+        http_response_code(400);
+        echo json_encode(['status' => 'error', 'message' => 'Malformed JSON payload received.']);
+        exit;
+    }
+}
+if (empty($data)) {
+    $data = $_POST;
+}
 
-$fullName = trim($data['fullName'] ?? ($data['name'] ?? ''));
-$email = trim(strtolower($data['email'] ?? ''));
-$phone = trim($data['phone'] ?? ($data['phoneNumber'] ?? ''));
-$formType = trim($data['form_type'] ?? ($data['subject'] ?? ($data['formName'] ?? 'Secretariat Inquiry')));
-$message = trim($data['message'] ?? ($data['bio'] ?? ($data['comments'] ?? '')));
+// Honeypot & bot detection check
+verifyHoneypot($data);
 
-$orgName = trim($data['orgName'] ?? ($data['organization'] ?? ''));
-$sector = trim($data['sector'] ?? '');
-$district = trim($data['district'] ?? '');
-$investmentRange = trim($data['investmentRange'] ?? '');
-$partnerTier = trim($data['partnerTier'] ?? '');
-$pincode = trim($data['pincode'] ?? '');
-$category = trim($data['category'] ?? '');
+// Sanitize all inputs to protect against XSS injection
+$fullName = sanitizeTextInput($data['fullName'] ?? ($data['name'] ?? ''), 150);
+$email = trim(strtolower(filter_var($data['email'] ?? '', FILTER_SANITIZE_EMAIL)));
+$phone = sanitizeTextInput($data['phone'] ?? ($data['phoneNumber'] ?? ''), 30);
+$formType = sanitizeTextInput($data['form_type'] ?? ($data['subject'] ?? ($data['formName'] ?? 'Secretariat Inquiry')), 100);
+$message = sanitizeTextInput($data['message'] ?? ($data['bio'] ?? ($data['comments'] ?? '')), 3000);
+
+$orgName = sanitizeTextInput($data['orgName'] ?? ($data['organization'] ?? ''), 200);
+$sector = sanitizeTextInput($data['sector'] ?? '', 100);
+$district = sanitizeTextInput($data['district'] ?? '', 100);
+$investmentRange = sanitizeTextInput($data['investmentRange'] ?? '', 100);
+$partnerTier = sanitizeTextInput($data['partnerTier'] ?? '', 100);
+$pincode = sanitizeTextInput($data['pincode'] ?? '', 20);
+$category = sanitizeTextInput($data['category'] ?? '', 100);
 
 if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
     http_response_code(422);

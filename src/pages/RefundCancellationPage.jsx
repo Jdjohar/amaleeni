@@ -64,7 +64,7 @@ export default function RefundCancellationPage() {
             {/* 13.5 Contact for refund queries */}
             <div className="pt-6 border-t border-[#E5D7C3] flex items-center justify-between flex-wrap gap-4">
               <div>
-                <h3 className="font-serif text-lg font-bold text-[#1B3629]">13.5 Contact for Refund Queries</h3>
+                <h2 className="font-serif text-lg font-bold text-[#1B3629]">13.5 Contact for Refund Queries</h2>
                 <p className="text-sm text-[#4E6B5A]">
                   Email us at <a href="mailto:hello@amaleeni.com" className="text-[#C83B46] font-bold underline">hello@amaleeni.com</a> – see also our <Link to="/grievance-redressal" className="text-[#C83B46] font-bold underline">Grievance Redressal page</Link> if a refund request isn't resolved.
                 </p>

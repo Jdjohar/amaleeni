@@ -51,6 +51,8 @@ export default function Footer() {
               <img
                 src="/assets/logo.png"
                 alt="Amaleeni Logo"
+                loading="lazy"
+                decoding="async"
                 className="h-14 sm:h-[70px] w-auto object-contain"
                 onError={(e) => {
                   e.currentTarget.src = "/assets/logo.png";
@@ -167,6 +169,7 @@ export default function Footer() {
               <input
                 type="email"
                 required
+                maxLength={150}
                 placeholder="Enter your email"
                 aria-label="Email address for newsletter subscription"
                 value={newsletterEmail}

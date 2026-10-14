@@ -2,6 +2,7 @@
 require_once __DIR__ . '/cors.php';
 require_once __DIR__ . '/db.php';
 require_once __DIR__ . '/email-helper.php';
+require_once __DIR__ . '/auth-helper.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
@@ -10,9 +11,21 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 $rawInput = file_get_contents('php://input');
-$data = json_decode($rawInput, true) ?? $_POST;
+if (!empty($rawInput)) {
+    $data = json_decode($rawInput, true);
+    if (json_last_error() !== JSON_ERROR_NONE && empty($_POST)) {
+        http_response_code(400);
+        echo json_encode(['status' => 'error', 'message' => 'Malformed JSON payload received.']);
+        exit;
+    }
+}
+if (empty($data)) {
+    $data = $_POST;
+}
 
-$email = trim(strtolower($data['email'] ?? ''));
+verifyHoneypot($data);
+
+$email = trim(strtolower(filter_var($data['email'] ?? '', FILTER_SANITIZE_EMAIL)));
 
 if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
     http_response_code(422);
@@ -21,6 +34,11 @@ if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
 }
 
 $pdo = getDbConnection();
+if (!$pdo) {
+    http_response_code(503);
+    echo json_encode(['status' => 'error', 'message' => 'Database service currently unavailable. Please try again.']);
+    exit;
+}
 $ipAddress = $_SERVER['REMOTE_ADDR'] ?? '';
 
 try {
@@ -49,7 +67,7 @@ try {
         'status' => 'success',
         'message' => 'Thank you for subscribing to Amaleeni Secretariat Updates!'
     ]);
-} catch (Exception $e) {
+} catch (Throwable $e) {
     http_response_code(500);
     echo json_encode([
         'status' => 'error',

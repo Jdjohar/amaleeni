@@ -3,6 +3,7 @@ require_once __DIR__ . '/cors.php';
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/db.php';
 require_once __DIR__ . '/email-helper.php';
+require_once __DIR__ . '/auth-helper.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
@@ -10,10 +11,13 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
+// Require valid authentication
+$auth = requireAuth(['member', 'admin', 'team_member']);
+
 $rawInput = file_get_contents('php://input');
 $data = json_decode($rawInput, true) ?? $_POST;
 
-$userId = intval($data['userId'] ?? 0);
+$userId = intval($data['userId'] ?? ($auth['user_id'] ?? ($auth['id'] ?? 0)));
 $razorpayOrderId = $data['razorpayOrderId'] ?? '';
 $razorpayPaymentId = $data['razorpayPaymentId'] ?? '';
 $razorpaySignature = $data['razorpaySignature'] ?? '';
@@ -21,6 +25,15 @@ $razorpaySignature = $data['razorpaySignature'] ?? '';
 if ($userId <= 0 || empty($razorpayPaymentId)) {
     http_response_code(400);
     echo json_encode(['status' => 'error', 'message' => 'Missing required payment confirmation fields.']);
+    exit;
+}
+
+$authUserId = intval($auth['user_id'] ?? ($auth['id'] ?? 0));
+$authRole = $auth['role'] ?? 'member';
+
+if ($authRole !== 'admin' && $authRole !== 'team_member' && $userId !== $authUserId && $authUserId > 0) {
+    http_response_code(403);
+    echo json_encode(['status' => 'error', 'code' => 403, 'message' => 'Access denied. You cannot verify payments for another account.']);
     exit;
 }
 

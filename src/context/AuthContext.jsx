@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { registerUserApi, loginUserApi, verifyPaymentApi } from '../services/api';
 
 const AuthContext = createContext(null);
@@ -22,6 +22,25 @@ export function AuthProvider({ children }) {
   });
 
   const [isLoading, setIsLoading] = useState(false);
+
+  // Synchronize authentication state across multiple browser tabs
+  useEffect(() => {
+    const handleStorageChange = (e) => {
+      if (e.key === 'ama_token' || e.key === 'ama_user') {
+        const storedToken = localStorage.getItem('ama_token');
+        const storedUser = localStorage.getItem('ama_user');
+        setToken(storedToken);
+        try {
+          setUser(storedUser ? JSON.parse(storedUser) : null);
+        } catch {
+          setUser(null);
+        }
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
 
   // Save session state helper
   const saveSession = (newToken, newUser) => {

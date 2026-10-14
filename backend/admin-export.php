@@ -1,6 +1,10 @@
 <?php
 require_once __DIR__ . '/cors.php';
 require_once __DIR__ . '/db.php';
+require_once __DIR__ . '/auth-helper.php';
+
+// Require Admin or Team Member authentication
+$auth = requireAuth(['admin', 'team_member']);
 
 $type = $_GET['type'] ?? 'members';
 

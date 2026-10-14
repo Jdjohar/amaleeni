@@ -61,6 +61,7 @@ export default function ImpactStoriesPage() {
 
       {/* 14.2 Case Stories Grid */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-20">
+        <h2 className="sr-only">Featured Impact Stories</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {stories.map((story, idx) => (
             <div key={idx} className="bg-[#FAF5EB] rounded-3xl p-8 border border-[#E5D7C3] shadow-md flex flex-col justify-between hover:shadow-xl transition-all">

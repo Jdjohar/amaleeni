@@ -52,6 +52,7 @@ export default function AdvisoryBoardPage() {
 
       {/* 9.2 Board Grid */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
+        <h2 className="sr-only">Board Members</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {boardMembers.map((member, idx) => (
             <div key={idx} className="bg-[#FAF5EB] rounded-3xl p-8 border border-[#E5D7C3] shadow-md flex flex-col justify-between hover:shadow-xl transition-all">
@@ -60,6 +61,8 @@ export default function AdvisoryBoardPage() {
                   <img
                     src={member.img}
                     alt={member.name}
+                    loading="lazy"
+                    decoding="async"
                     className="w-20 h-20 rounded-2xl object-cover border-2 border-[#D49B4B] shadow-md shrink-0"
                     onError={(e) => {
                       e.currentTarget.src = "/assets/logo.png";

@@ -43,6 +43,7 @@ export default function Header() {
             <img
               src="/assets/logo.png"
               alt="Amaleeni Logo"
+              decoding="async"
               className="h-14 sm:h-[100px] w-auto object-contain transition-transform duration-300 group-hover:scale-105"
               onError={(e) => {
                 e.currentTarget.src = "/assets/logo.png";

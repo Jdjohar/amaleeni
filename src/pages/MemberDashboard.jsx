@@ -970,6 +970,7 @@ export default function MemberDashboard({ onOpenContact }) {
                 <div className="relative w-full sm:w-80">
                   <input
                     type="text"
+                    maxLength={100}
                     placeholder="Search by Company, Email, Phone..."
                     value={companySearch}
                     onChange={(e) => setCompanySearch(e.target.value)}
@@ -1176,6 +1177,7 @@ export default function MemberDashboard({ onOpenContact }) {
                   <label className="block font-bold text-[#1B3629] mb-1">Designation / Role</label>
                   <input
                     type="text"
+                    maxLength={150}
                     value={editFormData.designation}
                     onChange={(e) => setEditFormData({ ...editFormData, designation: e.target.value })}
                     placeholder="e.g. Founder & CEO"
@@ -1235,6 +1237,7 @@ export default function MemberDashboard({ onOpenContact }) {
                   <label className="block font-bold text-[#1B3629] mb-1">Official Email Address</label>
                   <input
                     type="email"
+                    maxLength={150}
                     value={editFormData.email}
                     onChange={(e) => setEditFormData({ ...editFormData, email: e.target.value })}
                     placeholder="contact@yourcompany.com"
@@ -1246,6 +1249,7 @@ export default function MemberDashboard({ onOpenContact }) {
                   <label className="block font-bold text-[#1B3629] mb-1">Website / LinkedIn URL</label>
                   <input
                     type="url"
+                    maxLength={250}
                     value={editFormData.website_url}
                     onChange={(e) => setEditFormData({ ...editFormData, website_url: e.target.value })}
                     placeholder="https://..."
@@ -1257,6 +1261,7 @@ export default function MemberDashboard({ onOpenContact }) {
                   <label className="block font-bold text-[#1B3629] mb-1">City / Region</label>
                   <input
                     type="text"
+                    maxLength={100}
                     value={editFormData.city}
                     onChange={(e) => setEditFormData({ ...editFormData, city: e.target.value })}
                     placeholder="e.g. Lucknow, UP"
@@ -1271,6 +1276,7 @@ export default function MemberDashboard({ onOpenContact }) {
                 </label>
                 <input
                   type="text"
+                  maxLength={300}
                   value={editFormData.seeking}
                   onChange={(e) => setEditFormData({ ...editFormData, seeking: e.target.value })}
                   placeholder="e.g. Capital & Investment, Buyer Access, Corporate Supply Chains"
@@ -1284,6 +1290,7 @@ export default function MemberDashboard({ onOpenContact }) {
                 </label>
                 <textarea
                   rows={2}
+                  maxLength={2000}
                   value={editFormData.business_description}
                   onChange={(e) => setEditFormData({ ...editFormData, business_description: e.target.value })}
                   placeholder="Write a brief overview of what your enterprise delivers..."

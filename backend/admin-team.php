@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/cors.php';
 require_once __DIR__ . '/db.php';
+require_once __DIR__ . '/auth-helper.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit(0);
@@ -44,17 +45,20 @@ if ($method === 'GET') {
     exit;
 }
 
+// Mutative operations require Admin or Team Member authentication
+$auth = requireAuth(['admin', 'team_member']);
+
 if ($method === 'POST' || $method === 'PUT') {
     $rawInput = file_get_contents('php://input');
     $data = json_decode($rawInput, true) ?? $_POST;
 
     $id = intval($data['id'] ?? 0);
-    $name = trim($data['name'] ?? '');
-    $role = trim($data['role'] ?? '');
-    $category = trim($data['category'] ?? 'Secretariat');
-    $bio = trim($data['bio'] ?? '');
-    $status = trim($data['status'] ?? 'Confirmed');
-    $image = trim($data['image'] ?? '');
+    $name = sanitizeTextInput($data['name'] ?? '', 150);
+    $role = sanitizeTextInput($data['role'] ?? '', 150);
+    $category = sanitizeTextInput($data['category'] ?? 'Secretariat', 50);
+    $bio = sanitizeTextInput($data['bio'] ?? '', 1000);
+    $status = sanitizeTextInput($data['status'] ?? 'Confirmed', 50);
+    $image = sanitizeTextInput($data['image'] ?? '', 255);
     $sortOrder = intval($data['sort_order'] ?? $data['sortOrder'] ?? 0);
 
     if (empty($name) || empty($role)) {

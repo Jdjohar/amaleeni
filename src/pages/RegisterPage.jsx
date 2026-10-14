@@ -232,6 +232,7 @@ export default function RegisterPage() {
                   <input
                     type="text"
                     required
+                    maxLength={150}
                     placeholder="Enter full name"
                     value={formData.fullName}
                     onChange={e => setFormData({ ...formData, fullName: e.target.value })}
@@ -243,6 +244,7 @@ export default function RegisterPage() {
                   <input
                     type="email"
                     required
+                    maxLength={150}
                     placeholder="name@company.com"
                     value={formData.email}
                     onChange={e => setFormData({ ...formData, email: e.target.value })}
@@ -257,6 +259,7 @@ export default function RegisterPage() {
                   <input
                     type="tel"
                     required
+                    maxLength={30}
                     placeholder="+91 98765 43210"
                     value={formData.phone}
                     onChange={e => setFormData({ ...formData, phone: e.target.value })}
@@ -267,6 +270,7 @@ export default function RegisterPage() {
                   <label className="block text-xs font-bold text-[#1B3629] uppercase mb-1">Business / Organization Name</label>
                   <input
                     type="text"
+                    maxLength={200}
                     placeholder="Enterprise or Organization"
                     value={formData.orgName}
                     onChange={e => setFormData({ ...formData, orgName: e.target.value })}

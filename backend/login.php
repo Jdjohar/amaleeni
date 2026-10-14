@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/cors.php';
 require_once __DIR__ . '/db.php';
+require_once __DIR__ . '/auth-helper.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
@@ -9,7 +10,17 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 $rawInput = file_get_contents('php://input');
-$data = json_decode($rawInput, true) ?? $_POST;
+if (!empty($rawInput)) {
+    $data = json_decode($rawInput, true);
+    if (json_last_error() !== JSON_ERROR_NONE && empty($_POST)) {
+        http_response_code(400);
+        echo json_encode(['status' => 'error', 'message' => 'Malformed JSON payload received.']);
+        exit;
+    }
+}
+if (empty($data)) {
+    $data = $_POST;
+}
 
 // Honeypot bot protection
 if (!empty($data['website_bot_trap'])) {
@@ -161,8 +172,13 @@ try {
         // ignore
     }
 
-    // Generate session token
-    $token = bin2hex(random_bytes(32));
+    // Generate secure signed auth token
+    $token = generateAuthToken([
+        'user_id' => $user['id'],
+        'email' => $user['email'],
+        'role' => $user['role'],
+        'exp' => time() + (86400 * 30) // 30 days
+    ]);
 
     $userData = [
         'id' => $user['id'],

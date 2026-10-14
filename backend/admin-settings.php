@@ -1,10 +1,14 @@
 <?php
 require_once __DIR__ . '/cors.php';
 require_once __DIR__ . '/db.php';
+require_once __DIR__ . '/auth-helper.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit(0);
 }
+
+// Require Admin or Team Member authentication
+$auth = requireAuth(['admin', 'team_member']);
 
 $pdo = getDbConnection();
 if (!$pdo) {

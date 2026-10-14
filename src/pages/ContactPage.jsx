@@ -343,6 +343,7 @@ export default function ContactPage() {
                     <input
                       type="text"
                       required
+                      maxLength={150}
                       placeholder="Your name"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -359,6 +360,7 @@ export default function ContactPage() {
                       <input
                         type="email"
                         required
+                        maxLength={150}
                         placeholder="you@domain.com"
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -372,6 +374,7 @@ export default function ContactPage() {
                       <input
                         type="tel"
                         required
+                        maxLength={30}
                         placeholder="+91 98765 43210"
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
@@ -412,6 +415,7 @@ export default function ContactPage() {
                     <textarea
                       rows={3}
                       required
+                      maxLength={3000}
                       placeholder="Briefly describe your question or requirement..."
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}

@@ -59,6 +59,7 @@ export default function AdminLoginPage() {
               <input
                 type="email"
                 required
+                maxLength={150}
                 placeholder="president@amaleeni.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -76,6 +77,7 @@ export default function AdminLoginPage() {
               <input
                 type="password"
                 required
+                maxLength={128}
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}

@@ -233,9 +233,9 @@ export default function TeamPage() {
           <div className="bg-[#FAF5EB] rounded-3xl border-2 border-[#E5D7C3] shadow-xl overflow-hidden">
             <div className="bg-[#1B3629] text-white px-6 sm:px-8 py-5 flex items-center justify-between">
               <div>
-                <h3 className="font-serif text-xl sm:text-2xl font-bold">
+                <h2 className="font-serif text-xl sm:text-2xl font-bold">
                   Official Team Roster
-                </h3>
+                </h2>
                 <p className="text-xs text-[#A8C2B3] mt-0.5">
                   Amaleeni Foundation • Summit Organization Directory
                 </p>
@@ -325,6 +325,7 @@ export default function TeamPage() {
       ) : (
         /* 3.3 Cards Grid View */
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-20 animate-fadeIn">
+          <h2 className="sr-only">Team Members</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredTeam.map((member, idx) => (
               <div
@@ -360,6 +361,8 @@ export default function TeamPage() {
                       <img
                         src={member.image}
                         alt={member.name}
+                        loading="lazy"
+                        decoding="async"
                         className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
                       />
                     </div>

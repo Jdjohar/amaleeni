@@ -144,6 +144,7 @@ export default function LoginPage() {
                 <input
                   type="text"
                   required
+                  maxLength={150}
                   placeholder="+91 98765 43210 or email@domain.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -170,6 +171,7 @@ export default function LoginPage() {
                 <input
                   type={showPassword ? 'text' : 'password'}
                   required
+                  maxLength={128}
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}

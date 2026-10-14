@@ -10,6 +10,8 @@ export default function Hero({ onOpenContact }) {
         <img
           src="/assets/paper-monuments.jpg"
           alt="Indian Architectural Heritage Paper Craft"
+          loading="lazy"
+          decoding="async"
           className="w-full h-full object-cover object-left-top lg:object-right-top"
         />
       </div>
@@ -23,10 +25,10 @@ export default function Hero({ onOpenContact }) {
             <div className="space-y-1">
               <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl font-extrabold text-[#1B3629] leading-[1.02] tracking-tight mb-3 drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)]">
                 Empowered women,
+                <span className="block font-serif text-4xl sm:text-5xl lg:text-6xl font-bold text-[#C83B46] leading-[1.05] tracking-wider uppercase mt-1">
+                  Stronger India
+                </span>
               </h1>
-              <h2 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold text-[#C83B46] leading-[1.05] tracking-wider uppercase drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)]">
-                Stronger India
-              </h2>
             </div>
 
             <div className="mt-6 space-y-2 text-[#1B3629] font-serif leading-relaxed">
@@ -61,6 +63,8 @@ export default function Hero({ onOpenContact }) {
               <img
                 src="/assets/hero-women.jpg"
                 alt="Empowered Indian Professional Women"
+                fetchPriority="high"
+                decoding="async"
                 className="w-full h-auto object-contain max-h-[520px] mx-auto filter drop-shadow-lg"
               />
             </div>
@@ -73,6 +77,8 @@ export default function Hero({ onOpenContact }) {
         <img
           src="/assets/paper-leaves.jpg"
           alt="Paper craft leaves accent"
+          loading="lazy"
+          decoding="async"
           className="w-full h-auto object-contain transform -rotate-12 filter drop-shadow-md rounded-2xl"
         />
       </div>
@@ -81,6 +87,8 @@ export default function Hero({ onOpenContact }) {
         <img
           src="/assets/paper-leaves.jpg"
           alt="Paper craft leaves accent"
+          loading="lazy"
+          decoding="async"
           className="w-full h-auto object-contain transform rotate-45 scale-x-[-1] filter drop-shadow-md rounded-2xl"
         />
       </div>
@@ -112,9 +120,9 @@ export default function Hero({ onOpenContact }) {
                   <ShieldCheck className="w-6 h-6 stroke-[1.8]" />
                 </div>
                 <div>
-                  <h4 className="font-semibold text-base leading-snug text-[#FAF5EB] group-hover:text-white">
+                  <p className="font-semibold text-base leading-snug text-[#FAF5EB] group-hover:text-white">
                     Safe &amp; Welcoming
-                  </h4>
+                  </p>
                   <p className="text-xs text-[#A8C2B3]">Environment</p>
                 </div>
               </div>
@@ -125,9 +133,9 @@ export default function Hero({ onOpenContact }) {
                   <Handshake className="w-6 h-6 stroke-[1.8]" />
                 </div>
                 <div>
-                  <h4 className="font-semibold text-base leading-snug text-[#FAF5EB] group-hover:text-white">
+                  <p className="font-semibold text-base leading-snug text-[#FAF5EB] group-hover:text-white">
                     Endless Business
-                  </h4>
+                  </p>
                   <p className="text-xs text-[#A8C2B3]">Opportunities</p>
                 </div>
               </div>
@@ -138,9 +146,9 @@ export default function Hero({ onOpenContact }) {
                   <Users className="w-6 h-6 stroke-[1.8]" />
                 </div>
                 <div>
-                  <h4 className="font-semibold text-base leading-snug text-[#FAF5EB] group-hover:text-white">
+                  <p className="font-semibold text-base leading-snug text-[#FAF5EB] group-hover:text-white">
                     Women Support
-                  </h4>
+                  </p>
                   <p className="text-xs text-[#A8C2B3]">Network</p>
                 </div>
               </div>
@@ -151,9 +159,9 @@ export default function Hero({ onOpenContact }) {
                   <TrendingUp className="w-6 h-6 stroke-[1.8]" />
                 </div>
                 <div>
-                  <h4 className="font-semibold text-base leading-snug text-[#FAF5EB] group-hover:text-white">
+                  <p className="font-semibold text-base leading-snug text-[#FAF5EB] group-hover:text-white">
                     Strong Ecosystem
-                  </h4>
+                  </p>
                   <p className="text-xs text-[#A8C2B3]">for Growth</p>
                 </div>
               </div>

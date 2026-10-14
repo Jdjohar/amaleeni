@@ -29,12 +29,12 @@ export default function LegalPage() {
                 : 'By registering as a delegate, speaker, or partner for Amaleeni Womenpreneurs 2027 (12–13 March 2027, India), you agree to abide by the official summit code of conduct and event guidelines.'}
             </p>
 
-            <h3 className="font-serif text-xl font-bold text-[#1B3629] pt-2">Data Protection &amp; Confidentiality</h3>
+            <h2 className="font-serif text-xl font-bold text-[#1B3629] pt-2">Data Protection &amp; Confidentiality</h2>
             <p>
               Delegate answers regarding business financials and investment requirements are held securely in the Secretariat CRM and are never sold or published publicly.
             </p>
 
-            <h3 className="font-serif text-xl font-bold text-[#1B3629] pt-2">Contact &amp; Inquiries</h3>
+            <h2 className="font-serif text-xl font-bold text-[#1B3629] pt-2">Contact &amp; Inquiries</h2>
             <p>
               For privacy requests or terms clarification, please contact the Amaleeni Foundation Secretariat at secretariat@amaleeni.com.
             </p>

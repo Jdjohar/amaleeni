@@ -2,6 +2,7 @@
 require_once __DIR__ . '/cors.php';
 require_once __DIR__ . '/db.php';
 require_once __DIR__ . '/email-helper.php';
+require_once __DIR__ . '/auth-helper.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
@@ -10,7 +11,17 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 $rawInput = file_get_contents('php://input');
-$data = json_decode($rawInput, true) ?? $_POST;
+if (!empty($rawInput)) {
+    $data = json_decode($rawInput, true);
+    if (json_last_error() !== JSON_ERROR_NONE && empty($_POST)) {
+        http_response_code(400);
+        echo json_encode(['status' => 'error', 'message' => 'Malformed JSON payload received.']);
+        exit;
+    }
+}
+if (empty($data)) {
+    $data = $_POST;
+}
 
 // ==========================================
 // 1. BOT PROTECTION CHECKS
@@ -34,24 +45,26 @@ if (!empty($data['form_loaded_at'])) {
 }
 
 // ==========================================
-// 2. INPUT SANITIZATION & VALIDATION
-$fullName = trim($data['fullName'] ?? '');
-$orgName = trim($data['orgName'] ?? '');
-$designation = trim($data['designation'] ?? 'Founder / Leader');
-$phone = trim($data['phone'] ?? '');
+// 2. INPUT SANITIZATION & VALIDATION (XSS Protected)
+$fullName = sanitizeTextInput($data['fullName'] ?? '', 150);
+$orgName = sanitizeTextInput($data['orgName'] ?? '', 200);
+$designation = sanitizeTextInput($data['designation'] ?? 'Founder / Leader', 150);
+$phone = sanitizeTextInput($data['phone'] ?? '', 30);
 $cleanPhone = preg_replace('/[^0-9]/', '', $phone);
-$city = trim($data['cityPin'] ?? ($data['city'] ?? ''));
-$email = trim(strtolower($data['email'] ?? ''));
+$city = sanitizeTextInput($data['cityPin'] ?? ($data['city'] ?? ''), 100);
+$email = trim(strtolower(filter_var($data['email'] ?? '', FILTER_SANITIZE_EMAIL)));
 if (empty($email) && !empty($cleanPhone)) {
     $email = $cleanPhone . '@amaleeni.member';
 }
 $password = $data['password'] ?? '';
-$category = trim($data['profileCategory'] ?? 'Entrepreneurs & Founders');
-$sector = trim($data['sector'] ?? 'Technology & Digital');
-$stateCountry = trim($data['stateCountry'] ?? 'India');
-$websiteUrl = trim($data['websiteUrl'] ?? '');
-$seeking = is_array($data['seeking'] ?? null) ? implode(', ', $data['seeking']) : trim($data['seeking'] ?? 'Market & Buyer Access, Capital & Investment');
-$businessDescription = trim($data['businessDescription'] ?? '');
+$category = sanitizeTextInput($data['profileCategory'] ?? 'Entrepreneurs & Founders', 100);
+$sector = sanitizeTextInput($data['sector'] ?? 'Technology & Digital', 120);
+$stateCountry = sanitizeTextInput($data['stateCountry'] ?? 'India', 100);
+$websiteUrl = sanitizeTextInput($data['websiteUrl'] ?? '', 255);
+$seeking = is_array($data['seeking'] ?? null) 
+    ? sanitizeTextInput(implode(', ', $data['seeking']), 500) 
+    : sanitizeTextInput($data['seeking'] ?? 'Market & Buyer Access, Capital & Investment', 500);
+$businessDescription = sanitizeTextInput($data['businessDescription'] ?? '', 3000);
 
 if (empty($fullName) || empty($phone) || empty($orgName) || empty($email)) {
     http_response_code(422);
@@ -168,8 +181,13 @@ try {
 
     $pdo->commit();
 
-    // Generate secure auth token
-    $token = bin2hex(random_bytes(32));
+    // Generate secure signed auth token
+    $token = generateAuthToken([
+        'user_id' => $userId,
+        'email' => $email,
+        'role' => 'member',
+        'exp' => time() + (86400 * 30)
+    ]);
 
     $userPayload = [
         'id' => $userId,

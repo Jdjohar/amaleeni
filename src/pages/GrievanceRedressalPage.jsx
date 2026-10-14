@@ -37,19 +37,19 @@ export default function GrievanceRedressalPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
               <div className="bg-[#F4ECDC] p-5 rounded-2xl border border-[#E0D2BC]">
                 <span className="text-xs font-bold text-[#C83B46] uppercase tracking-wider block mb-1">Step 1</span>
-                <h4 className="font-serif font-bold text-[#1B3629]">Write to Officer</h4>
+                <h3 className="font-serif font-bold text-[#1B3629]">Write to Officer</h3>
                 <p className="text-xs text-[#5A7364] mt-1">Contact our Grievance Officer below by email or WhatsApp.</p>
               </div>
 
               <div className="bg-[#F4ECDC] p-5 rounded-2xl border border-[#E0D2BC]">
                 <span className="text-xs font-bold text-[#C83B46] uppercase tracking-wider block mb-1">Step 2</span>
-                <h4 className="font-serif font-bold text-[#1B3629]">Acknowledgment</h4>
+                <h3 className="font-serif font-bold text-[#1B3629]">Acknowledgment</h3>
                 <p className="text-xs text-[#5A7364] mt-1">We acknowledge receipt within 48 hours.</p>
               </div>
 
               <div className="bg-[#F4ECDC] p-5 rounded-2xl border border-[#E0D2BC]">
                 <span className="text-xs font-bold text-[#C83B46] uppercase tracking-wider block mb-1">Step 3</span>
-                <h4 className="font-serif font-bold text-[#1B3629]">Resolution</h4>
+                <h3 className="font-serif font-bold text-[#1B3629]">Resolution</h3>
                 <p className="text-xs text-[#5A7364] mt-1">We investigate and respond with a resolution within 15 days.</p>
               </div>
             </div>

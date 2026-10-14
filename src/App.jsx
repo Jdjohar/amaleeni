@@ -1,43 +1,56 @@
-import React, { useState } from 'react';
+import React, { useState, Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import HomePage from './pages/HomePage';
-import ProgrammePage from './pages/ProgrammePage';
-import TeamPage from './pages/TeamPage';
-import RegisterPage from './pages/RegisterPage';
-import AboutPage from './pages/AboutPage';
-import PartnerPage from './pages/PartnerPage';
-import LegalPage from './pages/LegalPage';
-import PinkPages from './pages/PinkPages';
-import PinkPagesRegister from './pages/PinkPagesRegister';
-import EnterpriseDetailPage from './pages/EnterpriseDetailPage';
-import LoginPage from './pages/LoginPage';
-import MemberDashboard from './pages/MemberDashboard';
-import ContactPage from './pages/ContactPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import { AuthProvider } from './context/AuthContext';
 import { ToastProvider } from './context/ToastContext';
 import ContactModal from './components/ContactModal';
 import WhatsAppButton from './components/WhatsAppButton';
-
-import AdvisoryBoardPage from './pages/AdvisoryBoardPage';
-import TermsPage from './pages/TermsPage';
-import PrivacyPage from './pages/PrivacyPage';
-import GrievanceRedressalPage from './pages/GrievanceRedressalPage';
-import RefundCancellationPage from './pages/RefundCancellationPage';
-import ImpactStoriesPage from './pages/ImpactStoriesPage';
-import CSRPartnershipsPage from './pages/CSRPartnershipsPage';
-
 import { AdminAuthProvider } from './context/AdminAuthContext';
 import AdminRoute from './components/AdminRoute';
-import AdminLoginPage from './pages/admin/AdminLoginPage';
-import AdminDashboard from './pages/admin/AdminDashboard';
-import AdminMembersPage from './pages/admin/AdminMembersPage';
-import AdminTeamPage from './pages/admin/AdminTeamPage';
-import AdminInquiriesPage from './pages/admin/AdminInquiriesPage';
-import AdminSubscribersPage from './pages/admin/AdminSubscribersPage';
-import AdminSettingsPage from './pages/admin/AdminSettingsPage';
+
+// Lazy loaded public pages
+const HomePage = lazy(() => import('./pages/HomePage'));
+const ProgrammePage = lazy(() => import('./pages/ProgrammePage'));
+const TeamPage = lazy(() => import('./pages/TeamPage'));
+const RegisterPage = lazy(() => import('./pages/RegisterPage'));
+const AboutPage = lazy(() => import('./pages/AboutPage'));
+const PartnerPage = lazy(() => import('./pages/PartnerPage'));
+const LegalPage = lazy(() => import('./pages/LegalPage'));
+const PinkPages = lazy(() => import('./pages/PinkPages'));
+const PinkPagesRegister = lazy(() => import('./pages/PinkPagesRegister'));
+const EnterpriseDetailPage = lazy(() => import('./pages/EnterpriseDetailPage'));
+const LoginPage = lazy(() => import('./pages/LoginPage'));
+const MemberDashboard = lazy(() => import('./pages/MemberDashboard'));
+const ContactPage = lazy(() => import('./pages/ContactPage'));
+const AdvisoryBoardPage = lazy(() => import('./pages/AdvisoryBoardPage'));
+const TermsPage = lazy(() => import('./pages/TermsPage'));
+const PrivacyPage = lazy(() => import('./pages/PrivacyPage'));
+const GrievanceRedressalPage = lazy(() => import('./pages/GrievanceRedressalPage'));
+const RefundCancellationPage = lazy(() => import('./pages/RefundCancellationPage'));
+const ImpactStoriesPage = lazy(() => import('./pages/ImpactStoriesPage'));
+const CSRPartnershipsPage = lazy(() => import('./pages/CSRPartnershipsPage'));
+
+// Lazy loaded admin panel pages
+const AdminLoginPage = lazy(() => import('./pages/admin/AdminLoginPage'));
+const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'));
+const AdminMembersPage = lazy(() => import('./pages/admin/AdminMembersPage'));
+const AdminTeamPage = lazy(() => import('./pages/admin/AdminTeamPage'));
+const AdminInquiriesPage = lazy(() => import('./pages/admin/AdminInquiriesPage'));
+const AdminSubscribersPage = lazy(() => import('./pages/admin/AdminSubscribersPage'));
+const AdminSettingsPage = lazy(() => import('./pages/admin/AdminSettingsPage'));
+
+function PageLoader() {
+  return (
+    <div className="min-h-[50vh] flex items-center justify-center py-20" aria-label="Loading content">
+      <div className="flex flex-col items-center gap-3">
+        <div className="w-10 h-10 border-3 border-[#C83B46] border-t-transparent rounded-full animate-spin"></div>
+        <span className="text-xs font-serif text-[#234633] tracking-wider uppercase font-semibold">Loading...</span>
+      </div>
+    </div>
+  );
+}
 
 export default function App() {
   const [isContactOpen, setIsContactOpen] = useState(false);
@@ -56,50 +69,52 @@ export default function App() {
               <Header onOpenContact={handleOpenContact} />
 
               <main className="grow">
-                <Routes>
-                  {/* ADMIN PANEL ROUTES */}
-                  <Route path="/admin/login" element={<AdminLoginPage />} />
-                  <Route path="/admin" element={<AdminRoute permission="dashboard"><AdminDashboard /></AdminRoute>} />
-                  <Route path="/admin/members" element={<AdminRoute permission="members"><AdminMembersPage /></AdminRoute>} />
-                  <Route path="/admin/team" element={<AdminRoute permission="team"><AdminTeamPage /></AdminRoute>} />
-                  <Route path="/admin/inquiries" element={<AdminRoute permission="inquiries"><AdminInquiriesPage /></AdminRoute>} />
-                  <Route path="/admin/subscribers" element={<AdminRoute permission="subscribers"><AdminSubscribersPage /></AdminRoute>} />
-                  <Route path="/admin/settings" element={<AdminRoute permission="settings"><AdminSettingsPage /></AdminRoute>} />
+                <Suspense fallback={<PageLoader />}>
+                  <Routes>
+                    {/* ADMIN PANEL ROUTES */}
+                    <Route path="/admin/login" element={<AdminLoginPage />} />
+                    <Route path="/admin" element={<AdminRoute permission="dashboard"><AdminDashboard /></AdminRoute>} />
+                    <Route path="/admin/members" element={<AdminRoute permission="members"><AdminMembersPage /></AdminRoute>} />
+                    <Route path="/admin/team" element={<AdminRoute permission="team"><AdminTeamPage /></AdminRoute>} />
+                    <Route path="/admin/inquiries" element={<AdminRoute permission="inquiries"><AdminInquiriesPage /></AdminRoute>} />
+                    <Route path="/admin/subscribers" element={<AdminRoute permission="subscribers"><AdminSubscribersPage /></AdminRoute>} />
+                    <Route path="/admin/settings" element={<AdminRoute permission="settings"><AdminSettingsPage /></AdminRoute>} />
 
-                  {/* PUBLIC ROUTES */}
-                  <Route path="/" element={<HomePage onOpenContact={handleOpenContact} />} />
-                  <Route path="/pink-pages" element={<PinkPages onOpenContact={handleOpenContact} />} />
-                  <Route path="/pink-pages/register" element={<PinkPagesRegister onOpenContact={handleOpenContact} />} />
-                  <Route path="/pink-pages/enterprise/:id" element={<EnterpriseDetailPage />} />
-                  
-                  {/* Authentication & Member Portal */}
-                  <Route path="/login" element={<LoginPage />} />
-                  <Route
-                    path="/pink-pages/dashboard"
-                    element={
-                      <ProtectedRoute>
-                        <MemberDashboard onOpenContact={handleOpenContact} />
-                      </ProtectedRoute>
-                    }
-                  />
-                  
-                  {/* Multi-page routes */}
-                  <Route path="/programme" element={<ProgrammePage />} />
-                  <Route path="/team" element={<TeamPage />} />
-                  <Route path="/advisory-board" element={<AdvisoryBoardPage />} />
-                  <Route path="/register" element={<RegisterPage />} />
-                  <Route path="/about" element={<AboutPage />} />
-                  <Route path="/partner" element={<PartnerPage />} />
-                  <Route path="/csr-partnerships" element={<CSRPartnershipsPage />} />
-                  <Route path="/impact-stories" element={<ImpactStoriesPage />} />
-                  <Route path="/contact" element={<ContactPage />} />
-                  
-                  {/* Governance & Policy routes */}
-                  <Route path="/privacy" element={<PrivacyPage />} />
-                  <Route path="/terms" element={<TermsPage />} />
-                  <Route path="/grievance-redressal" element={<GrievanceRedressalPage />} />
-                  <Route path="/refund-cancellation" element={<RefundCancellationPage />} />
-                </Routes>
+                    {/* PUBLIC ROUTES */}
+                    <Route path="/" element={<HomePage onOpenContact={handleOpenContact} />} />
+                    <Route path="/pink-pages" element={<PinkPages onOpenContact={handleOpenContact} />} />
+                    <Route path="/pink-pages/register" element={<PinkPagesRegister onOpenContact={handleOpenContact} />} />
+                    <Route path="/pink-pages/enterprise/:id" element={<EnterpriseDetailPage />} />
+                    
+                    {/* Authentication & Member Portal */}
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route
+                      path="/pink-pages/dashboard"
+                      element={
+                        <ProtectedRoute>
+                          <MemberDashboard onOpenContact={handleOpenContact} />
+                        </ProtectedRoute>
+                      }
+                    />
+                    
+                    {/* Multi-page routes */}
+                    <Route path="/programme" element={<ProgrammePage />} />
+                    <Route path="/team" element={<TeamPage />} />
+                    <Route path="/advisory-board" element={<AdvisoryBoardPage />} />
+                    <Route path="/register" element={<RegisterPage />} />
+                    <Route path="/about" element={<AboutPage />} />
+                    <Route path="/partner" element={<PartnerPage />} />
+                    <Route path="/csr-partnerships" element={<CSRPartnershipsPage />} />
+                    <Route path="/impact-stories" element={<ImpactStoriesPage />} />
+                    <Route path="/contact" element={<ContactPage />} />
+                    
+                    {/* Governance & Policy routes */}
+                    <Route path="/privacy" element={<PrivacyPage />} />
+                    <Route path="/terms" element={<TermsPage />} />
+                    <Route path="/grievance-redressal" element={<GrievanceRedressalPage />} />
+                    <Route path="/refund-cancellation" element={<RefundCancellationPage />} />
+                  </Routes>
+                </Suspense>
               </main>
 
               {/* Footer */}

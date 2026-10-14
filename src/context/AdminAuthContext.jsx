@@ -14,6 +14,23 @@ export function AdminAuthProvider({ children }) {
 
   useEffect(() => {
     loadSettings();
+
+    // Synchronize admin session across browser tabs
+    const handleStorageChange = (e) => {
+      if (e.key === 'ama_admin_token' || e.key === 'ama_admin_user') {
+        const storedToken = localStorage.getItem('ama_admin_token');
+        const storedUser = localStorage.getItem('ama_admin_user');
+        setAdminToken(storedToken);
+        try {
+          setAdminUser(storedUser ? JSON.parse(storedUser) : null);
+        } catch {
+          setAdminUser(null);
+        }
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
 
   const loadSettings = async () => {

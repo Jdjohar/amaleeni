@@ -12,8 +12,33 @@ const RAW_URL = import.meta.env.API_URL || 'https://linen-oryx-691439.hostingers
 const API_BASE_URL = RAW_URL.replace(/\/+$/, '');
 export const RAZORPAY_KEY_ID = import.meta.env.RAZORPAY_KEY_ID || 'rzp_test_YourKeyIdHere';
 
-// Helper for HTTP requests
-async function postRequest(endpoint, payload) {
+/**
+ * Returns Authorization header if an active member or admin token exists in localStorage
+ */
+function getAuthHeader() {
+  try {
+    const adminToken = localStorage.getItem('ama_admin_token');
+    const userToken = localStorage.getItem('ama_token');
+    const token = adminToken || userToken;
+    if (token) {
+      return { Authorization: `Bearer ${token}` };
+    }
+  } catch (e) {}
+  return {};
+}
+
+/**
+ * Returns user-friendly message when offline or connection is lost
+ */
+function handleOfflineError() {
+  if (typeof navigator !== 'undefined' && !navigator.onLine) {
+    return 'You appear to be offline. Please check your internet connection.';
+  }
+  return 'Unable to reach server. Please check your internet connection or try again later.';
+}
+
+// Unified helper for authenticated POST requests
+async function postRequest(endpoint, payload, customHeaders = {}) {
   const tryUrls = [
     `${API_BASE_URL}/${endpoint}`,
     `${API_BASE_URL}/api/${endpoint}`
@@ -25,6 +50,8 @@ async function postRequest(endpoint, payload) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          ...getAuthHeader(),
+          ...customHeaders,
         },
         body: JSON.stringify(payload),
       });
@@ -45,18 +72,77 @@ async function postRequest(endpoint, payload) {
           ok: false,
           error: data.message || `Server error (${response.status})`,
           status: response.status,
+          data,
         };
       }
       return { ok: true, data };
     } catch (err) {
       if (url === tryUrls[tryUrls.length - 1]) {
-        console.warn(`Backend endpoint ${endpoint} unavailable or offline:`, err.message);
-        return { ok: false, error: err.message };
+        console.warn(`Backend endpoint ${endpoint} unavailable:`, err.message);
+        return { ok: false, error: handleOfflineError() };
       }
     }
   }
 
-  return { ok: false, error: 'All backend URL attempts failed.' };
+  return { ok: false, error: handleOfflineError() };
+}
+
+// Unified helper for authenticated GET & DELETE requests
+async function authFetch(endpoint, options = {}) {
+  const tryUrls = [
+    `${API_BASE_URL}/${endpoint}`,
+    `${API_BASE_URL}/api/${endpoint}`
+  ];
+
+  for (const url of tryUrls) {
+    try {
+      const response = await fetch(url, {
+        ...options,
+        headers: {
+          'Content-Type': 'application/json',
+          ...getAuthHeader(),
+          ...(options.headers || {})
+        }
+      });
+
+      if (response.status === 404) continue;
+
+      let data = {};
+      try {
+        data = await response.json();
+      } catch (e) {
+        data = { message: `Server returned HTTP ${response.status}` };
+      }
+
+      if (!response.ok) {
+        return {
+          ok: false,
+          status: response.status,
+          error: data.message || `Server error (${response.status})`,
+          data
+        };
+      }
+
+      return { ok: true, data };
+    } catch (err) {
+      if (url === tryUrls[tryUrls.length - 1]) {
+        return { ok: false, error: handleOfflineError() };
+      }
+    }
+  }
+
+  return { ok: false, error: handleOfflineError() };
+}
+
+/**
+ * Fetch Authenticated Member Profile API (Hostinger PHP Backend DB me.php)
+ */
+export async function fetchUserProfileApi(userId) {
+  const result = await authFetch(`me.php?userId=${encodeURIComponent(userId || '')}`);
+  if (result.ok && result.data && result.data.user) {
+    return result.data.user;
+  }
+  return null;
 }
 
 /**
@@ -186,20 +272,11 @@ export async function adminLoginApi(email, password) {
 
 export async function fetchAdminMembersApi(search = '', status = '', sector = '') {
   const query = new URLSearchParams({ search, status, sector }).toString();
-  const tryUrls = [
-    `${API_BASE_URL}/admin-members.php?${query}`,
-    `${API_BASE_URL}/api/admin-members.php?${query}`
-  ];
-  for (const url of tryUrls) {
-    try {
-      const res = await fetch(url);
-      if (res.ok) {
-        const data = await res.json();
-        return data;
-      }
-    } catch (e) {}
+  const result = await authFetch(`admin-members.php?${query}`);
+  if (result.ok) {
+    return result.data;
   }
-  return { status: 'error', count: 0, members: [], message: 'Unable to fetch members list from database.' };
+  return { status: 'error', count: 0, members: [], message: result.error || 'Unable to fetch members list.' };
 }
 
 export async function updateMemberEntryApi(memberData) {
@@ -215,33 +292,14 @@ export async function togglePaymentStatusApi(userId, paymentStatus) {
 }
 
 export async function deleteMemberApi(userId) {
-  const tryUrls = [
-    `${API_BASE_URL}/admin-members.php?userId=${userId}`,
-    `${API_BASE_URL}/api/admin-members.php?userId=${userId}`
-  ];
-  for (const url of tryUrls) {
-    try {
-      const res = await fetch(url, { method: 'DELETE' });
-      if (res.ok) return await res.json();
-    } catch (e) {}
-  }
+  const result = await authFetch(`admin-members.php?userId=${encodeURIComponent(userId)}`, { method: 'DELETE' });
+  if (result.ok) return result.data;
   return { status: 'success' };
 }
 
 export async function fetchAdminTeamApi() {
-  const tryUrls = [
-    `${API_BASE_URL}/admin-team.php`,
-    `${API_BASE_URL}/api/admin-team.php`
-  ];
-  for (const url of tryUrls) {
-    try {
-      const res = await fetch(url);
-      if (res.ok) {
-        const data = await res.json();
-        return data;
-      }
-    } catch (e) {}
-  }
+  const result = await authFetch('admin-team.php');
+  if (result.ok) return result.data;
   return { status: 'success', team: [] };
 }
 
@@ -252,31 +310,15 @@ export async function saveTeamMemberApi(payload) {
 }
 
 export async function deleteTeamMemberApi(id) {
-  const tryUrls = [
-    `${API_BASE_URL}/admin-team.php?id=${id}`,
-    `${API_BASE_URL}/api/admin-team.php?id=${id}`
-  ];
-  for (const url of tryUrls) {
-    try {
-      const res = await fetch(url, { method: 'DELETE' });
-      if (res.ok) return await res.json();
-    } catch (e) {}
-  }
+  const result = await authFetch(`admin-team.php?id=${encodeURIComponent(id)}`, { method: 'DELETE' });
+  if (result.ok) return result.data;
   return { status: 'success' };
 }
 
 export async function fetchAdminInquiriesApi(search = '', form_type = '', status = '') {
   const query = new URLSearchParams({ search, form_type, status }).toString();
-  const tryUrls = [
-    `${API_BASE_URL}/admin-inquiries.php?${query}`,
-    `${API_BASE_URL}/api/admin-inquiries.php?${query}`
-  ];
-  for (const url of tryUrls) {
-    try {
-      const res = await fetch(url);
-      if (res.ok) return await res.json();
-    } catch (e) {}
-  }
+  const result = await authFetch(`admin-inquiries.php?${query}`);
+  if (result.ok) return result.data;
   return { status: 'success', inquiries: [] };
 }
 
@@ -287,16 +329,8 @@ export async function updateInquiryStatusApi(id, status, adminNotes = '') {
 }
 
 export async function fetchSiteSettingsApi() {
-  const tryUrls = [
-    `${API_BASE_URL}/admin-settings.php`,
-    `${API_BASE_URL}/api/admin-settings.php`
-  ];
-  for (const url of tryUrls) {
-    try {
-      const res = await fetch(url);
-      if (res.ok) return await res.json();
-    } catch (e) {}
-  }
+  const result = await authFetch('admin-settings.php');
+  if (result.ok) return result.data;
   return { status: 'success', settings: {} };
 }
 

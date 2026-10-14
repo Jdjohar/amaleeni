@@ -453,6 +453,7 @@ export default function PinkPagesRegister({ onOpenContact }) {
                 <input
                   type="text"
                   required
+                  maxLength={150}
                   placeholder="e.g. Ananya Sharma"
                   value={formData.fullName}
                   onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
@@ -468,6 +469,7 @@ export default function PinkPagesRegister({ onOpenContact }) {
                 <input
                   type="text"
                   required
+                  maxLength={200}
                   placeholder="e.g. Sharma Crafts & Textiles"
                   value={formData.orgName}
                   onChange={(e) => setFormData({ ...formData, orgName: e.target.value })}
@@ -485,6 +487,7 @@ export default function PinkPagesRegister({ onOpenContact }) {
                 <input
                   type="text"
                   required
+                  maxLength={150}
                   placeholder="e.g. Founder, CEO, Partner, Director"
                   value={formData.designation}
                   onChange={(e) => setFormData({ ...formData, designation: e.target.value })}
@@ -518,6 +521,7 @@ export default function PinkPagesRegister({ onOpenContact }) {
                     id="email"
                     type="email"
                     required
+                    maxLength={150}
                     placeholder="name@company.com"
                     value={formData.email}
                     onChange={(e) => {
@@ -544,6 +548,7 @@ export default function PinkPagesRegister({ onOpenContact }) {
                 <input
                   type="tel"
                   required
+                  maxLength={30}
                   placeholder="+91 98765 43210 or +1 415 555 2671"
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
@@ -559,6 +564,7 @@ export default function PinkPagesRegister({ onOpenContact }) {
                 <input
                   type="text"
                   required
+                  maxLength={20}
                   placeholder="e.g. 226016 or 10001 or W1A 1AA"
                   value={formData.pincode || formData.cityPin}
                   onChange={(e) => setFormData({ ...formData, cityPin: e.target.value, pincode: e.target.value })}
@@ -577,6 +583,7 @@ export default function PinkPagesRegister({ onOpenContact }) {
                   <input
                     type={showPassword ? 'text' : 'password'}
                     required
+                    maxLength={128}
                     placeholder="••••••••"
                     value={formData.password}
                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
@@ -619,6 +626,7 @@ export default function PinkPagesRegister({ onOpenContact }) {
                 <input
                   type={showPassword ? 'text' : 'password'}
                   required
+                  maxLength={128}
                   placeholder="••••••••"
                   value={formData.confirmPassword}
                   onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}

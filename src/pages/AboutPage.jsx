@@ -79,9 +79,11 @@ export default function AboutPage() {
             <img
               src="/assets/Akshaya Jain.jpeg"
               alt="Dr. Akshaya Jain"
+              loading="lazy"
+              decoding="async"
               className="w-48 h-48 rounded-full object-cover mx-auto border-4 border-[#D49B4B] shadow-xl mb-4"
             />
-            <h3 className="font-serif text-2xl font-bold text-[#1B3629]">Dr. Akshaya Jain</h3>
+            <h2 className="font-serif text-2xl font-bold text-[#1B3629]">Dr. Akshaya Jain</h2>
             <p className="text-xs font-semibold text-[#C83B46] uppercase tracking-wider mt-1">
               Founder &amp; Convenor, Amaleeni Foundation
             </p>
@@ -154,19 +156,19 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="bg-[#234533] p-6 rounded-2xl border border-[#2F5A43] space-y-2">
               <span className="px-3 py-1 rounded-full bg-[#C83B46] text-white text-[10px] font-bold uppercase">NITI Aayog</span>
-              <h4 className="font-serif text-lg font-bold text-white">Recognised &amp; CSR-Certified</h4>
+              <h3 className="font-serif text-lg font-bold text-white">Recognised &amp; CSR-Certified</h3>
               <p className="text-xs text-[#A8C2B3]">Fully compliant for corporate CSR partnerships under Schedule VII.</p>
             </div>
 
             <div className="bg-[#234533] p-6 rounded-2xl border border-[#2F5A43] space-y-2">
               <span className="px-3 py-1 rounded-full bg-[#D49B4B] text-white text-[10px] font-bold uppercase">Skill India</span>
-              <h4 className="font-serif text-lg font-bold text-white">CIATN Institute Registered</h4>
+              <h3 className="font-serif text-lg font-bold text-white">CIATN Institute Registered</h3>
               <p className="text-xs text-[#A8C2B3]">Ministry of Skill Development &amp; Entrepreneurship clinical training institute.</p>
             </div>
 
             <div className="bg-[#234533] p-6 rounded-2xl border border-[#2F5A43] space-y-2">
               <span className="px-3 py-1 rounded-full bg-[#1B3629] text-white border border-[#3A644D] text-[10px] font-bold uppercase">State Honour</span>
-              <h4 className="font-serif text-lg font-bold text-white">Advantage Vidarbha 2026</h4>
+              <h3 className="font-serif text-lg font-bold text-white">Advantage Vidarbha 2026</h3>
               <p className="text-xs text-[#A8C2B3]">Honoured by Union Minister Nitin Gadkari as Leader in Aesthetic Medicine &amp; Skill Development.</p>
             </div>
           </div>

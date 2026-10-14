@@ -122,6 +122,7 @@ export default function ContactModal({ isOpen, onClose }) {
                     <input
                       type="text"
                       required
+                      maxLength={150}
                       placeholder="e.g. Sunita Sharma"
                       value={formData.fullName}
                       onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
@@ -139,6 +140,7 @@ export default function ContactModal({ isOpen, onClose }) {
                     <input
                       type="email"
                       required
+                      maxLength={150}
                       placeholder="sunita@example.com"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -158,6 +160,7 @@ export default function ContactModal({ isOpen, onClose }) {
                     <input
                       type="tel"
                       required
+                      maxLength={30}
                       placeholder="+91 98765 43210"
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
@@ -234,6 +237,7 @@ export default function ContactModal({ isOpen, onClose }) {
                 </label>
                 <textarea
                   rows={3}
+                  maxLength={3000}
                   placeholder="Share a brief overview of your business idea or requirements..."
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}

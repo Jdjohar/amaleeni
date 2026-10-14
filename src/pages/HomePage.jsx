@@ -128,10 +128,10 @@ export default function HomePage() {
               <div className="space-y-0 pt-0.5">
                 <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#1B3629] leading-[1.08] tracking-tight drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)]">
                   Empowered women,
+                  <span className="block font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-[#C83B46] leading-[1.08] tracking-tight drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)]">
+                    Stronger India
+                  </span>
                 </h1>
-                <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-[#C83B46] leading-[1.08] tracking-tight drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)]">
-                  Stronger India
-                </h2>
               </div>
 
               {/* Subhead Paragraph */}
@@ -177,6 +177,8 @@ export default function HomePage() {
                 <img
                   src="/assets/females.png"
                   alt="Empowered Professional Women"
+                  fetchPriority="high"
+                  decoding="async"
                   className="w-full h-auto object-contain max-h-[400px] sm:max-h-[620px] lg:max-h-[780px] mx-auto filter drop-shadow-2xl origin-bottom"
                 />
               </div>
@@ -190,6 +192,8 @@ export default function HomePage() {
           <img
             src="/assets/greenborder.png"
             alt="Green Wave Border"
+            loading="lazy"
+            decoding="async"
             className="w-full h-auto min-h-[175px] sm:min-h-[160px] lg:min-h-[140px] object-cover object-bottom"
           />
         </div>
@@ -204,9 +208,9 @@ export default function HomePage() {
                   <ShieldCheck className="w-3.5 h-3.5 sm:w-5 sm:h-5 stroke-[1.8]" />
                 </div>
                 <div>
-                  <h4 className="font-semibold text-[11px] sm:text-sm leading-tight text-[#FAF5EB] group-hover:text-white">
+                  <p className="font-semibold text-[11px] sm:text-sm leading-tight text-[#FAF5EB] group-hover:text-white">
                     Safe &amp; Welcoming
-                  </h4>
+                  </p>
                   <p className="text-[9px] sm:text-[11px] text-[#A8C2B3]">Environment</p>
                 </div>
               </div>
@@ -216,9 +220,9 @@ export default function HomePage() {
                   <HeartHandshake className="w-3.5 h-3.5 sm:w-5 sm:h-5 stroke-[1.8]" />
                 </div>
                 <div>
-                  <h4 className="font-semibold text-[11px] sm:text-sm leading-tight text-[#FAF5EB] group-hover:text-white">
+                  <p className="font-semibold text-[11px] sm:text-sm leading-tight text-[#FAF5EB] group-hover:text-white">
                     Endless Business
-                  </h4>
+                  </p>
                   <p className="text-[9px] sm:text-[11px] text-[#A8C2B3]">Opportunities</p>
                 </div>
               </div>
@@ -228,9 +232,9 @@ export default function HomePage() {
                   <Users className="w-3.5 h-3.5 sm:w-5 sm:h-5 stroke-[1.8]" />
                 </div>
                 <div>
-                  <h4 className="font-semibold text-[11px] sm:text-sm leading-tight text-[#FAF5EB] group-hover:text-white">
+                  <p className="font-semibold text-[11px] sm:text-sm leading-tight text-[#FAF5EB] group-hover:text-white">
                     Women Support
-                  </h4>
+                  </p>
                   <p className="text-[9px] sm:text-[11px] text-[#A8C2B3]">Network</p>
                 </div>
               </div>
@@ -240,9 +244,9 @@ export default function HomePage() {
                   <Award className="w-3.5 h-3.5 sm:w-5 sm:h-5 stroke-[1.8]" />
                 </div>
                 <div>
-                  <h4 className="font-semibold text-[11px] sm:text-sm leading-tight text-[#FAF5EB] group-hover:text-white">
+                  <p className="font-semibold text-[11px] sm:text-sm leading-tight text-[#FAF5EB] group-hover:text-white">
                     Strong Ecosystem
-                  </h4>
+                  </p>
                   <p className="text-[9px] sm:text-[11px] text-[#A8C2B3]">for Growth</p>
                 </div>
               </div>
@@ -348,13 +352,13 @@ export default function HomePage() {
       <section className="py-20 bg-[#FAF5EB] border-b border-[#E8DCC8]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-14">
-            <span className="text-xs font-bold tracking-[0.2em] uppercase text-[#D49B4B]">
+            <span className="text-xs font-bold tracking-[0.2em] uppercase text-[#8C5E1B]">
               Summit Network
             </span>
             <h2 className="font-serif text-4xl sm:text-5xl font-bold text-[#1B3629] mt-2">
               Who's In The Room
             </h2>
-            <p className="text-base text-[#4E6B5A] font-serif mt-3">
+            <p className="text-base text-[#2D4D3B] font-serif mt-3">
               Bringing together the complete spectrum of enterprise leaders, capital providers, and decision makers.
             </p>
           </div>
@@ -614,7 +618,7 @@ export default function HomePage() {
               key={idx}
               className="shrink-0 w-72 bg-[#234533] rounded-2xl p-6 border border-[#2D5640] text-center flex flex-col items-center justify-center"
             >
-              <h4 className="font-serif text-xl font-bold text-white">{s.name}</h4>
+              <h3 className="font-serif text-xl font-bold text-white">{s.name}</h3>
               <p className="text-xs text-[#D49B4B] font-semibold mt-1 font-serif">{s.title}</p>
             </div>
           ))}
@@ -662,7 +666,7 @@ export default function HomePage() {
                   <p className="text-xs font-medium text-[#1B3629] mt-1">Women Members</p>
                 </div>
                 <div className="bg-[#F2E8D7] rounded-2xl p-5 border border-[#E0D2BC] text-center">
-                  <p className="font-serif text-3xl font-extrabold text-[#D49B4B]">Nationwide</p>
+                  <p className="font-serif text-3xl font-extrabold text-[#8C5E1B]">Nationwide</p>
                   <p className="text-xs font-medium text-[#1B3629] mt-1">Mission Shakti Support</p>
                 </div>
               </div>
@@ -699,7 +703,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto space-y-8 text-center">
             
-            <span className="text-xs font-bold tracking-[0.2em] uppercase text-[#D49B4B]">
+            <span className="text-xs font-bold tracking-[0.2em] uppercase text-[#8C5E1B]">
               Convening Body
             </span>
             <h2 className="font-serif text-4xl sm:text-5xl font-bold text-[#1B3629]">
@@ -717,7 +721,7 @@ export default function HomePage() {
               <span className="px-4 py-2 rounded-full bg-[#FAF5EB] border border-[#E2D4C0] text-xs font-bold text-[#C83B46]">
                 Recognised by NITI Aayog
               </span>
-              <span className="px-4 py-2 rounded-full bg-[#FAF5EB] border border-[#E2D4C0] text-xs font-bold text-[#D49B4B]">
+              <span className="px-4 py-2 rounded-full bg-[#FAF5EB] border border-[#E2D4C0] text-xs font-bold text-[#8C5E1B]">
                 CSR-Certified
               </span>
               <span className="px-4 py-2 rounded-full bg-[#FAF5EB] border border-[#E2D4C0] text-xs font-bold text-[#1B3629]">

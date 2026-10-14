@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/cors.php';
 require_once __DIR__ . '/db.php';
+require_once __DIR__ . '/auth-helper.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit(0);
@@ -68,7 +69,7 @@ if ($action === 'login') {
         'role' => $user['role'],
         'exp' => time() + (86400 * 7) // 7 days
     ];
-    $token = base64_encode(json_encode($tokenPayload));
+    $token = generateAuthToken($tokenPayload);
 
     unset($user['password_hash']);
     $user['permissions'] = $permissions;
