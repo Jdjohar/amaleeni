@@ -166,7 +166,7 @@ export default function HomePage() {
               </div>
 
               {/* Caption Below Buttons */}
-              <p className="text-xs sm:text-sm font-semibold text-[#1B3629]/90 font-serif pt-0.5 drop-shadow-[0_1px_1px_rgba(255,255,255,0.6)]">
+              <p className="text-xl lg:text-lg font-semibold text-[#C83B46]/90 font-serif pt-0.5 drop-shadow-[0_1px_1px_rgba(255,255,255,0.6)]">
                 An initiative of the Amaleeni Foundation – ten years of work with women.
               </p>
             </div>
@@ -755,7 +755,7 @@ export default function HomePage() {
             Two days. One floor. The introductions that change a business.
           </h2>
 
-          <p className="text-sm sm:text-base text-[#D49B4B] font-serif italic">
+          <p className="text-xl xl:text-base text-[#D49B4B] font-serif italic">
             An initiative of the Amaleeni Foundation – awakening the strength within.
           </p>
 

@@ -18,11 +18,19 @@ import {
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { useToast } from '../context/ToastContext';
+import { useAdminAuth } from '../context/AdminAuthContext';
 
 import { submitContactFormApi } from '../services/api';
 
 export default function ContactPage() {
   const { showToast } = useToast();
+  const { siteSettings } = useAdminAuth();
+
+  const instagramUrl = siteSettings?.instagram_url || 'https://www.instagram.com/amaleenifoundation';
+  const linkedinUrl = siteSettings?.linkedin_url || 'https://www.linkedin.com/company/amaleenifoundation';
+  const facebookUrl = siteSettings?.facebook_url || 'https://www.facebook.com/amaleenifoundation';
+  const youtubeUrl = siteSettings?.youtube_url || 'https://www.youtube.com/@AmaleeniFoundation';
+
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
@@ -520,7 +528,7 @@ export default function ContactPage() {
 
         <div className="flex flex-wrap items-center justify-center gap-4">
           <a
-            href="https://instagram.com"
+            href={instagramUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2.5 bg-[#FAF5EB] hover:bg-[#F2E8D7] text-[#1B3629] px-6 py-3 rounded-full text-xs font-bold border border-[#E0D2BC] shadow-sm hover:shadow-md transition-all group cursor-pointer"
@@ -532,7 +540,7 @@ export default function ContactPage() {
           </a>
 
           <a
-            href="https://linkedin.com"
+            href={linkedinUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2.5 bg-[#FAF5EB] hover:bg-[#F2E8D7] text-[#1B3629] px-6 py-3 rounded-full text-xs font-bold border border-[#E0D2BC] shadow-sm hover:shadow-md transition-all group cursor-pointer"
@@ -544,7 +552,7 @@ export default function ContactPage() {
           </a>
 
           <a
-            href="https://facebook.com"
+            href={facebookUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2.5 bg-[#FAF5EB] hover:bg-[#F2E8D7] text-[#1B3629] px-6 py-3 rounded-full text-xs font-bold border border-[#E0D2BC] shadow-sm hover:shadow-md transition-all group cursor-pointer"
@@ -556,7 +564,7 @@ export default function ContactPage() {
           </a>
 
           <a
-            href="https://youtube.com"
+            href={youtubeUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2.5 bg-[#FAF5EB] hover:bg-[#F2E8D7] text-[#1B3629] px-6 py-3 rounded-full text-xs font-bold border border-[#E0D2BC] shadow-sm hover:shadow-md transition-all group cursor-pointer"

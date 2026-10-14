@@ -101,7 +101,7 @@ export default function AdminTeamPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {teamMembers.map((m, idx) => (
               <div
-                key={idx}
+                key={m.id || `${m.name}-${idx}`}
                 className="bg-[#FAF5EB] rounded-3xl p-6 border border-[#E5D7C3] shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow relative"
               >
                 <div>

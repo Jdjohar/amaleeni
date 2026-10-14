@@ -204,10 +204,10 @@ function ensureTablesExist($pdo) {
                 'secretariat_email' => 'delegates@amaleeni.com',
                 'registered_address' => 'Krishna Co-op Society, Boat Club Road, Pune, Maharashtra 411003',
                 'google_map_url' => 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3782.996173003254!2d73.8741!3d18.5284',
-                'facebook_url' => 'https://facebook.com/amaleenifoundation',
-                'instagram_url' => 'https://instagram.com/amaleenifoundation',
-                'linkedin_url' => 'https://linkedin.com/company/amaleeni-foundation',
-                'youtube_url' => 'https://youtube.com/@amaleenifoundation',
+                'facebook_url' => 'https://www.facebook.com/amaleenifoundation',
+                'instagram_url' => 'https://www.instagram.com/amaleenifoundation',
+                'linkedin_url' => 'https://www.linkedin.com/company/amaleenifoundation',
+                'youtube_url' => 'https://www.youtube.com/@AmaleeniFoundation',
                 'twitter_url' => 'https://twitter.com/amaleeni',
             ];
             $stIns = $pdo->prepare("REPLACE INTO site_settings (setting_key, setting_value) VALUES (:k, :v)");

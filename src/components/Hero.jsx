@@ -36,7 +36,7 @@ export default function Hero({ onOpenContact }) {
               <p className="text-sm sm:text-base lg:text-lg text-[#2D4D3B] font-semibold drop-shadow-[0_1px_1px_rgba(255,255,255,0.6)]">
                 Amaleeni Womenpreneurs 2027 brings together women entrepreneurs face to face with investors, banks, corporates and policymakers.
               </p>
-              <p className="text-xs sm:text-sm text-[#614E38] font-medium pt-1 drop-shadow-[0_1px_1px_rgba(255,255,255,0.6)]">
+              <p className="text-xl lg:text-lg text-[#614E38] font-medium pt-1 drop-shadow-[0_1px_1px_rgba(255,255,255,0.6)]">
                 An initiative of the Amaleeni Foundation – ten years of work with women.
               </p>
             </div>

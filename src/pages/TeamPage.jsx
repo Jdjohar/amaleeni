@@ -43,7 +43,17 @@ export default function TeamPage() {
     try {
       const res = await fetchAdminTeamApi();
       if (res && res.team && res.team.length > 0) {
-        setTeamRoster(res.team);
+        // Defensive safeguard: Deduplicate by id or unique name+role combo
+        const unique = [];
+        const seen = new Set();
+        for (const item of res.team) {
+          const key = item.id ? `id_${item.id}` : `${item.name}_${item.role}`;
+          if (!seen.has(key)) {
+            seen.add(key);
+            unique.push(item);
+          }
+        }
+        setTeamRoster(unique);
         return;
       }
     } catch (e) {}
@@ -246,7 +256,7 @@ export default function TeamPage() {
                 <tbody className="divide-y divide-[#EAE0D0] text-sm text-[#1B3629]">
                   {officialRoster.map((item, idx) => (
                     <tr
-                      key={idx}
+                      key={item.id || `${item.name}-${idx}`}
                       className={`hover:bg-[#F7EFE1] transition-colors ${
                         item.name === '[Name]' ? 'bg-[#FAF5EB]/60' : ''
                       }`}
@@ -318,7 +328,7 @@ export default function TeamPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredTeam.map((member, idx) => (
               <div
-                key={idx}
+                key={member.id || `${member.name}-${idx}`}
                 className={`bg-[#FAF5EB] rounded-3xl p-6 sm:p-7 border transition-all duration-300 flex flex-col justify-between hover:shadow-xl ${
                   member.name === 'Dr. Akshaya Jain'
                     ? 'border-2 border-[#C83B46] shadow-md bg-gradient-to-b from-[#FAF5EB] to-[#F5EDE1]'
